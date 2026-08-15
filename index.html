@@ -762,6 +762,40 @@
   .exec-forecast-horizon{color:var(--ink-700);}
   .exec-forecast-values{font-family:var(--font-mono);font-variant-numeric:tabular-nums;text-align:end;color:var(--ink-900);}
   .exec-chart-card{background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-card);padding:24px 24px 18px;margin-bottom:24px;}
+
+  /* ---------- Price Journey (Market Learning Engine, Phase A Slice 2) ----------
+     Same card language as .exec-chart-card immediately below it (theme-aware
+     --surface/--line tokens, not the always-dark --exec-* header tokens) -
+     this section lives in the normal themed-card zone, not the fixed-dark
+     three-card header. Evidence badges reuse the EXISTING .evidence-badge
+     ev-* classes/colors verbatim - no new badge palette introduced. */
+  .price-journey-card{background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-card);padding:24px 24px 20px;margin-bottom:24px;}
+  .pj-head h2{font-size:19px;font-weight:750;color:var(--ink-900);margin:0;}
+  .pj-subtitle{font-size:12.5px;color:var(--ink-500);margin:4px 0 18px;max-width:64ch;}
+  .pj-layout{display:grid;grid-template-columns:1.6fr 1fr;gap:22px;align-items:start;}
+  @media (max-width:860px){.pj-layout{grid-template-columns:1fr;}}
+  .pj-steps{display:flex;flex-direction:column;}
+  .pj-step{display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:10px 0;border-bottom:1px dashed var(--line);}
+  .pj-step:last-child{border-bottom:none;}
+  .pj-step.pj-step--benchmark, .pj-step.pj-step--landed{background:var(--surface-2);margin:0 -10px;padding:12px 10px;border-radius:10px;border-bottom:none;}
+  .pj-step-label{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink-900);font-weight:600;}
+  .pj-step-label .pj-arrow{color:var(--ink-500);font-size:11px;}
+  .pj-step-value{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:14px;font-weight:700;color:var(--ink-900);text-align:end;}
+  .pj-step--landed .pj-step-value{color:var(--exec-teal,#0E9F8F);font-size:16px;}
+  .pj-step-sub{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11.5px;color:var(--ink-500);padding-inline-start:16px;}
+  .pj-step-warning{grid-column:1/-1;display:flex;align-items:flex-start;gap:6px;font-size:11.5px;color:var(--exec-gold,#9A6B00);background:var(--exec-gold-tint,#E8B84B22);border:1px solid var(--exec-gold,#E8B84B);border-radius:8px;padding:6px 9px;margin-top:2px;}
+  .pj-step details.mj-why{grid-column:1/-1;}
+  .pj-side{display:flex;flex-direction:column;gap:16px;}
+  .pj-adjustment-box, .pj-why-box{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
+  .pj-adjustment-label, .pj-why-title{font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-500);font-weight:700;}
+  .pj-adjustment-value{font-family:var(--font-mono);font-size:24px;font-weight:800;color:var(--ink-900);margin-top:6px;}
+  .pj-adjustment-pct{font-family:var(--font-mono);font-size:13px;color:var(--ink-700);margin-top:2px;}
+  .pj-adjustment-note{font-size:11px;color:var(--ink-500);margin:8px 0 0;}
+  .pj-why-list{margin:10px 0 0;display:flex;flex-direction:column;gap:6px;}
+  .pj-why-list > div{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;}
+  .pj-why-list dt{color:var(--ink-500);font-weight:500;}
+  .pj-why-list dd{margin:0;font-family:var(--font-mono);font-variant-numeric:tabular-nums;color:var(--ink-900);font-weight:700;}
+  .pj-why-largest{font-size:11.5px;color:var(--ink-700);margin:10px 0 0;padding-top:10px;border-top:1px solid var(--line);}
   .exec-chart-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px;}
   .exec-chart-title{font-size:19px;font-weight:750;color:var(--ink-900);}
   .exec-chart-note{font-size:12px;color:var(--ink-500);margin-top:4px;}
@@ -1075,6 +1109,40 @@
                 <p id="execPhysicalRbdH5Note" dir="auto"></p>
               </div>
             </details>
+          </div>
+        </div>
+      </div>
+
+      <!-- Price Journey (Market Learning Engine, Phase A Slice 2) - a
+           read-only, component-by-component decomposition of the SAME
+           computeLandedCore() output already shown above (hero figure,
+           Executive Card 2). Deliberately its own bounded section, visually
+           separate from the three Executive headline cards - never a fourth
+           competing headline. Populated entirely by renderPriceJourney();
+           see that function for the derivation. -->
+      <div class="price-journey-card" id="priceJourneyCard">
+        <div class="pj-head">
+          <h2 data-i18n="priceJourneyTitle">Price Journey</h2>
+          <p class="pj-subtitle" data-i18n="priceJourneySubtitle" dir="auto"></p>
+        </div>
+        <div class="pj-layout">
+          <div class="pj-steps" id="priceJourneySteps" role="list"></div>
+          <div class="pj-side">
+            <div class="pj-adjustment-box" id="priceJourneyAdjustment">
+              <span class="pj-adjustment-label" data-i18n="journeyAdjustmentLabel">Market → Landed</span>
+              <div class="pj-adjustment-value" dir="ltr"><span id="priceJourneyAdjustmentUsd">—</span></div>
+              <div class="pj-adjustment-pct" dir="ltr"><span id="priceJourneyAdjustmentPct">—</span></div>
+              <p class="pj-adjustment-note" data-i18n="journeyAdjustmentNote" dir="auto"></p>
+            </div>
+            <div class="pj-why-box" id="priceJourneyWhy">
+              <span class="pj-why-title" data-i18n="journeyWhyTitle">Why this price?</span>
+              <dl class="pj-why-list">
+                <div><dt data-i18n="journeyWhyBenchmark">Starting benchmark</dt><dd id="priceJourneyWhyBenchmark" dir="ltr">—</dd></div>
+                <div><dt data-i18n="journeyWhyAdjustment">Market-to-landed adjustment</dt><dd id="priceJourneyWhyAdjustment" dir="ltr">—</dd></div>
+                <div><dt data-i18n="journeyWhyLanded">Modeled Egypt landed</dt><dd id="priceJourneyWhyLanded" dir="ltr">—</dd></div>
+              </dl>
+              <p class="pj-why-largest" id="priceJourneyWhyLargest" dir="auto"></p>
+            </div>
           </div>
         </div>
       </div>
@@ -1801,6 +1869,21 @@
       execWhyLabel:'Why is cost expected to change?', execWhyFcpo:'Malaysia benchmark impact', execWhyFx:'Egypt pound / USD impact', execWhyOther:'Freight and other assumptions', execWhyHeld:'Held constant',
       execFcpoDirLabel:'FCPO', execFxDirLabel:'EGP/USD', execFreightLabel:'Freight', execDataQualityLabel:'Data Quality', execTrustLabel:'Trust', execUpdatedLabel:'Updated',
       execDirUp:'Up', execDirDown:'Down', execDirFlat:'Flat',
+      // ---------- Price Journey (Market Learning Engine, Phase A Slice 2) ----------
+      priceJourneyTitle:'Price Journey', priceJourneySubtitle:'A transparent, component-by-component decomposition of today’s modeled landed cost — the same computeLandedCore() calculation shown elsewhere on this page, never a second formula.',
+      journeyStepBenchmark:'Malaysia FCPO benchmark (converted to USD)', journeyStepRbd:'RBD / physical adjustment', journeyStepOriginCost:'Origin levy (Indonesia)',
+      journeyStepFreight:'Freight', journeyStepInsurance:'Insurance', journeyStepDuty:'Customs duty', journeyStepVat:'VAT', journeyStepMargin:'Legacy local/commercial adjustment',
+      journeyStepLanded:'Modeled Egypt landed',
+      journeySubRefiningProcessing:'Refining/processing adjustment', journeySubOleinFractionation:'Olein fractionation premium', journeySubPhysicalBasis:'Physical market basis (residual)',
+      journeyMarginWarning:'Unverified legacy assumption — repository evidence does not confirm this is a commercial margin, an inland distribution cost, a contingency, or a landed-at-port cost.',
+      journeyAdjustmentLabel:'Market → Landed', journeyAdjustmentNote:'Sum of every step below, from the FCPO benchmark to the modeled landed cost — never a stored constant.',
+      journeyWhyTitle:'Why this price?', journeyWhyBenchmark:'Starting benchmark', journeyWhyAdjustment:'Market-to-landed adjustment', journeyWhyLanded:'Modeled Egypt landed', journeyWhyLargest:'Largest contributor',
+      journeyClassObserved:'Observed', journeyClassCalculated:'Calculated', journeyClassAssumed:'Assumed', journeyClassTrader:'Trader-supplied', journeyClassLearned:'Learned', journeyClassUnknown:'Unclassified',
+      journeyEvidenceSource:'Source', journeyEvidenceObserved:'Observation date', journeyEvidenceUpdated:'Last updated', journeyEvidenceConfidence:'Confidence', journeyEvidenceFormulaRole:'Formula role',
+      journeyEvidenceUnknown:'Unknown — no provenance recorded for this field', journeyDetailsLabel:'Details',
+      journeyFormulaRoleBenchmark:'fobCpoUSD = cpoMYR ÷ usdMyr', journeyFormulaRoleRbd:'fobOlein = fobCpoUSD + totalRbdAdjustment()', journeyFormulaRoleFreight:'preFreight + freight',
+      journeyFormulaRoleInsurance:'(preFreight + freight) × insurancePct%', journeyFormulaRoleDuty:'cif × egyptDutyPct%', journeyFormulaRoleVat:'dutyPaid × vatPct% (only when VAT is on)',
+      journeyFormulaRoleMargin:'preMargin × marginPct% — the last step before landedUSD', journeyFormulaRoleLanded:'preMargin + margin, then × egpUsd',
       execTrustInsufficient:'Not enough history', execStaleSuffix:'(stale)',
       execStaleBannerAsOf:'Dashboard data as of', execStaleBannerText:'Update overdue', execHorizonPrefix:'Forecast horizon', execHorizonDaysUnit:'days',
       execCardWhyLabel:'Source / Why this number?',
@@ -2008,6 +2091,20 @@
       execWhyLabel:'لماذا من المتوقع أن تتغير التكلفة؟', execWhyFcpo:'أثر المؤشر الماليزي', execWhyFx:'أثر الجنيه المصري / الدولار', execWhyOther:'الشحن والافتراضات الأخرى', execWhyHeld:'ثابتة دون تغيير',
       execFcpoDirLabel:'FCPO', execFxDirLabel:'الجنيه/الدولار', execFreightLabel:'الشحن', execDataQualityLabel:'جودة البيانات', execTrustLabel:'الثقة', execUpdatedLabel:'التحديث',
       execDirUp:'مرتفع', execDirDown:'منخفض', execDirFlat:'مستقر',
+      priceJourneyTitle:'رحلة السعر', priceJourneySubtitle:'تفصيل شفاف، خطوة بخطوة، للتكلفة الواصلة المحسوبة اليوم — نفس حساب computeLandedCore() الظاهر في باقي الصفحة، وليس معادلة ثانية.',
+      journeyStepBenchmark:'مؤشر FCPO الماليزي (محوَّل إلى الدولار)', journeyStepRbd:'تعديل الأولين المكرر / السوق الفعلي', journeyStepOriginCost:'رسوم المنشأ (إندونيسيا)',
+      journeyStepFreight:'الشحن', journeyStepInsurance:'التأمين', journeyStepDuty:'الجمارك', journeyStepVat:'ضريبة القيمة المضافة', journeyStepMargin:'تعديل تجاري/محلي قديم',
+      journeyStepLanded:'التكلفة الواصلة المحسوبة لمصر',
+      journeySubRefiningProcessing:'تعديل التكرير/المعالجة', journeySubOleinFractionation:'علاوة تجزئة الأولين', journeySubPhysicalBasis:'أساس السوق الفعلي (متبقٍّ حسابي)',
+      journeyMarginWarning:'افتراض قديم غير مؤكَّد — لا تثبت أدلة المشروع أن هذا هامش تجاري، أو تكلفة توزيع داخلي، أو احتياطي، أو تكلفة وصول للميناء.',
+      journeyAdjustmentLabel:'من السوق إلى التكلفة الواصلة', journeyAdjustmentNote:'مجموع كل الخطوات أدناه، من مؤشر FCPO إلى التكلفة الواصلة المحسوبة — ليست رقمًا ثابتًا مخزَّنًا أبدًا.',
+      journeyWhyTitle:'لماذا هذا السعر؟', journeyWhyBenchmark:'المؤشر الأساسي', journeyWhyAdjustment:'التعديل من السوق إلى التكلفة الواصلة', journeyWhyLanded:'التكلفة الواصلة المحسوبة لمصر', journeyWhyLargest:'أكبر مساهم',
+      journeyClassObserved:'مُلاحَظ', journeyClassCalculated:'مُحتسَب', journeyClassAssumed:'افتراض', journeyClassTrader:'من التاجر', journeyClassLearned:'مُتعلَّم', journeyClassUnknown:'غير مصنَّف',
+      journeyEvidenceSource:'المصدر', journeyEvidenceObserved:'تاريخ الرصد', journeyEvidenceUpdated:'آخر تحديث', journeyEvidenceConfidence:'مستوى الثقة', journeyEvidenceFormulaRole:'دور المعادلة',
+      journeyEvidenceUnknown:'غير معروف — لا يوجد مصدر مسجَّل لهذا الحقل', journeyDetailsLabel:'تفاصيل',
+      journeyFormulaRoleBenchmark:'fobCpoUSD = cpoMYR ÷ usdMyr', journeyFormulaRoleRbd:'fobOlein = fobCpoUSD + totalRbdAdjustment()', journeyFormulaRoleFreight:'preFreight + freight',
+      journeyFormulaRoleInsurance:'(preFreight + freight) × insurancePct%', journeyFormulaRoleDuty:'cif × egyptDutyPct%', journeyFormulaRoleVat:'dutyPaid × vatPct% (فقط عند تفعيل ضريبة القيمة المضافة)',
+      journeyFormulaRoleMargin:'preMargin × marginPct% — آخر خطوة قبل landedUSD', journeyFormulaRoleLanded:'preMargin + margin، ثم × egpUsd',
       execTrustInsufficient:'بيانات غير كافية', execStaleSuffix:'(قديم)',
       execStaleBannerAsOf:'بيانات اللوحة بتاريخ', execStaleBannerText:'التحديث متأخر', execHorizonPrefix:'أفق التوقع', execHorizonDaysUnit:'يومًا',
       execCardWhyLabel:'المصدر / لماذا هذا الرقم؟',
@@ -3626,6 +3723,136 @@
     return computeLandedCore(cpoMYR / state.usdMyr, state.origin === 'id', egpUsdRate);
   }
 
+  // ---------- Price Journey (Market Learning Engine, Phase A Slice 2) ----------
+  // Read-only decomposition of computeLandedCore()'s own return value - no
+  // second formula, no new stored value. classifyJourneyComponent() and
+  // getJourneyComponentEvidence() derive OBSERVED/CALCULATED/ASSUMED purely
+  // from the EXISTING DATA_PROVENANCE registry (never a duplicate registry -
+  // see docs/KPI_DATA_DICTIONARY.md's Phase A Slice 1 investigation for the
+  // evidence this mapping is built from). buildPriceJourney() sums pieces
+  // computeLandedCore() already returns; it never recomputes the formula.
+  //
+  // Classification rule (documented, not invented ad hoc):
+  //   - DATA_PROVENANCE[key].status === 'Derived'                -> CALCULATED
+  //   - DATA_PROVENANCE[key].status === 'Hardcoded'               -> ASSUMED
+  //   - DATA_PROVENANCE[key].status === 'Manual' with a real,
+  //     dated source (not "not documented"/route-mismatched)      -> OBSERVED
+  //   - DATA_PROVENANCE[key].status === 'Manual' with no real
+  //     source on file                                            -> ASSUMED
+  //   - no DATA_PROVENANCE entry at all for this exact key         -> see
+  //     JOURNEY_CLASSIFICATION_OVERRIDES below (each entry documents WHY,
+  //     traced to the Phase A Slice 1 investigation) - never silently
+  //     defaulted to a confident-sounding tier.
+  var JOURNEY_CLASSIFICATION_OVERRIDES = {
+    // Unsourced split of a grounded total (refiningSpread itself IS in
+    // DATA_PROVENANCE and IS CALCULATED-eligible - only the two-way split
+    // below it has never had independent evidence, confirmed by Slice 1's
+    // git-history investigation finding zero originating rationale).
+    refiningProcessingAdjustment: 'ASSUMED',
+    oleinFractionationPremium: 'ASSUMED',
+    // Hardcoded, zero source on file (Slice 1: appeared fully-formed in the
+    // very first commit, no business rationale ever recorded anywhere in
+    // git history - see docs/KPI_DATA_DICTIONARY.md Phase A Slice 1 report).
+    marginPct: 'ASSUMED',
+    // Neither has a DATA_PROVENANCE entry at all today.
+    vatPct: 'ASSUMED',
+    idLevyPct: 'ASSUMED'
+  };
+  function classifyJourneyComponent(fieldKey){
+    var dp = DATA_PROVENANCE[fieldKey];
+    if (dp && dp.status === 'Derived') return 'CALCULATED';
+    if (dp && dp.status === 'Hardcoded') return 'ASSUMED';
+    if (dp && dp.status === 'Manual'){
+      var src = dp.source || '';
+      var looksUnsourced = src.indexOf('Not documented') !== -1 || src.toLowerCase().indexOf('no egypt-route source documented') !== -1;
+      return looksUnsourced ? 'ASSUMED' : 'OBSERVED';
+    }
+    if (Object.prototype.hasOwnProperty.call(JOURNEY_CLASSIFICATION_OVERRIDES, fieldKey)){
+      return JOURNEY_CLASSIFICATION_OVERRIDES[fieldKey];
+    }
+    // Fail-safe: never invent a confident-sounding classification for a
+    // field this function doesn't actually have evidence about.
+    return 'UNKNOWN';
+  }
+  // Full evidence detail for one journey component's expandable panel.
+  // confidence is explicitly 'Unknown' (a distinct value, never a fabricated
+  // 'Low') when no DATA_PROVENANCE entry exists at all - satisfies "missing
+  // provenance fails safely / shows unknown rather than inventing confidence".
+  function getJourneyComponentEvidence(fieldKey){
+    var dp = DATA_PROVENANCE[fieldKey];
+    var classification = classifyJourneyComponent(fieldKey);
+    if (!dp){
+      return {
+        classification: classification, hasProvenance: false,
+        source: null, sourceType: null, observationDate: null, lastUpdated: null,
+        confidence: 'Unknown', status: null, unit: null
+      };
+    }
+    return {
+      classification: classification, hasProvenance: true,
+      source: dp.source || null, sourceType: dp.sourceType || null,
+      observationDate: dp.observationDate || null, lastUpdated: dp.lastUpdated || null,
+      confidence: dp.confidence || 'Unknown', status: dp.status || null, unit: dp.unit || null
+    };
+  }
+  // Builds the full Price Journey decomposition for the CURRENT live state -
+  // an explanation of the current formula version, never a reinterpretation
+  // of any past HISTORY entry. Every subtotal below is arithmetic performed
+  // on values computeLandedCore() itself already returned - fobCpoUSD is the
+  // formula's REAL starting point (the FCPO benchmark converted to USD),
+  // deliberately NOT the separately-displayed, never-fed-into-the-formula
+  // rbdOleinFobMarketUSD market-reported quote (see Slice 1 §3's explicit
+  // warning against mixing those two concepts).
+  function buildPriceJourney(){
+    var fobCpoUSD = state.cpoMYR / state.usdMyr;
+    var isIndonesia = state.origin === 'id';
+    var core = computeLandedCore(fobCpoUSD, isIndonesia, state.egpUsd);
+    var cif = core.fobOlein + core.originCost + core.freight + core.insurance;
+    var dutyPaid = cif + core.duty;
+    var preMargin = dutyPaid + core.vat;
+    var rbdAdjustment = core.fobOlein - fobCpoUSD;
+    var marketToLandedUsd = core.landedUSD - fobCpoUSD;
+    var marketToLandedPct = fobCpoUSD ? (marketToLandedUsd / fobCpoUSD * 100) : 0;
+
+    var steps = [];
+    steps.push({ key:'rbdAdjustment', amountUsd: rbdAdjustment, classification: classifyJourneyComponent('refiningSpread'),
+      subComponents: [
+        { key:'refiningProcessingAdjustment', amountUsd: state.refiningProcessingAdjustment, classification: classifyJourneyComponent('refiningProcessingAdjustment') },
+        { key:'oleinFractionationPremium', amountUsd: state.oleinFractionationPremium, classification: classifyJourneyComponent('oleinFractionationPremium') },
+        { key:'physicalMarketBasisAdjustment', amountUsd: state.physicalMarketBasisAdjustment, classification: classifyJourneyComponent('refiningSpread') }
+      ] });
+    if (isIndonesia && core.originCost){
+      steps.push({ key:'originCost', amountUsd: core.originCost, classification: classifyJourneyComponent('idLevyPct') });
+    }
+    steps.push({ key:'freight', amountUsd: core.freight, classification: classifyJourneyComponent('freight') });
+    steps.push({ key:'insurance', amountUsd: core.insurance, classification: classifyJourneyComponent('insurancePct') });
+    steps.push({ key:'duty', amountUsd: core.duty, classification: classifyJourneyComponent('egyptDutyPct') });
+    if (state.vatOn){
+      steps.push({ key:'vat', amountUsd: core.vat, classification: classifyJourneyComponent('vatPct') });
+    }
+    steps.push({ key:'margin', amountUsd: core.margin, classification: classifyJourneyComponent('marginPct') });
+
+    // Deterministic largest-contributor identification (Phase A Slice 2 §9)
+    // - plain arithmetic comparison by absolute magnitude, never an
+    // LLM-authored judgement. Excludes the benchmark itself (not an
+    // "adjustment") and any zero-value step (e.g. VAT off, no Indonesia).
+    var largest = null;
+    steps.forEach(function (s){
+      if (Math.abs(s.amountUsd) < 1e-9) return;
+      if (!largest || Math.abs(s.amountUsd) > Math.abs(largest.amountUsd)) largest = s;
+    });
+
+    return {
+      formulaVersion: 'v1-fob-freight-insurance-cif-duty-vat-margin',
+      fobCpoUSD: fobCpoUSD, benchmarkClassification: classifyJourneyComponent('cpoMYR'),
+      steps: steps,
+      cif: cif, dutyPaid: dutyPaid, preMargin: preMargin,
+      landedUSD: core.landedUSD, landedEGP: core.landedEGP, egpUsd: state.egpUsd,
+      marketToLandedUsd: marketToLandedUsd, marketToLandedPct: marketToLandedPct,
+      largestContributorKey: largest ? largest.key : null
+    };
+  }
+
   function computeProductOriginDecision(productId, originId, egpUsdRate){
     if (!PRODUCT_REGISTRY[productId]) return { status:'UNSUPPORTED_PRODUCT', productId:productId, originId:originId, outputs:null };
     if (originId !== 'MY') return {
@@ -3679,7 +3906,7 @@
   // on either side pass whichever field their record actually has.
   function buildCostChangeNarrative(base, point12Week, outlookWeek, fxScenarioBaseEnd, state){
     if (!point12Week){
-      return { hasPoint:false, isFlat:true, changePct:0, changeRounded:0, driver:null, fcpoImpact:0, fxImpact:0 };
+      return { hasPoint:false, isFlat:true, changePct:0, changeRounded:0, driver:null, fcpoImpact:0, fxImpact:0, outlookFcpo:undefined, outlookFx:undefined };
     }
     var change = point12Week.baseLandedEgp - base.landedEGP;
     var changeRounded = Math.round(change);
@@ -3703,7 +3930,7 @@
     else if (Math.abs(fcpoImpact) === Math.abs(fxImpact)) driver = 'mixed';
     else driver = Math.abs(fcpoImpact) > Math.abs(fxImpact) ? 'fcpo' : 'fx';
 
-    return { hasPoint:true, isFlat:isFlat, changePct:changePct, changeRounded:changeRounded, driver:driver, fcpoImpact:fcpoImpact, fxImpact:fxImpact };
+    return { hasPoint:true, isFlat:isFlat, changePct:changePct, changeRounded:changeRounded, driver:driver, fcpoImpact:fcpoImpact, fxImpact:fxImpact, outlookFcpo:outlookFcpo, outlookFx:outlookFx };
   }
 
   // ---------- Assumptions form ----------
@@ -4322,6 +4549,11 @@
     renderOutlook(forecastPoints);
     renderExecutiveSummary(base);
     renderRbdMismatchWarning();
+    // Presentation-only; a failure here must never block the rest of the
+    // dashboard from rendering (same defensive pattern as the FX bank
+    // monitor widget below) - Price Journey explains computeLandedCore()'s
+    // own output, it never participates in producing it.
+    try { renderPriceJourney(); } catch (e) { /* widget-local failure only */ }
     renderAssumptionAudit();
     renderForecastAccuracy();
     // Informational-only widget; a failure here must never block the rest
@@ -4450,6 +4682,184 @@
   function renderEvidenceBadgeFromTier(elId, tierInfo){
     var style = EVIDENCE_BADGE_STYLE[tierInfo.tier] || ['ev-unknown','?','evTierUnknown'];
     renderEvidenceBadge(elId, style[0], style[1], style[2], tierInfo.reason);
+  }
+
+  // ---------- Price Journey rendering (Market Learning Engine, Phase A
+  // Slice 2) ----------
+  // Builds its own small inline badge (JOURNEY_CLASS_BADGE_STYLE) rather than
+  // calling renderEvidenceBadge() above, because that helper requires a
+  // pre-existing element id and this section's step list is variable-length
+  // (VAT on/off, Indonesia origin) - every node here is built fresh each
+  // render from buildPriceJourney()'s output. Presentation only: never reads
+  // or writes computeLandedCore()'s inputs, only its already-computed output.
+  var JOURNEY_CLASS_BADGE_STYLE = {
+    OBSERVED:   ['ev-verified','✓','journeyClassObserved'],
+    CALCULATED: ['ev-market','●','journeyClassCalculated'],
+    ASSUMED:    ['ev-estimated','≈','journeyClassAssumed'],
+    TRADER:     ['ev-market','●','journeyClassTrader'],
+    LEARNED:    ['ev-market','●','journeyClassLearned'],
+    UNKNOWN:    ['ev-unknown','?','journeyClassUnknown']
+  };
+  function journeyBadgeEl(classification){
+    var style = JOURNEY_CLASS_BADGE_STYLE[classification] || JOURNEY_CLASS_BADGE_STYLE.UNKNOWN;
+    var span = document.createElement('span');
+    span.className = 'evidence-badge ' + style[0];
+    var iconSpan = document.createElement('span');
+    iconSpan.setAttribute('aria-hidden','true');
+    iconSpan.textContent = style[1];
+    var labelSpan = document.createElement('span');
+    labelSpan.textContent = t(style[2]);
+    span.appendChild(iconSpan);
+    span.appendChild(labelSpan);
+    return span;
+  }
+  function journeyEvidenceDetailsEl(fieldKey, formulaRoleKey){
+    var ev = getJourneyComponentEvidence(fieldKey);
+    var details = document.createElement('details');
+    details.className = 'mj-why';
+    var summary = document.createElement('summary');
+    summary.textContent = t('journeyDetailsLabel');
+    details.appendChild(summary);
+    var body = document.createElement('div');
+    body.className = 'mj-why-body';
+    body.setAttribute('dir','auto');
+    function row(labelKey, value){
+      if (value === null || value === undefined || value === '') return;
+      var wr = document.createElement('div');
+      wr.className = 'wr';
+      var l = document.createElement('span');
+      l.textContent = t(labelKey);
+      var v = document.createElement('span');
+      v.setAttribute('dir','auto');
+      v.textContent = value;
+      wr.appendChild(l); wr.appendChild(v);
+      body.appendChild(wr);
+    }
+    if (!ev.hasProvenance){
+      var p = document.createElement('p');
+      p.textContent = t('journeyEvidenceUnknown');
+      body.appendChild(p);
+    } else {
+      row('journeyEvidenceSource', ev.source);
+      row('journeyEvidenceObserved', ev.observationDate);
+      row('journeyEvidenceUpdated', ev.lastUpdated);
+      row('journeyEvidenceConfidence', ev.confidence);
+    }
+    if (formulaRoleKey) row('journeyEvidenceFormulaRole', t(formulaRoleKey));
+    details.appendChild(body);
+    return details;
+  }
+  function journeyStepRow(opts){
+    // opts: { labelKey, amountUsd, classification, fieldKey, formulaRoleKey, variant, warningKey, subRows }
+    var row = document.createElement('div');
+    row.className = 'pj-step' + (opts.variant ? ' pj-step--' + opts.variant : '');
+    row.setAttribute('role','listitem');
+    var labelDiv = document.createElement('div');
+    labelDiv.className = 'pj-step-label';
+    if (opts.variant !== 'benchmark'){
+      var arrow = document.createElement('span');
+      arrow.className = 'pj-arrow';
+      arrow.setAttribute('aria-hidden','true');
+      arrow.textContent = '→';
+      labelDiv.appendChild(arrow);
+    }
+    var labelText = document.createElement('span');
+    labelText.setAttribute('data-i18n', opts.labelKey);
+    labelText.textContent = t(opts.labelKey);
+    labelDiv.appendChild(labelText);
+    if (opts.fieldKey) labelDiv.appendChild(journeyBadgeEl(opts.classification));
+    row.appendChild(labelDiv);
+
+    var valueDiv = document.createElement('div');
+    valueDiv.className = 'pj-step-value';
+    valueDiv.setAttribute('dir','ltr');
+    var sign = opts.variant === 'benchmark' || opts.variant === 'landed' ? '' : (opts.amountUsd < 0 ? '-' : '+');
+    valueDiv.textContent = sign + '$' + fmt(Math.abs(opts.amountUsd), 2);
+    row.appendChild(valueDiv);
+
+    if (opts.subRows && opts.subRows.length){
+      var sub = document.createElement('div');
+      sub.className = 'pj-step-sub';
+      opts.subRows.forEach(function (s){
+        var chip = document.createElement('span');
+        chip.textContent = t(s.labelKey) + ': ' + (s.amountUsd < 0 ? '-' : '+') + '$' + fmt(Math.abs(s.amountUsd), 2) + ' (' + t((JOURNEY_CLASS_BADGE_STYLE[s.classification] || JOURNEY_CLASS_BADGE_STYLE.UNKNOWN)[2]) + ')';
+        sub.appendChild(chip);
+      });
+      row.appendChild(sub);
+    }
+
+    if (opts.warningKey){
+      var warn = document.createElement('div');
+      warn.className = 'pj-step-warning';
+      warn.textContent = '⚠ ' + t(opts.warningKey);
+      row.appendChild(warn);
+    }
+
+    if (opts.fieldKey){
+      row.appendChild(journeyEvidenceDetailsEl(opts.fieldKey, opts.formulaRoleKey));
+    }
+    return row;
+  }
+  var JOURNEY_STEP_LABEL_KEYS = {
+    rbdAdjustment: 'journeyStepRbd', originCost: 'journeyStepOriginCost', freight: 'journeyStepFreight',
+    insurance: 'journeyStepInsurance', duty: 'journeyStepDuty', vat: 'journeyStepVat', margin: 'journeyStepMargin'
+  };
+  var JOURNEY_STEP_FORMULA_ROLE_KEYS = {
+    rbdAdjustment: 'journeyFormulaRoleRbd', originCost: 'journeyFormulaRoleRbd', freight: 'journeyFormulaRoleFreight',
+    insurance: 'journeyFormulaRoleInsurance', duty: 'journeyFormulaRoleDuty', vat: 'journeyFormulaRoleVat', margin: 'journeyFormulaRoleMargin'
+  };
+  function renderPriceJourney(){
+    var container = document.getElementById('priceJourneySteps');
+    if (!container) return;
+    var journey = buildPriceJourney();
+    container.innerHTML = '';
+
+    container.appendChild(journeyStepRow({
+      labelKey: 'journeyStepBenchmark', amountUsd: journey.fobCpoUSD, classification: journey.benchmarkClassification,
+      fieldKey: 'cpoMYR', formulaRoleKey: 'journeyFormulaRoleBenchmark', variant: 'benchmark'
+    }));
+
+    journey.steps.forEach(function (s){
+      var opts = {
+        labelKey: JOURNEY_STEP_LABEL_KEYS[s.key] || s.key, amountUsd: s.amountUsd, classification: s.classification,
+        fieldKey: s.key, formulaRoleKey: JOURNEY_STEP_FORMULA_ROLE_KEYS[s.key]
+      };
+      if (s.key === 'rbdAdjustment' && s.subComponents){
+        opts.subRows = s.subComponents.map(function (sc){
+          var subLabelKey = sc.key === 'refiningProcessingAdjustment' ? 'journeySubRefiningProcessing'
+            : sc.key === 'oleinFractionationPremium' ? 'journeySubOleinFractionation' : 'journeySubPhysicalBasis';
+          return { labelKey: subLabelKey, amountUsd: sc.amountUsd, classification: sc.classification };
+        });
+      }
+      if (s.key === 'margin') opts.warningKey = 'journeyMarginWarning';
+      container.appendChild(journeyStepRow(opts));
+    });
+
+    container.appendChild(journeyStepRow({
+      labelKey: 'journeyStepLanded', amountUsd: journey.landedUSD, classification: 'CALCULATED',
+      fieldKey: null, variant: 'landed'
+    }));
+
+    var adjUsdEl = document.getElementById('priceJourneyAdjustmentUsd');
+    var adjPctEl = document.getElementById('priceJourneyAdjustmentPct');
+    if (adjUsdEl) adjUsdEl.textContent = (journey.marketToLandedUsd < 0 ? '-' : '+') + '$' + fmt(Math.abs(journey.marketToLandedUsd), 2) + '/MT';
+    if (adjPctEl) adjPctEl.textContent = (journey.marketToLandedPct < 0 ? '-' : '+') + fmt(Math.abs(journey.marketToLandedPct), 1) + '%';
+
+    var whyBenchmarkEl = document.getElementById('priceJourneyWhyBenchmark');
+    var whyAdjustmentEl = document.getElementById('priceJourneyWhyAdjustment');
+    var whyLandedEl = document.getElementById('priceJourneyWhyLanded');
+    var whyLargestEl = document.getElementById('priceJourneyWhyLargest');
+    if (whyBenchmarkEl) whyBenchmarkEl.textContent = '$' + fmt(journey.fobCpoUSD, 2) + '/MT';
+    if (whyAdjustmentEl) whyAdjustmentEl.textContent = (journey.marketToLandedUsd < 0 ? '-' : '+') + '$' + fmt(Math.abs(journey.marketToLandedUsd), 2) + '/MT';
+    if (whyLandedEl) whyLandedEl.textContent = '$' + fmt(journey.landedUSD, 2) + '/MT';
+    if (whyLargestEl){
+      if (journey.largestContributorKey){
+        var largestLabelKey = JOURNEY_STEP_LABEL_KEYS[journey.largestContributorKey] || journey.largestContributorKey;
+        whyLargestEl.textContent = t('journeyWhyLargest') + ': ' + t(largestLabelKey);
+      } else {
+        whyLargestEl.textContent = '';
+      }
+    }
   }
 
   // ---------- Confidence Engine V1 badge rendering (UI integration slice 1) ----------
@@ -5049,8 +5459,14 @@
 
     // FCPO / EGP-USD direction: today's value vs. the latest canonical
     // forecast endpoint - a strict sign comparison, no invented threshold.
-    renderExecDirChip('execFcpoDir', state.cpoMYR, outlookFcpo);
-    renderExecDirChip('execFxDir', state.egpUsd, outlookFx);
+    // Pre-existing bug fix (found during Price Journey Phase A Slice 2
+    // UAT, unrelated to that feature): outlookFcpo/outlookFx are local to
+    // buildCostChangeNarrative(), not this function - read them off its
+    // already-computed return value (same value, same formula) instead of
+    // referencing out-of-scope variables, which threw an uncaught
+    // ReferenceError and silently aborted the rest of renderAll().
+    renderExecDirChip('execFcpoDir', state.cpoMYR, costChangeNarrative.outlookFcpo);
+    renderExecDirChip('execFxDir', state.egpUsd, costChangeNarrative.outlookFx);
 
     // Freight: value + provenance confidence only - no invented trend, since
     // no historical freight series exists to derive one from.
