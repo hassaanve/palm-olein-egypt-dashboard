@@ -881,7 +881,7 @@
     <h1 data-i18n="title">RBD Palm Olein — Egypt</h1>
     <p class="subtitle" id="pageSubtitle" hidden data-i18n="subtitle">A transparent, adjustable model of the landed price of refined, bleached &amp; deodorized palm olein into Egypt — built from the Bursa Malaysia benchmark, freight, Egyptian customs duty and EGP/USD scenarios. Not a market quote: a computed estimate you can correct with real numbers as you get them.</p>
     <div class="meta-row">
-      <span><span data-i18n="metaSnapshot">Snapshot</span> <b>13 Aug 2026</b></span>
+      <span><span data-i18n="metaSnapshot">Snapshot</span> <b>15 Aug 2026</b></span>
       <span><span data-i18n="metaBasis">Basis</span> <b data-i18n="metaBasisValue">FOB Malaysia, Port Klang</b></span>
       <span><span data-i18n="metaDest">Destination</span> <b data-i18n="metaDestValue">Alexandria / Damietta</b></span>
     </div>
@@ -1497,12 +1497,12 @@
   "use strict";
 
   var DEFAULTS = {
-    cpoMYR: 4510,
-    usdMyr: 4.087,
-    refiningSpread: 35.5,
+    cpoMYR: 4575,
+    usdMyr: 4.085,
+    refiningSpread: 38.5,
     refiningProcessingAdjustment: 15,
     oleinFractionationPremium: 15,
-    physicalMarketBasisAdjustment: 5.5,
+    physicalMarketBasisAdjustment: 8.5,
     origin: 'my',
     idLevyPct: 9,
     freight: 36,
@@ -1522,7 +1522,7 @@
     // FOB olein figure from cpoMYR/usdMyr + totalRbdAdjustment() exactly as
     // before - this field exists purely so a trader can see a directly
     // market-reported price alongside that derived one, not to replace it.
-    rbdOleinFobMarketUSD: 1155,
+    rbdOleinFobMarketUSD: 1147.50,
     lang: 'en'
   };
   var state = Object.assign({}, DEFAULTS);
@@ -1598,17 +1598,17 @@
   // a future task.
   var DATA_PROVENANCE = {
     cpoMYR: {
-      source:'agropost.wordpress.com dated "12 Aug 2026 – Palm Oil Prices at Closing" table (CPO FUTURES PRICES AT MDEX), Aug’26 contract',
-      sourceType:'Market Report', lastUpdated:'2026-08-13', confidence:'Medium', status:'Manual',
+      source:'agropost.wordpress.com dated "14 Aug 2026 – Palm Oil Prices at Closing" table (CPO FUTURES PRICES AT MDEX), Sep’26 contract (Aug’26 contract no longer listed — rolled)',
+      sourceType:'Market Report', lastUpdated:'2026-08-15', confidence:'Medium', status:'Manual',
       unit:'MYR/MT', refreshMethod:'Daily AI refresh',
-      contractCode:'Not confirmed by source (referred to only as "Aug’26")', contractMonth:'August 2026',
-      priceType:'Last Traded (agropost "Last" column; not confirmed as official BMD settlement)', observationDate:'12 Aug 2026',
-      contractSelectionRule:'Nearest liquid FCPO contract (currently Aug’26)'
+      contractCode:'Not confirmed by source (referred to only as "Sep’26")', contractMonth:'September 2026',
+      priceType:'Last Traded (agropost "Last" column; not confirmed as official BMD settlement)', observationDate:'14 Aug 2026',
+      contractSelectionRule:'Nearest liquid FCPO contract (currently Sep’26, rolled from Aug’26 which is no longer quoted)'
     },
     usdMyr: {
-      source:'Bank Negara Malaysia — USD/MYR interbank middle rate (4.087), 13 Aug 2026 1200 hours',
-      sourceType:'Official Publication', lastUpdated:'2026-08-13', confidence:'High', status:'Manual',
-      unit:'MYR/USD', refreshMethod:'Daily AI refresh', observationDate:'13 Aug 2026'
+      source:'Bank Negara Malaysia — USD/MYR interbank intraday dealt rates, 14 Aug 2026 (high 4.088 / low 4.081; midpoint 4.085 used, no single reference-rate figure published for that date)',
+      sourceType:'Official Publication', lastUpdated:'2026-08-15', confidence:'Medium', status:'Manual',
+      unit:'MYR/USD', refreshMethod:'Daily AI refresh', observationDate:'14 Aug 2026'
     },
     egpUsd: {
       source:'BankLive-reported Central Bank of Egypt official USD/EGP buy/sell rates (50.1557 / 50.2957), 13 Aug 2026',
@@ -1621,8 +1621,8 @@
       unit:'USD/MT', refreshMethod:'Daily automation, only on Egypt-route-specific evidence, else left unchanged — scripts/daily-refresh-prompt.txt'
     },
     refiningSpread: {
-      source:'agropost.wordpress.com dated "12 Aug 2026 – Palm Oil Prices at Closing" FOB Malaysia physical prices table, Aug’26 contract (RBD Palm Olein Selling $1,142.50/MT vs CPO Selling $1,107.00/MT)',
-      sourceType:'Market Report', lastUpdated:'2026-08-13', confidence:'Medium', status:'Derived',
+      source:'mblionoleo.com dated "13 August 2026" FOB Malaysian Port table (RBD Palm Olein $1,147.50/MT vs CPO $1,109.00/MT), cross-checked against agropost.wordpress.com 14 Aug 2026 closing post (Aug’26 contract, RBD Palm Olein $1,145.00/MT, delta $2.50)',
+      sourceType:'Market Report', lastUpdated:'2026-08-15', confidence:'Medium', status:'Derived',
       unit:'USD/MT', refreshMethod:'Daily AI refresh'
     },
     insurancePct: {
@@ -1648,13 +1648,13 @@
       priceBasis:'FOB Malaysian Port (physical, dated price sheet)',
       source:'MBLion Oleo dated homepage table (mblionoleo.com) — the dated "FOB Malaysian Port" table only, never its undated scrolling ticker',
       sourceType:'Market Report (dated physical price sheet)',
-      observationDate:'10 Aug 2026',
+      observationDate:'13 Aug 2026',
       contractOrDeliveryMonth:'Not designated (spot/nearest table, no contract month stated by source)',
       confidence:'Medium', status:'Manual', unit:'USD/MT',
       refreshMethod:'Daily automation, dated MBLion table only, cross-checked against Agropost — scripts/daily-refresh-prompt.txt',
       crossCheckSource:'Agropost dated closing-price post (agropost.wordpress.com), Aug’26 contract "Selling" price',
-      crossCheckValue:1152.50,
-      crossCheckObservationDate:'11 Aug 2026',
+      crossCheckValue:1145.00,
+      crossCheckObservationDate:'14 Aug 2026',
       crossCheckDeltaUSD:2.50
     }
   };
@@ -1927,7 +1927,7 @@
       caveatText:'RBD palm olein has no single public spot price for Egypt — it is a broker-quoted, opaque market. The model’s refining spread (olein price over CPO) was corrected on 29 Jul 2026 from an earlier $183/MT assumption to ~$35/MT, based on a directly-dated FOB Malaysia price sheet (MBLion Oleo) showing Aug ’26 CPO at $1,116/MT against RBD Olein at $1,150/MT — the earlier $183 figure came from a less reliable secondary source and had been overstating every implied FOB olein price on this page by roughly $150/MT. A fresher dated comparison on 12 Aug 2026 (agropost FOB Malaysia closing prices, Aug ’26 contract: CPO $1,107/MT vs RBD Olein $1,142.50/MT) puts the spread at ~$35.5/MT, the figure currently in use. EGP/USD forecasts for 2026 also diverge sharply by source (mid-40s to mid-50s) — the scenario band reflects that spread, not certainty. Treat every output as a starting estimate for negotiation, not a quote.',
       h3sources:'Sources',
       disclaimer:'Built 24 Jul 2026 from public web sources; commodity and currency data move daily. Re-run with current figures before using for a purchasing decision.',
-      ptSpot:'Spot', ptSpotSub:'13 Aug', ptAug:"Sep ’26", ptSep:"Oct ’26", ptOct:"Nov ’26", ptContract:'contract',
+      ptSpot:'Spot', ptSpotSub:'15 Aug', ptAug:"Oct ’26", ptSep:"Nov ’26", ptOct:"Dec ’26", ptContract:'contract',
       ttCpo:'CPO', ttImpliedFob:'Implied FOB olein', unitMyrMt:'MYR/MT',
       ttLow:'Low', ttBase:'Base', ttHigh:'High',
       h2s10:'Pricing Assumptions &amp; Data Quality',
@@ -2134,7 +2134,7 @@
       caveatText:'لا يوجد سعر فوري علني موحّد لزيت النخيل الأولين المكرر في مصر — فهو سوق يعتمد على تسعير الوسطاء وغير شفاف. تم تصحيح هامش التكرير في النموذج (فارق سعر الأولين عن الزيت الخام) في 29 يوليو 2026 من افتراض سابق قدره 183 دولارًا للطن إلى نحو 35 دولارًا للطن، استنادًا إلى نشرة أسعار مؤرخة لتسليم السفينة من ماليزيا (MBLion Oleo) أظهرت أن سعر الزيت الخام لعقد أغسطس ’26 بلغ 1,116 دولارًا للطن مقابل 1,150 دولارًا للطن لأولين RBD — وكان الرقم السابق (183 دولارًا) مستمدًا من مصدر ثانوي أقل موثوقية، وكان يُبالغ في تقدير كل سعر ضمني لتسليم السفينة من الأولين في هذه الصفحة بنحو 150 دولارًا للطن. وتُظهر مقارنة أحدث ومؤرخة بتاريخ 12 أغسطس 2026 (أسعار إغلاق agropost لتسليم السفينة من ماليزيا، عقد أغسطس ’26: 1,107 دولارًا للزيت الخام مقابل 1,142.50 دولارًا لأولين RBD) أن الهامش بات نحو 35.5 دولارًا للطن، وهو الرقم المستخدم حاليًا. كذلك تتباين توقعات سعر صرف الجنيه/الدولار لعام 2026 بشكل كبير بين المصادر (من منتصف الأربعينيات إلى منتصف الخمسينيات) — ونطاق السيناريو أعلاه يعكس هذا التباين، لا اليقين. تعامل مع كل رقم في هذا النموذج كنقطة بداية للتفاوض، لا كعرض سعر نهائي.',
       h3sources:'المصادر',
       disclaimer:'تم إعداد هذا النموذج في 24 يوليو 2026 اعتمادًا على مصادر ويب عامة؛ وتتغير بيانات السلع والعملات يوميًا. يُرجى تحديث الأرقام قبل استخدام النموذج في أي قرار شراء.',
-      ptSpot:'فوري', ptSpotSub:'13 أغسطس', ptAug:"سبتمبر '26", ptSep:"أكتوبر '26", ptOct:"نوفمبر '26", ptContract:'عقد',
+      ptSpot:'فوري', ptSpotSub:'15 أغسطس', ptAug:"أكتوبر '26", ptSep:"نوفمبر '26", ptOct:"ديسمبر '26", ptContract:'عقد',
       ttCpo:'زيت النخيل الخام', ttImpliedFob:'سعر الأولين الضمني', unitMyrMt:'رينغيت/طن',
       ttLow:'الأدنى', ttBase:'الأساسي', ttHigh:'الأعلى',
       h2s10:'افتراضات التسعير وجودة البيانات',
@@ -2196,10 +2196,10 @@
   }
 
   var CURVE = [
-    { key:'spot', myr:4510, labelKey:'ptSpot', subKey:'ptSpotSub', weekOffset:0 },
-    { key:'aug',  myr:4591, labelKey:'ptAug',  subKey:'ptContract', weekOffset:5 },
-    { key:'sep',  myr:4697, labelKey:'ptSep',  subKey:'ptContract', weekOffset:9 },
-    { key:'oct',  myr:4776, labelKey:'ptOct',  subKey:'ptContract', weekOffset:14 }
+    { key:'spot', myr:4575, labelKey:'ptSpot', subKey:'ptSpotSub', weekOffset:0 },
+    { key:'aug',  myr:4711, labelKey:'ptAug',  subKey:'ptContract', weekOffset:5 },
+    { key:'sep',  myr:4807, labelKey:'ptSep',  subKey:'ptContract', weekOffset:9 },
+    { key:'oct',  myr:4880, labelKey:'ptOct',  subKey:'ptContract', weekOffset:14 }
   ];
 
   var FX_SCENARIOS = { stableEnd: 49.9, baseEnd: 50.6, depEnd: 52.8 };
@@ -2318,7 +2318,8 @@
     { date:'2026-08-08', landedUSD:1279, landedEGP:63663 },
     { date:'2026-08-09', landedUSD:1279, landedEGP:63663 },
     { date:'2026-08-12', landedUSD:1290, landedEGP:64838 },
-    { date:'2026-08-13', landedUSD:1274, landedEGP:63976 }
+    { date:'2026-08-13', landedUSD:1274, landedEGP:63976 },
+    { date:'2026-08-15', landedUSD:1295, landedEGP:65035 }
   ];
 
   // Forecast-accountability log: each snapshot freezes exactly what the
@@ -2428,7 +2429,11 @@
           baseLandedEgp: 63921,
           lowLandedEgp: 63846,
           highLandedEgp: 64156,
-          status: 'Pending'
+          status: 'Evaluated',
+          actualDateUsed: '2026-08-15',
+          actualLandedEgp: 65035,
+          absoluteErrorEgp: 1114,
+          absolutePercentageError: 1.71
         },
         {
           targetDate: '2026-08-22',
@@ -2711,6 +2716,82 @@
           baseLandedEgp: 67593,
           lowLandedEgp: 66658,
           highLandedEgp: 70532,
+          status: 'Pending'
+        }
+      ]
+    },
+    {
+      issuedDate: '2026-08-15',
+      modelVersion: 'v1-linear-curve-fx-scenario',
+      sourceSnapshotDate: '2026-08-15',
+      currentFcpoMYR: 4575,
+      currentUsdMyr: 4.085,
+      currentEgpUsd: 50.23,
+      forecastPoints: [
+        {
+          targetDate: '2026-08-22',
+          horizonWeeks: 1,
+          fcpoMYR: 4602,
+          estimatedFobUsd: 1165.11,
+          baseLandedUsd: 1301.97,
+          baseLandedEgp: 65438,
+          lowLandedEgp: 65362,
+          highLandedEgp: 65677,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-08-29',
+          horizonWeeks: 2,
+          fcpoMYR: 4629,
+          estimatedFobUsd: 1171.77,
+          baseLandedUsd: 1309.18,
+          baseLandedEgp: 65841,
+          lowLandedEgp: 65688,
+          highLandedEgp: 66321,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-09-05',
+          horizonWeeks: 3,
+          fcpoMYR: 4657,
+          estimatedFobUsd: 1178.43,
+          baseLandedUsd: 1316.4,
+          baseLandedEgp: 66245,
+          lowLandedEgp: 66014,
+          highLandedEgp: 66969,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-09-12',
+          horizonWeeks: 4,
+          fcpoMYR: 4684,
+          estimatedFobUsd: 1185.09,
+          baseLandedUsd: 1323.62,
+          baseLandedEgp: 66649,
+          lowLandedEgp: 66340,
+          highLandedEgp: 67619,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-10-10',
+          horizonWeeks: 8,
+          fcpoMYR: 4783,
+          estimatedFobUsd: 1209.37,
+          baseLandedUsd: 1349.94,
+          baseLandedEgp: 68141,
+          lowLandedEgp: 67511,
+          highLandedEgp: 70120,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-11-07',
+          horizonWeeks: 12,
+          fcpoMYR: 4851,
+          estimatedFobUsd: 1225.97,
+          baseLandedUsd: 1367.93,
+          baseLandedEgp: 69217,
+          lowLandedEgp: 68260,
+          highLandedEgp: 72227,
           status: 'Pending'
         }
       ]
@@ -3210,6 +3291,161 @@
           ageDays: 3
         }
       }
+    },
+    {
+      schemaVersion: 1,
+      snapshotDate: '2026-08-15',
+      capturedAt: '2026-08-15T09:35:55.041Z',
+      landedFormulaVersion: 'v1-fob-freight-insurance-cif-duty-vat-margin',
+      malaysia: {
+        cpoMYR: 4575,
+        usdMyr: 4.085,
+        refiningProcessingAdjustment: 15,
+        oleinFractionationPremium: 15,
+        physicalMarketBasisAdjustment: 8.5,
+        totalRbdAdjustment: 38.5,
+        estimatedFobOleinUsd: 1158.451,
+        rbdOleinFobMarketUSD: 1147.5
+      },
+      fx: {
+        usdMyr: 4.085,
+        egpUsd: 50.23,
+        usdIdr: 17871
+      },
+      freight: {
+        freight: 36,
+        origin: 'my',
+        transitDays: 35,
+        clearanceDays: 7
+      },
+      importCosts: {
+        insurancePct: 0.75,
+        egyptDutyPct: 1.5,
+        vatOn: false,
+        vatPct: 14,
+        marginPct: 6
+      },
+      outputs: {
+        fobOleinUsd: 1158.451,
+        originCostUsd: 0,
+        cifUsd: 1203.4094,
+        dutyUsd: 18.0511,
+        vatUsd: 0,
+        marginUsd: 73.2876,
+        landedUSD: 1294.7482,
+        landedEGP: 65035.2
+      },
+      provenance: {
+        cpoMYR: {
+          source: 'agropost.wordpress.com dated "14 Aug 2026 – Palm Oil Prices at Closing" table (CPO FUTURES PRICES AT MDEX), Sep’26 contract (Aug’26 contract no longer listed — rolled)',
+          sourceType: 'Market Report',
+          lastUpdated: '2026-08-15',
+          confidence: 'Medium',
+          status: 'Manual',
+          unit: 'MYR/MT',
+          refreshMethod: 'Daily AI refresh',
+          contractCode: 'Not confirmed by source (referred to only as "Sep’26")',
+          contractMonth: 'September 2026',
+          priceType: 'Last Traded (agropost "Last" column; not confirmed as official BMD settlement)',
+          observationDate: '14 Aug 2026',
+          contractSelectionRule: 'Nearest liquid FCPO contract (currently Sep’26, rolled from Aug’26 which is no longer quoted)'
+        },
+        usdMyr: {
+          source: 'Bank Negara Malaysia — USD/MYR interbank intraday dealt rates, 14 Aug 2026 (high 4.088 / low 4.081; midpoint 4.085 used, no single reference-rate figure published for that date)',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-08-15',
+          confidence: 'Medium',
+          status: 'Manual',
+          unit: 'MYR/USD',
+          refreshMethod: 'Daily AI refresh',
+          observationDate: '14 Aug 2026'
+        },
+        egpUsd: {
+          source: 'BankLive-reported Central Bank of Egypt official USD/EGP buy/sell rates (50.1557 / 50.2957), 13 Aug 2026',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-08-13',
+          confidence: 'High',
+          status: 'Manual',
+          unit: 'EGP/USD',
+          refreshMethod: 'Daily AI refresh'
+        },
+        freight: {
+          source: 'No Egypt-route source documented; nearest §09 citation (MPOB West Malaysia–Sumatra rates) is a different route',
+          sourceType: 'Not documented (route mismatch)',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily automation, only on Egypt-route-specific evidence, else left unchanged — scripts/daily-refresh-prompt.txt'
+        },
+        refiningSpread: {
+          source: 'mblionoleo.com dated "13 August 2026" FOB Malaysian Port table (RBD Palm Olein $1,147.50/MT vs CPO $1,109.00/MT), cross-checked against agropost.wordpress.com 14 Aug 2026 closing post (Aug’26 contract, RBD Palm Olein $1,145.00/MT, delta $2.50)',
+          sourceType: 'Market Report',
+          lastUpdated: '2026-08-15',
+          confidence: 'Medium',
+          status: 'Derived',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily AI refresh'
+        },
+        insurancePct: {
+          source: 'Not documented',
+          sourceType: 'Not documented',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Hardcoded',
+          unit: '%',
+          refreshMethod: 'Not refreshed by automation (static assumption)'
+        },
+        egyptDutyPct: {
+          source: 'WTO Tariff & Trade Data — Egypt member profile (§09 sources)',
+          sourceType: 'Regulatory / trade data',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: '%',
+          refreshMethod: 'Re-checked only on evidence of change — scripts/daily-refresh-prompt.txt'
+        },
+        rbdOleinFobMarketUSD: {
+          product: 'RBD Palm Olein',
+          priceBasis: 'FOB Malaysian Port (physical, dated price sheet)',
+          source: 'MBLion Oleo dated homepage table (mblionoleo.com) — the dated "FOB Malaysian Port" table only, never its undated scrolling ticker',
+          sourceType: 'Market Report (dated physical price sheet)',
+          observationDate: '13 Aug 2026',
+          contractOrDeliveryMonth: 'Not designated (spot/nearest table, no contract month stated by source)',
+          confidence: 'Medium',
+          status: 'Manual',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily automation, dated MBLion table only, cross-checked against Agropost — scripts/daily-refresh-prompt.txt',
+          crossCheckSource: 'Agropost dated closing-price post (agropost.wordpress.com), Aug’26 contract "Selling" price',
+          crossCheckValue: 1145,
+          crossCheckObservationDate: '14 Aug 2026',
+          crossCheckDeltaUSD: 2.5
+        }
+      },
+      evidence: {
+        cpoMYR: {
+          tier: 'Estimated',
+          reason: 'Provenance is insufficient for a stronger tier'
+        },
+        usdMyr: {
+          tier: 'Estimated',
+          reason: 'Provenance is insufficient for a stronger tier'
+        },
+        egpUsd: {
+          tier: 'Stale',
+          reason: 'Last observation (2026-08-13) is 2 day(s) old, past the 2-day freshness window',
+          ageDays: 2
+        },
+        freight: {
+          tier: 'Low Confidence',
+          reason: 'Source confidence is recorded as Low'
+        },
+        rbdOleinFobMarketUSD: {
+          tier: 'Stale',
+          reason: 'Last observation (13 Aug 2026) is 2 day(s) old, past the 2-day freshness window',
+          ageDays: 2
+        }
+      }
     }
   ];
 
@@ -3426,6 +3662,48 @@
       }
     }
     return CURVE[CURVE.length-1].myr;
+  }
+
+  // Pure (no DOM) 12-week cost-change narrative computation: change%,
+  // flatness, and which factor (FCPO benchmark vs EGP/USD) most drove the
+  // move. Extracted out of renderExecutiveSummary's on-page narrative
+  // assembly so it is the ONE place this decision is made - shared, via
+  // scripts/lib/dashboard-model.js's REQUIRED_FUNCTIONS extraction, with the
+  // WhatsApp Daily Brief's Arabic narrative (scripts/lib/whatsapp-daily-
+  // brief-model.js). No wording/translation lives here; callers combine
+  // this result with their own t()/T.<lang> lookups. outlookWeek is passed
+  // in explicitly (rather than read off point12Week.horizonWeeks) so this
+  // function works unchanged against either the dashboard's own legacy-
+  // shape FORECAST_SNAPSHOTS mirror (horizonWeeks) or the canonical
+  // data/forecast-snapshots.json shape (horizonType/horizonValue) - callers
+  // on either side pass whichever field their record actually has.
+  function buildCostChangeNarrative(base, point12Week, outlookWeek, fxScenarioBaseEnd, state){
+    if (!point12Week){
+      return { hasPoint:false, isFlat:true, changePct:0, changeRounded:0, driver:null, fcpoImpact:0, fxImpact:0 };
+    }
+    var change = point12Week.baseLandedEgp - base.landedEGP;
+    var changeRounded = Math.round(change);
+    var changePct = base.landedEGP ? (change / base.landedEGP * 100) : 0;
+    var isFlat = changeRounded === 0;
+
+    var outlookFcpo = point12Week.fcpoMYR;
+    var outlookFx = fxAtWeek(fxScenarioBaseEnd, outlookWeek);
+    var fcpoOnly = computeLanded(outlookFcpo, state.egpUsd);
+    var fxOnly = computeLanded(state.cpoMYR, outlookFx);
+    var fcpoImpact = Math.round(fcpoOnly.landedEGP - base.landedEGP);
+    var fxImpact = Math.round(fxOnly.landedEGP - base.landedEGP);
+
+    // No magnitude threshold is invented here: opposite-signed impacts are
+    // genuinely offsetting (mixed), equal-magnitude impacts are a genuine
+    // tie (mixed), otherwise the larger-magnitude impact is the driver.
+    var driver;
+    if (fcpoImpact === 0) driver = 'fx';
+    else if (fxImpact === 0) driver = 'fcpo';
+    else if ((fcpoImpact > 0) !== (fxImpact > 0)) driver = 'mixed';
+    else if (Math.abs(fcpoImpact) === Math.abs(fxImpact)) driver = 'mixed';
+    else driver = Math.abs(fcpoImpact) > Math.abs(fxImpact) ? 'fcpo' : 'fx';
+
+    return { hasPoint:true, isFlat:isFlat, changePct:changePct, changeRounded:changeRounded, driver:driver, fcpoImpact:fcpoImpact, fxImpact:fxImpact };
   }
 
   // ---------- Assumptions form ----------
@@ -4732,14 +5010,14 @@
     // via computeLanded() - the same technique renderArrivalScenario itself
     // already uses for the full (both-moved) scenario. Not a new formula.
     // Pinned explicitly to the 12-week horizon (point12Week), matching what
-    // this attribution panel already meant before this redesign.
+    // this attribution panel already meant before this redesign. Computed
+    // once via the shared buildCostChangeNarrative() and reused below for
+    // both this "Why" panel and the narrative sentence, rather than
+    // recomputing fcpoImpact/fxImpact twice.
     var outlookWeek = point12Week ? point12Week.horizonWeeks : 0;
-    var outlookFcpo = point12Week ? point12Week.fcpoMYR : state.cpoMYR;
-    var outlookFx = fxAtWeek(FX_SCENARIOS.baseEnd, outlookWeek);
-    var fcpoOnly = computeLanded(outlookFcpo, state.egpUsd);
-    var fxOnly = computeLanded(state.cpoMYR, outlookFx);
-    var fcpoImpact = Math.round(fcpoOnly.landedEGP - base.landedEGP);
-    var fxImpact = Math.round(fxOnly.landedEGP - base.landedEGP);
+    var costChangeNarrative = buildCostChangeNarrative(base, point12Week, outlookWeek, FX_SCENARIOS.baseEnd, state);
+    var fcpoImpact = costChangeNarrative.fcpoImpact;
+    var fxImpact = costChangeNarrative.fxImpact;
 
     document.getElementById('execWhyFcpoVal').textContent = (fcpoImpact > 0 ? '+' : '') + fmt(fcpoImpact) + ' EGP/MT';
     document.getElementById('execWhyFxVal').textContent = (fxImpact > 0 ? '+' : '') + fmt(fxImpact) + ' EGP/MT';
@@ -4763,16 +5041,7 @@
     if (isFlat){
       narrativeEl.textContent = t('execNarrFlat');
     } else {
-      // No magnitude threshold is invented here: opposite-signed impacts are
-      // genuinely offsetting (mixed), equal-magnitude impacts are a genuine
-      // tie (mixed), otherwise the larger-magnitude impact is the driver.
-      var driver;
-      if (fcpoImpact === 0) driver = 'fx';
-      else if (fxImpact === 0) driver = 'fcpo';
-      else if ((fcpoImpact > 0) !== (fxImpact > 0)) driver = 'mixed';
-      else if (Math.abs(fcpoImpact) === Math.abs(fxImpact)) driver = 'mixed';
-      else driver = Math.abs(fcpoImpact) > Math.abs(fxImpact) ? 'fcpo' : 'fx';
-      var driverPhrase = driver === 'fcpo' ? t('execNarrDriverFcpo') : driver === 'fx' ? t('execNarrDriverFx') : t('execNarrDriverMixed');
+      var driverPhrase = costChangeNarrative.driver === 'fcpo' ? t('execNarrDriverFcpo') : costChangeNarrative.driver === 'fx' ? t('execNarrDriverFx') : t('execNarrDriverMixed');
       narrativeEl.textContent = t('execNarrLead') + ' ' + fmt(Math.abs(outlook12.changePct),1) + '% ' +
         (outlook12.changeRounded > 0 ? t('execNarrAbove') : t('execNarrBelow')) + ', ' +
         t('execNarrDriverPrefix') + ' ' + driverPhrase + '.';
