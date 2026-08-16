@@ -796,6 +796,26 @@
   .pj-why-list dt{color:var(--ink-500);font-weight:500;}
   .pj-why-list dd{margin:0;font-family:var(--font-mono);font-variant-numeric:tabular-nums;color:var(--ink-900);font-weight:700;}
   .pj-why-largest{font-size:11.5px;color:var(--ink-700);margin:10px 0 0;padding-top:10px;border-top:1px solid var(--line);}
+  /* ---------- Trader Intelligence overlay (Market Learning & Price
+     Intelligence Engine, Phase C Slice 2) - same card language as
+     .price-journey-card immediately above it (theme-aware surface/line
+     tokens), evidence badges reuse the EXISTING .evidence-badge ev-*
+     classes verbatim - no new badge palette. ---------- */
+  .trader-intel-card{background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-card);padding:24px 24px 20px;margin-bottom:24px;}
+  .ti-empty{font-size:13px;color:var(--ink-500);margin:8px 0 0;}
+  .ti-signals{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:14px;}
+  .ti-signal{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
+  .ti-signal-label{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-500);font-weight:700;}
+  .ti-signal-value{font-family:var(--font-mono);font-size:20px;font-weight:800;color:var(--ink-900);margin-top:6px;}
+  .ti-signal-meta{font-size:11.5px;color:var(--ink-700);margin-top:4px;}
+  .ti-signal-premium{font-family:var(--font-mono);font-size:12px;color:var(--exec-teal,#0E9F8F);margin-top:6px;}
+  .ti-signal-premium-note{font-size:10.5px;color:var(--ink-500);margin-top:2px;}
+  .ti-context{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);}
+  .ti-context-title{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-500);font-weight:700;}
+  .ti-context-row{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:8px;}
+  .ti-context-item{font-size:12.5px;color:var(--ink-700);}
+  .ti-context-item b{color:var(--ink-900);font-family:var(--font-mono);}
+  .exec-narrative--trader{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);color:var(--ink-700);}
   .exec-chart-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px;}
   .exec-chart-title{font-size:19px;font-weight:750;color:var(--ink-900);}
   .exec-chart-note{font-size:12px;color:var(--ink-500);margin-top:4px;}
@@ -915,7 +935,7 @@
     <h1 data-i18n="title">RBD Palm Olein — Egypt</h1>
     <p class="subtitle" id="pageSubtitle" hidden data-i18n="subtitle">A transparent, adjustable model of the landed price of refined, bleached &amp; deodorized palm olein into Egypt — built from the Bursa Malaysia benchmark, freight, Egyptian customs duty and EGP/USD scenarios. Not a market quote: a computed estimate you can correct with real numbers as you get them.</p>
     <div class="meta-row">
-      <span><span data-i18n="metaSnapshot">Snapshot</span> <b>15 Aug 2026</b></span>
+      <span><span data-i18n="metaSnapshot">Snapshot</span> <b>16 Aug 2026</b></span>
       <span><span data-i18n="metaBasis">Basis</span> <b data-i18n="metaBasisValue">FOB Malaysia, Port Klang</b></span>
       <span><span data-i18n="metaDest">Destination</span> <b data-i18n="metaDestValue">Alexandria / Damietta</b></span>
     </div>
@@ -1147,6 +1167,27 @@
         </div>
       </div>
 
+      <!-- Trader Intelligence overlay (Market Learning & Price Intelligence
+           Engine, Phase C Slice 2) - read-only, additive context layer,
+           clearly separate from the modeled headline above. Populated
+           entirely by renderTraderIntelligenceOverlay() from the sanitized
+           TRADER_INTELLIGENCE_MIRROR array (no raw trader text - see that
+           array's own header comment). Renders a clean empty state when
+           the mirror has zero records (current state, since the canonical
+           store is empty as of this slice). -->
+      <div class="trader-intel-card" id="traderIntelCard">
+        <div class="pj-head">
+          <h2 data-i18n="traderIntelTitle">Trader Market Intelligence</h2>
+          <p class="pj-subtitle" data-i18n="traderIntelSubtitle" dir="auto"></p>
+        </div>
+        <p class="ti-empty" id="traderIntelEmpty" data-i18n="traderIntelEmptyState" dir="auto" hidden></p>
+        <div class="ti-signals" id="traderIntelSignals"></div>
+        <div class="ti-context" id="traderIntelContext" hidden>
+          <span class="ti-context-title" data-i18n="traderIntelContextTitle">Demand / Supply Context</span>
+          <div class="ti-context-row" id="traderIntelContextRow"></div>
+        </div>
+      </div>
+
       <div class="exec-chart-card">
         <div class="exec-chart-head"><div><div class="exec-chart-title" data-i18n="execChartTitle">Historical Actual → Today → Forecast</div><div class="exec-chart-note" id="execChartCoverage" dir="auto"></div></div></div>
         <svg class="exec-chart" id="execMarketChart" viewBox="0 0 820 300" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="execChartSvgTitle execChartSvgDesc" dir="ltr"><title id="execChartSvgTitle">Egypt landed price: historical actual, today, and forecast</title><desc id="execChartSvgDesc">Actual model history is shown separately from today's modeled point and the dashed forecast with scenario range.</desc></svg>
@@ -1156,6 +1197,11 @@
       <div class="exec-support-grid"><div class="exec-narrative-wrap">
         <span class="exec-eyebrow-label" data-i18n="execInsightLabel">Market Insight</span>
         <p class="exec-narrative" id="execNarrative" dir="auto"></p>
+        <!-- Deterministic trader-intelligence context line (Phase C Slice
+             2) - only rendered when a real headline signal exists; omitted
+             cleanly otherwise (see renderTraderIntelligenceOverlay()). No
+             LLM prose - every word here comes from T.en/T.ar templates. -->
+        <p class="exec-narrative exec-narrative--trader" id="execTraderContext" dir="auto" hidden></p>
       </div>
 
       <div class="exec-status-wrap">
@@ -1566,7 +1612,7 @@
 
   var DEFAULTS = {
     cpoMYR: 4575,
-    usdMyr: 4.085,
+    usdMyr: 4.0861,
     refiningSpread: 38.5,
     refiningProcessingAdjustment: 15,
     oleinFractionationPremium: 15,
@@ -1580,8 +1626,8 @@
     vatPct: 14,
     marginPct: 6,
     egpUsd: 50.23,
-    cpoIDR: 15702,
-    usdIdr: 17871,
+    cpoIDR: 15700,
+    usdIdr: 17820,
     // Stage 3A — direct market-reported RBD Palm Olein FOB Malaysian Port
     // price, USD/MT (see DATA_PROVENANCE.rbdOleinFobMarketUSD below).
     // DISPLAY / MARKET-INTELLIGENCE ONLY: never read by computeLandedCore(),
@@ -1674,8 +1720,8 @@
       contractSelectionRule:'Nearest liquid FCPO contract (currently Sep’26, rolled from Aug’26 which is no longer quoted)'
     },
     usdMyr: {
-      source:'Bank Negara Malaysia — USD/MYR interbank intraday dealt rates, 14 Aug 2026 (high 4.088 / low 4.081; midpoint 4.085 used, no single reference-rate figure published for that date)',
-      sourceType:'Official Publication', lastUpdated:'2026-08-15', confidence:'Medium', status:'Manual',
+      source:'Bank Negara Malaysia — KL USD/MYR Reference Rate (FMIP, financialmarkets.bnm.gov.my), 4.0861 for 14 Aug 2026 (most recent published reference rate; markets closed 15-16 Aug 2026 weekend)',
+      sourceType:'Official Publication', lastUpdated:'2026-08-16', confidence:'High', status:'Manual',
       unit:'MYR/USD', refreshMethod:'Daily AI refresh', observationDate:'14 Aug 2026'
     },
     egpUsd: {
@@ -1884,6 +1930,16 @@
       journeyFormulaRoleBenchmark:'fobCpoUSD = cpoMYR ÷ usdMyr', journeyFormulaRoleRbd:'fobOlein = fobCpoUSD + totalRbdAdjustment()', journeyFormulaRoleFreight:'preFreight + freight',
       journeyFormulaRoleInsurance:'(preFreight + freight) × insurancePct%', journeyFormulaRoleDuty:'cif × egyptDutyPct%', journeyFormulaRoleVat:'dutyPaid × vatPct% (only when VAT is on)',
       journeyFormulaRoleMargin:'preMargin × marginPct% — the last step before landedUSD', journeyFormulaRoleLanded:'preMargin + margin, then × egpUsd',
+      // ---------- Trader Intelligence overlay (Market Learning & Price Intelligence Engine, Phase C Slice 2) ----------
+      traderIntelTitle:'Trader Market Intelligence', traderIntelSubtitle:'Deterministic, evidence-linked context from Egypt trader observations — never a replacement for the modeled landed cost above, and never automatically applied to it.',
+      traderIntelEmptyState:'No recent trader intelligence.',
+      traderIntelLatestIndication:'Latest Trader Market Indication', traderIntelLatestExecuted:'Latest Executed Market Evidence', traderIntelLatestOffer:'Latest Offer / Quote',
+      traderIntelPremiumLabel:'Trader Market Premium vs Modeled Landed', traderIntelPremiumNote:'A derived comparison only — not a commercial margin, not verified inland cost.',
+      traderIntelContextTitle:'Demand / Supply Context', traderIntelDemand:'Demand', traderIntelSupply:'Supply', traderIntelExecution:'Execution', traderIntelShipment:'Shipment expected',
+      traderIntelStrengthHigh:'High', traderIntelStrengthLow:'Low', traderIntelTightnessTight:'Tight', traderIntelTightnessAmple:'Ample', traderIntelExecStrong:'Strong', traderIntelExecWeak:'Weak', traderIntelShipmentYes:'Yes',
+      traderIntelProvisional:'Provisional', traderIntelNeedsClarification:'Needs clarification',
+      traderIntelEvidenceTrader:'Trader (pseudonymous)', traderIntelEvidenceObservedAt:'Observed', traderIntelEvidenceEventType:'Event type', traderIntelEvidenceExtraction:'Extraction method/version', traderIntelEvidenceConfidence:'Confidence',
+      execTraderContextLabel:'Egypt market intelligence', execTraderContextPremiumPrefix:'vs modeled landed:',
       execTrustInsufficient:'Not enough history', execStaleSuffix:'(stale)',
       execStaleBannerAsOf:'Dashboard data as of', execStaleBannerText:'Update overdue', execHorizonPrefix:'Forecast horizon', execHorizonDaysUnit:'days',
       execCardWhyLabel:'Source / Why this number?',
@@ -2010,7 +2066,7 @@
       caveatText:'RBD palm olein has no single public spot price for Egypt — it is a broker-quoted, opaque market. The model’s refining spread (olein price over CPO) was corrected on 29 Jul 2026 from an earlier $183/MT assumption to ~$35/MT, based on a directly-dated FOB Malaysia price sheet (MBLion Oleo) showing Aug ’26 CPO at $1,116/MT against RBD Olein at $1,150/MT — the earlier $183 figure came from a less reliable secondary source and had been overstating every implied FOB olein price on this page by roughly $150/MT. A fresher dated comparison on 12 Aug 2026 (agropost FOB Malaysia closing prices, Aug ’26 contract: CPO $1,107/MT vs RBD Olein $1,142.50/MT) puts the spread at ~$35.5/MT, the figure currently in use. EGP/USD forecasts for 2026 also diverge sharply by source (mid-40s to mid-50s) — the scenario band reflects that spread, not certainty. Treat every output as a starting estimate for negotiation, not a quote.',
       h3sources:'Sources',
       disclaimer:'Built 24 Jul 2026 from public web sources; commodity and currency data move daily. Re-run with current figures before using for a purchasing decision.',
-      ptSpot:'Spot', ptSpotSub:'15 Aug', ptAug:"Oct ’26", ptSep:"Nov ’26", ptOct:"Dec ’26", ptContract:'contract',
+      ptSpot:'Spot', ptSpotSub:'16 Aug', ptAug:"Oct ’26", ptSep:"Nov ’26", ptOct:"Dec ’26", ptContract:'contract',
       ttCpo:'CPO', ttImpliedFob:'Implied FOB olein', unitMyrMt:'MYR/MT',
       ttLow:'Low', ttBase:'Base', ttHigh:'High',
       h2s10:'Pricing Assumptions &amp; Data Quality',
@@ -2105,6 +2161,15 @@
       journeyFormulaRoleBenchmark:'fobCpoUSD = cpoMYR ÷ usdMyr', journeyFormulaRoleRbd:'fobOlein = fobCpoUSD + totalRbdAdjustment()', journeyFormulaRoleFreight:'preFreight + freight',
       journeyFormulaRoleInsurance:'(preFreight + freight) × insurancePct%', journeyFormulaRoleDuty:'cif × egyptDutyPct%', journeyFormulaRoleVat:'dutyPaid × vatPct% (فقط عند تفعيل ضريبة القيمة المضافة)',
       journeyFormulaRoleMargin:'preMargin × marginPct% — آخر خطوة قبل landedUSD', journeyFormulaRoleLanded:'preMargin + margin، ثم × egpUsd',
+      traderIntelTitle:'معلومات السوق من التاجر', traderIntelSubtitle:'سياق حتمي مرتبط بالأدلة من ملاحظات تجار مصر — لا يستبدل أبدًا التكلفة الواصلة المحسوبة أعلاه، ولا يُطبَّق عليها تلقائيًا.',
+      traderIntelEmptyState:'لا توجد معلومات حديثة من التجار.',
+      traderIntelLatestIndication:'آخر مؤشر سوق من تاجر', traderIntelLatestExecuted:'آخر دليل تنفيذ فعلي في السوق', traderIntelLatestOffer:'آخر عرض / سعر معروض',
+      traderIntelPremiumLabel:'فرق سعر التاجر مقابل التكلفة الواصلة المحسوبة', traderIntelPremiumNote:'مقارنة مشتقة فقط — ليست هامشًا تجاريًا، وليست تكلفة داخلية موثقة.',
+      traderIntelContextTitle:'سياق الطلب / العرض', traderIntelDemand:'الطلب', traderIntelSupply:'العرض', traderIntelExecution:'التنفيذ', traderIntelShipment:'شحنة متوقعة',
+      traderIntelStrengthHigh:'مرتفع', traderIntelStrengthLow:'منخفض', traderIntelTightnessTight:'ضيق', traderIntelTightnessAmple:'وفير', traderIntelExecStrong:'قوي', traderIntelExecWeak:'ضعيف', traderIntelShipmentYes:'نعم',
+      traderIntelProvisional:'استرشادي', traderIntelNeedsClarification:'يحتاج توضيح',
+      traderIntelEvidenceTrader:'التاجر (رمز غير معرّف)', traderIntelEvidenceObservedAt:'تاريخ الملاحظة', traderIntelEvidenceEventType:'نوع الحدث', traderIntelEvidenceExtraction:'طريقة/إصدار الاستخلاص', traderIntelEvidenceConfidence:'الثقة',
+      execTraderContextLabel:'معلومات سوق مصر', execTraderContextPremiumPrefix:'مقابل التكلفة الواصلة المحسوبة:',
       execTrustInsufficient:'بيانات غير كافية', execStaleSuffix:'(قديم)',
       execStaleBannerAsOf:'بيانات اللوحة بتاريخ', execStaleBannerText:'التحديث متأخر', execHorizonPrefix:'أفق التوقع', execHorizonDaysUnit:'يومًا',
       execCardWhyLabel:'المصدر / لماذا هذا الرقم؟',
@@ -2231,7 +2296,7 @@
       caveatText:'لا يوجد سعر فوري علني موحّد لزيت النخيل الأولين المكرر في مصر — فهو سوق يعتمد على تسعير الوسطاء وغير شفاف. تم تصحيح هامش التكرير في النموذج (فارق سعر الأولين عن الزيت الخام) في 29 يوليو 2026 من افتراض سابق قدره 183 دولارًا للطن إلى نحو 35 دولارًا للطن، استنادًا إلى نشرة أسعار مؤرخة لتسليم السفينة من ماليزيا (MBLion Oleo) أظهرت أن سعر الزيت الخام لعقد أغسطس ’26 بلغ 1,116 دولارًا للطن مقابل 1,150 دولارًا للطن لأولين RBD — وكان الرقم السابق (183 دولارًا) مستمدًا من مصدر ثانوي أقل موثوقية، وكان يُبالغ في تقدير كل سعر ضمني لتسليم السفينة من الأولين في هذه الصفحة بنحو 150 دولارًا للطن. وتُظهر مقارنة أحدث ومؤرخة بتاريخ 12 أغسطس 2026 (أسعار إغلاق agropost لتسليم السفينة من ماليزيا، عقد أغسطس ’26: 1,107 دولارًا للزيت الخام مقابل 1,142.50 دولارًا لأولين RBD) أن الهامش بات نحو 35.5 دولارًا للطن، وهو الرقم المستخدم حاليًا. كذلك تتباين توقعات سعر صرف الجنيه/الدولار لعام 2026 بشكل كبير بين المصادر (من منتصف الأربعينيات إلى منتصف الخمسينيات) — ونطاق السيناريو أعلاه يعكس هذا التباين، لا اليقين. تعامل مع كل رقم في هذا النموذج كنقطة بداية للتفاوض، لا كعرض سعر نهائي.',
       h3sources:'المصادر',
       disclaimer:'تم إعداد هذا النموذج في 24 يوليو 2026 اعتمادًا على مصادر ويب عامة؛ وتتغير بيانات السلع والعملات يوميًا. يُرجى تحديث الأرقام قبل استخدام النموذج في أي قرار شراء.',
-      ptSpot:'فوري', ptSpotSub:'15 أغسطس', ptAug:"أكتوبر '26", ptSep:"نوفمبر '26", ptOct:"ديسمبر '26", ptContract:'عقد',
+      ptSpot:'فوري', ptSpotSub:'16 أغسطس', ptAug:"أكتوبر '26", ptSep:"نوفمبر '26", ptOct:"ديسمبر '26", ptContract:'عقد',
       ttCpo:'زيت النخيل الخام', ttImpliedFob:'سعر الأولين الضمني', unitMyrMt:'رينغيت/طن',
       ttLow:'الأدنى', ttBase:'الأساسي', ttHigh:'الأعلى',
       h2s10:'افتراضات التسعير وجودة البيانات',
@@ -2398,6 +2463,26 @@
     }
   ];
 
+  // ---------- Trader Intelligence sanitized mirror (Market Learning &
+  // Price Intelligence Engine, Phase C Slice 2) ----------
+  // A hand-refreshed mirror of data/trader-intelligence-mirror.json's
+  // `records` array - itself a DETERMINISTIC, SANITIZED transform of the
+  // private canonical data/trader-observations.json, produced by
+  // scripts/generate-trader-intelligence-mirror.js. NEVER contains rawText
+  // or interpretation.notes (free-text) - see that script and
+  // scripts/lib/trader-intelligence-mirror-model.js's header comment for
+  // the full privacy-boundary reasoning: raw trader free-text stays in the
+  // local/internal-only tool (scripts/trader-intelligence-local-server.js;
+  // never embedded in the public dashboard) and is never embedded here, because
+  // this file is published verbatim to the public GitHub Pages site.
+  // Currently empty because the canonical store has zero records as of
+  // this slice - see this task's report for the empty-state behavior this
+  // is designed to render safely. DISPLAY/EVIDENCE ONLY, same as
+  // EGYPT_MARKET_OBSERVATIONS above: never read by DEFAULTS, HISTORY,
+  // computeLanded()/computeLandedCore(), FORECAST_SNAPSHOTS,
+  // MARKET_SNAPSHOTS, or any recommendation logic.
+  var TRADER_INTELLIGENCE_MIRROR = [];
+
   // Real record of what this model actually computed each day it ran (Malaysia
   // origin, VAT off — matches the hero figure's own formula at the time). Not
   // reforecast retroactively when assumptions change; this is the historical
@@ -2416,7 +2501,8 @@
     { date:'2026-08-09', landedUSD:1279, landedEGP:63663 },
     { date:'2026-08-12', landedUSD:1290, landedEGP:64838 },
     { date:'2026-08-13', landedUSD:1274, landedEGP:63976 },
-    { date:'2026-08-15', landedUSD:1295, landedEGP:65035 }
+    { date:'2026-08-15', landedUSD:1295, landedEGP:65035 },
+    { date:'2026-08-16', landedUSD:1294, landedEGP:65019 }
   ];
 
   // Forecast-accountability log: each snapshot freezes exactly what the
@@ -2606,7 +2692,11 @@
           baseLandedEgp: 63921,
           lowLandedEgp: 63846,
           highLandedEgp: 64156,
-          status: 'Pending'
+          status: 'Evaluated',
+          actualDateUsed: '2026-08-16',
+          actualLandedEgp: 65019,
+          absoluteErrorEgp: 1098,
+          absolutePercentageError: 1.69
         },
         {
           targetDate: '2026-08-23',
@@ -2889,6 +2979,82 @@
           baseLandedEgp: 69217,
           lowLandedEgp: 68260,
           highLandedEgp: 72227,
+          status: 'Pending'
+        }
+      ]
+    },
+    {
+      issuedDate: '2026-08-16',
+      modelVersion: 'v1-linear-curve-fx-scenario',
+      sourceSnapshotDate: '2026-08-16',
+      currentFcpoMYR: 4575,
+      currentUsdMyr: 4.0861,
+      currentEgpUsd: 50.23,
+      forecastPoints: [
+        {
+          targetDate: '2026-08-23',
+          horizonWeeks: 1,
+          fcpoMYR: 4602,
+          estimatedFobUsd: 1164.81,
+          baseLandedUsd: 1301.64,
+          baseLandedEgp: 65421,
+          lowLandedEgp: 65345,
+          highLandedEgp: 65660,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-08-30',
+          horizonWeeks: 2,
+          fcpoMYR: 4629,
+          estimatedFobUsd: 1171.46,
+          baseLandedUsd: 1308.85,
+          baseLandedEgp: 65824,
+          lowLandedEgp: 65672,
+          highLandedEgp: 66304,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-09-06',
+          horizonWeeks: 3,
+          fcpoMYR: 4657,
+          estimatedFobUsd: 1178.12,
+          baseLandedUsd: 1316.07,
+          baseLandedEgp: 66228,
+          lowLandedEgp: 65998,
+          highLandedEgp: 66952,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-09-13',
+          horizonWeeks: 4,
+          fcpoMYR: 4684,
+          estimatedFobUsd: 1184.78,
+          baseLandedUsd: 1323.28,
+          baseLandedEgp: 66632,
+          lowLandedEgp: 66323,
+          highLandedEgp: 67602,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-10-11',
+          horizonWeeks: 8,
+          fcpoMYR: 4783,
+          estimatedFobUsd: 1209.05,
+          baseLandedUsd: 1349.6,
+          baseLandedEgp: 68123,
+          lowLandedEgp: 67493,
+          highLandedEgp: 70103,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-11-08',
+          horizonWeeks: 12,
+          fcpoMYR: 4851,
+          estimatedFobUsd: 1225.65,
+          baseLandedUsd: 1367.59,
+          baseLandedEgp: 69200,
+          lowLandedEgp: 68243,
+          highLandedEgp: 72209,
           status: 'Pending'
         }
       ]
@@ -3543,6 +3709,163 @@
           ageDays: 2
         }
       }
+    },
+    {
+      schemaVersion: 1,
+      snapshotDate: '2026-08-16',
+      capturedAt: '2026-08-16T09:51:11.821Z',
+      landedFormulaVersion: 'v1-fob-freight-insurance-cif-duty-vat-margin',
+      malaysia: {
+        cpoMYR: 4575,
+        usdMyr: 4.0861,
+        refiningProcessingAdjustment: 15,
+        oleinFractionationPremium: 15,
+        physicalMarketBasisAdjustment: 8.5,
+        totalRbdAdjustment: 38.5,
+        estimatedFobOleinUsd: 1158.1495,
+        rbdOleinFobMarketUSD: 1147.5
+      },
+      fx: {
+        usdMyr: 4.0861,
+        egpUsd: 50.23,
+        usdIdr: 17820
+      },
+      freight: {
+        freight: 36,
+        origin: 'my',
+        transitDays: 35,
+        clearanceDays: 7
+      },
+      importCosts: {
+        insurancePct: 0.75,
+        egyptDutyPct: 1.5,
+        vatOn: false,
+        vatPct: 14,
+        marginPct: 6
+      },
+      outputs: {
+        fobOleinUsd: 1158.1495,
+        originCostUsd: 0,
+        cifUsd: 1203.1057,
+        dutyUsd: 18.0466,
+        vatUsd: 0,
+        marginUsd: 73.2691,
+        landedUSD: 1294.4214,
+        landedEGP: 65018.79
+      },
+      provenance: {
+        cpoMYR: {
+          source: 'agropost.wordpress.com dated "14 Aug 2026 – Palm Oil Prices at Closing" table (CPO FUTURES PRICES AT MDEX), Sep’26 contract (Aug’26 contract no longer listed — rolled)',
+          sourceType: 'Market Report',
+          lastUpdated: '2026-08-15',
+          confidence: 'Medium',
+          status: 'Manual',
+          unit: 'MYR/MT',
+          refreshMethod: 'Daily AI refresh',
+          contractCode: 'Not confirmed by source (referred to only as "Sep’26")',
+          contractMonth: 'September 2026',
+          priceType: 'Last Traded (agropost "Last" column; not confirmed as official BMD settlement)',
+          observationDate: '14 Aug 2026',
+          contractSelectionRule: 'Nearest liquid FCPO contract (currently Sep’26, rolled from Aug’26 which is no longer quoted)'
+        },
+        usdMyr: {
+          source: 'Bank Negara Malaysia — KL USD/MYR Reference Rate (FMIP, financialmarkets.bnm.gov.my), 4.0861 for 14 Aug 2026 (most recent published reference rate; markets closed 15-16 Aug 2026 weekend)',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-08-16',
+          confidence: 'High',
+          status: 'Manual',
+          unit: 'MYR/USD',
+          refreshMethod: 'Daily AI refresh',
+          observationDate: '14 Aug 2026'
+        },
+        egpUsd: {
+          source: 'BankLive-reported Central Bank of Egypt official USD/EGP buy/sell rates (50.1557 / 50.2957), 13 Aug 2026',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-08-13',
+          confidence: 'High',
+          status: 'Manual',
+          unit: 'EGP/USD',
+          refreshMethod: 'Daily AI refresh'
+        },
+        freight: {
+          source: 'No Egypt-route source documented; nearest §09 citation (MPOB West Malaysia–Sumatra rates) is a different route',
+          sourceType: 'Not documented (route mismatch)',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily automation, only on Egypt-route-specific evidence, else left unchanged — scripts/daily-refresh-prompt.txt'
+        },
+        refiningSpread: {
+          source: 'mblionoleo.com dated "13 August 2026" FOB Malaysian Port table (RBD Palm Olein $1,147.50/MT vs CPO $1,109.00/MT), cross-checked against agropost.wordpress.com 14 Aug 2026 closing post (Aug’26 contract, RBD Palm Olein $1,145.00/MT, delta $2.50)',
+          sourceType: 'Market Report',
+          lastUpdated: '2026-08-15',
+          confidence: 'Medium',
+          status: 'Derived',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily AI refresh'
+        },
+        insurancePct: {
+          source: 'Not documented',
+          sourceType: 'Not documented',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Hardcoded',
+          unit: '%',
+          refreshMethod: 'Not refreshed by automation (static assumption)'
+        },
+        egyptDutyPct: {
+          source: 'WTO Tariff & Trade Data — Egypt member profile (§09 sources)',
+          sourceType: 'Regulatory / trade data',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: '%',
+          refreshMethod: 'Re-checked only on evidence of change — scripts/daily-refresh-prompt.txt'
+        },
+        rbdOleinFobMarketUSD: {
+          product: 'RBD Palm Olein',
+          priceBasis: 'FOB Malaysian Port (physical, dated price sheet)',
+          source: 'MBLion Oleo dated homepage table (mblionoleo.com) — the dated "FOB Malaysian Port" table only, never its undated scrolling ticker',
+          sourceType: 'Market Report (dated physical price sheet)',
+          observationDate: '13 Aug 2026',
+          contractOrDeliveryMonth: 'Not designated (spot/nearest table, no contract month stated by source)',
+          confidence: 'Medium',
+          status: 'Manual',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily automation, dated MBLion table only, cross-checked against Agropost — scripts/daily-refresh-prompt.txt',
+          crossCheckSource: 'Agropost dated closing-price post (agropost.wordpress.com), Aug’26 contract "Selling" price',
+          crossCheckValue: 1145,
+          crossCheckObservationDate: '14 Aug 2026',
+          crossCheckDeltaUSD: 2.5
+        }
+      },
+      evidence: {
+        cpoMYR: {
+          tier: 'Stale',
+          reason: 'Last observation (14 Aug 2026) is 2 day(s) old, past the 2-day freshness window',
+          ageDays: 2
+        },
+        usdMyr: {
+          tier: 'Stale',
+          reason: 'Last observation (14 Aug 2026) is 2 day(s) old, past the 2-day freshness window',
+          ageDays: 2
+        },
+        egpUsd: {
+          tier: 'Stale',
+          reason: 'Last observation (2026-08-13) is 3 day(s) old, past the 2-day freshness window',
+          ageDays: 3
+        },
+        freight: {
+          tier: 'Low Confidence',
+          reason: 'Source confidence is recorded as Low'
+        },
+        rbdOleinFobMarketUSD: {
+          tier: 'Stale',
+          reason: 'Last observation (13 Aug 2026) is 3 day(s) old, past the 2-day freshness window',
+          ageDays: 3
+        }
+      }
     }
   ];
 
@@ -3851,6 +4174,67 @@
       marketToLandedUsd: marketToLandedUsd, marketToLandedPct: marketToLandedPct,
       largestContributorKey: largest ? largest.key : null
     };
+  }
+
+  // ---------- Trader Intelligence overlay (Market Learning & Price
+  // Intelligence Engine, Phase C Slice 2) ----------
+  // Read-only display logic over the already-sanitized TRADER_INTELLIGENCE_MIRROR
+  // array above - never reads or reconstructs rawText, never calls
+  // computeLandedCore()/computeLanded() for anything other than reading the
+  // SAME modeled landed figure already computed for the hero/hero cards, and
+  // never writes anywhere. The selection/priority RULES here are a verbatim
+  // port of scripts/lib/trader-intelligence-mirror-model.js (the Node/private
+  // source of truth for these rules) - ported, not redesigned, because
+  // browser JS cannot require() that Node module. Any change to the
+  // selection/priority rules must be made in both places.
+  var TRADER_SIGNAL_TYPES_FOR_HEADLINE = ['PURCHASE_EXECUTED', 'MARKET_INDICATION', 'OFFER_QUOTE'];
+  function traderIsSuperseded(records, observationId){
+    return records.some(function (r){ return r && r.revision && r.revision.revisionState === 'CORRECTION' && r.revision.supersedesObservationId === observationId; });
+  }
+  function traderActiveRecords(records){
+    return (records || []).filter(function (r){ return r && !traderIsSuperseded(records, r.observationId); });
+  }
+  function traderSortByTimestampDesc(records){
+    return records.slice().sort(function (a, b){ return b.observationTimestamp < a.observationTimestamp ? -1 : (b.observationTimestamp > a.observationTimestamp ? 1 : 0); });
+  }
+  function selectLatestTraderSignalByType(records, eventType){
+    var candidates = traderSortByTimestampDesc(traderActiveRecords(records)).filter(function (r){ return r.interpretation && r.interpretation.eventType === eventType; });
+    return candidates.length ? candidates[0] : null;
+  }
+  function selectTraderHeadlineSignal(records){
+    for (var i = 0; i < TRADER_SIGNAL_TYPES_FOR_HEADLINE.length; i++){
+      var found = selectLatestTraderSignalByType(records, TRADER_SIGNAL_TYPES_FOR_HEADLINE[i]);
+      if (found) return { eventType: TRADER_SIGNAL_TYPES_FOR_HEADLINE[i], record: found };
+    }
+    return null;
+  }
+  function computeTraderDemandSupplyContext(records){
+    var sorted = traderSortByTimestampDesc(traderActiveRecords(records));
+    function latestFieldOwner(fieldName){
+      for (var i = 0; i < sorted.length; i++){
+        var v = sorted[i].interpretation ? sorted[i].interpretation[fieldName] : undefined;
+        if (v !== null && v !== undefined) return { value: v, observationId: sorted[i].observationId, observationTimestamp: sorted[i].observationTimestamp };
+      }
+      return null;
+    }
+    return {
+      demandStrength: latestFieldOwner('demandStrength'), supplyTightness: latestFieldOwner('supplyTightness'),
+      executionStrength: latestFieldOwner('executionStrength'), shipmentExpected: latestFieldOwner('shipmentExpected'),
+      shipmentTiming: latestFieldOwner('shipmentTiming')
+    };
+  }
+  // Same "derived, never stored" discipline as computeTraderPremiumVsModeledLanded's
+  // Node-side counterpart (scripts/lib/trader-market-comparison.js) - only
+  // compares a record's own localPriceEGPMT against the modeled landed EGP/MT
+  // figure already computed elsewhere on this page; returns null (fails
+  // safe) rather than fabricating a number when either side is missing.
+  function computeTraderPremiumVsModeledLanded(record, modeledLandedEGPMT){
+    if (!record || !record.interpretation) return null;
+    var localPrice = record.interpretation.localPriceEGPMT;
+    if (typeof localPrice !== 'number' || !isFinite(localPrice)) return null;
+    if (typeof modeledLandedEGPMT !== 'number' || !isFinite(modeledLandedEGPMT) || modeledLandedEGPMT === 0) return null;
+    var absoluteEGPMT = localPrice - modeledLandedEGPMT;
+    return { traderPriceEGPMT: localPrice, modeledLandedEGPMT: modeledLandedEGPMT, absoluteEGPMT: absoluteEGPMT, percent: (absoluteEGPMT / modeledLandedEGPMT) * 100 };
   }
 
   function computeProductOriginDecision(productId, originId, egpUsdRate){
@@ -4554,6 +4938,10 @@
     // monitor widget below) - Price Journey explains computeLandedCore()'s
     // own output, it never participates in producing it.
     try { renderPriceJourney(); } catch (e) { /* widget-local failure only */ }
+    // Additive, read-only context layer - a failure here must never block
+    // the rest of renderAll() or affect the modeled Executive Summary
+    // narrative computed just above (renderExecutiveSummary already ran).
+    try { renderTraderIntelligenceOverlay(); } catch (e) { /* widget-local failure only */ }
     renderAssumptionAudit();
     renderForecastAccuracy();
     // Informational-only widget; a failure here must never block the rest
@@ -4858,6 +5246,145 @@
         whyLargestEl.textContent = t('journeyWhyLargest') + ': ' + t(largestLabelKey);
       } else {
         whyLargestEl.textContent = '';
+      }
+    }
+  }
+
+  // ---------- Trader Intelligence overlay rendering (Market Learning &
+  // Price Intelligence Engine, Phase C Slice 2) ----------
+  // Reads only the sanitized TRADER_INTELLIGENCE_MIRROR array (no rawText -
+  // see that array's header comment) and the modeled landedEGP already
+  // computed for the hero/Executive cards. Never writes anywhere, never
+  // participates in computeLandedCore()'s own computation.
+  var TRADER_EVENT_TYPE_LABEL_KEYS = {
+    PURCHASE_EXECUTED: 'traderIntelLatestExecuted', MARKET_INDICATION: 'traderIntelLatestIndication', OFFER_QUOTE: 'traderIntelLatestOffer'
+  };
+  function traderEvidenceDetailsEl(record){
+    var details = document.createElement('details');
+    details.className = 'mj-why';
+    var summary = document.createElement('summary');
+    summary.textContent = t('journeyDetailsLabel');
+    details.appendChild(summary);
+    var body = document.createElement('div');
+    body.className = 'mj-why-body';
+    body.setAttribute('dir', 'auto');
+    function row(labelKey, value){
+      if (value === null || value === undefined || value === '') return;
+      var wr = document.createElement('div'); wr.className = 'wr';
+      var l = document.createElement('span'); l.textContent = t(labelKey);
+      var v = document.createElement('span'); v.setAttribute('dir', 'auto'); v.textContent = value;
+      wr.appendChild(l); wr.appendChild(v); body.appendChild(wr);
+    }
+    row('traderIntelEvidenceTrader', record.traderId);
+    row('traderIntelEvidenceObservedAt', record.observationTimestamp);
+    row('traderIntelEvidenceEventType', record.interpretation.eventType);
+    row('traderIntelEvidenceExtraction', record.interpretation.extractionMethod + ' / ' + record.interpretation.extractionVersion);
+    row('traderIntelEvidenceConfidence', record.interpretation.confidence + (record.interpretation.uncertainty ? ' · ' + t('traderIntelNeedsClarification') : ''));
+    details.appendChild(body);
+    return details;
+  }
+  function traderSignalCardEl(eventType, record, modeledLandedEGPMT){
+    var card = document.createElement('div');
+    card.className = 'ti-signal';
+    var label = document.createElement('div'); label.className = 'ti-signal-label'; label.textContent = t(TRADER_EVENT_TYPE_LABEL_KEYS[eventType]);
+    var value = document.createElement('div'); value.className = 'ti-signal-value'; value.setAttribute('dir', 'ltr');
+    var interp = record.interpretation;
+    var priceVal = eventType === 'PURCHASE_EXECUTED' ? interp.executedPrice : eventType === 'OFFER_QUOTE' ? interp.offerPrice : interp.localPriceEGPMT;
+    value.textContent = (priceVal !== null && priceVal !== undefined) ? fmt(priceVal, 0) + ' ' + (interp.unit || (interp.currency ? interp.currency + '/MT' : '')) : '—';
+    var meta = document.createElement('div'); meta.className = 'ti-signal-meta'; meta.setAttribute('dir', 'ltr');
+    meta.textContent = record.traderId + ' · ' + record.observationTimestamp.slice(11, 16);
+    if (record.interpretation.uncertainty === 'NEEDS_CLARIFICATION'){
+      var flag = document.createElement('div'); flag.className = 'ti-signal-meta'; flag.textContent = '⚠ ' + t('traderIntelNeedsClarification');
+      meta.appendChild(document.createElement('br')); meta.appendChild(flag);
+    }
+    card.appendChild(label); card.appendChild(value); card.appendChild(meta);
+    var premium = computeTraderPremiumVsModeledLanded(record, modeledLandedEGPMT);
+    if (premium){
+      var pEl = document.createElement('div'); pEl.className = 'ti-signal-premium'; pEl.setAttribute('dir', 'ltr');
+      pEl.textContent = t('traderIntelPremiumLabel') + ': ' + (premium.absoluteEGPMT >= 0 ? '+' : '') + fmt(premium.absoluteEGPMT, 0) + ' EGP/MT (' + (premium.percent >= 0 ? '+' : '') + fmt(premium.percent, 1) + '%)';
+      var pNote = document.createElement('div'); pNote.className = 'ti-signal-premium-note'; pNote.textContent = t('traderIntelPremiumNote');
+      card.appendChild(pEl); card.appendChild(pNote);
+    }
+    card.appendChild(traderEvidenceDetailsEl(record));
+    return card;
+  }
+  function renderTraderIntelligenceOverlay(){
+    var emptyEl = document.getElementById('traderIntelEmpty');
+    var signalsEl = document.getElementById('traderIntelSignals');
+    var contextWrap = document.getElementById('traderIntelContext');
+    var contextRow = document.getElementById('traderIntelContextRow');
+    var execTraderEl = document.getElementById('execTraderContext');
+    if (!signalsEl) return;
+    signalsEl.innerHTML = '';
+    if (contextRow) contextRow.innerHTML = '';
+
+    var mirror = (typeof TRADER_INTELLIGENCE_MIRROR !== 'undefined') ? TRADER_INTELLIGENCE_MIRROR : [];
+    var modeledLandedEGPMT = state.egpUsd ? (computeLanded(state.cpoMYR, state.egpUsd).landedEGP) : null;
+
+    if (!mirror.length){
+      if (emptyEl) emptyEl.hidden = false;
+      if (contextWrap) contextWrap.hidden = true;
+      if (execTraderEl) execTraderEl.hidden = true;
+      return;
+    }
+    if (emptyEl) emptyEl.hidden = true;
+
+    var latestExecuted = selectLatestTraderSignalByType(mirror, 'PURCHASE_EXECUTED');
+    var latestIndication = selectLatestTraderSignalByType(mirror, 'MARKET_INDICATION');
+    var latestOffer = selectLatestTraderSignalByType(mirror, 'OFFER_QUOTE');
+    [['PURCHASE_EXECUTED', latestExecuted], ['MARKET_INDICATION', latestIndication], ['OFFER_QUOTE', latestOffer]].forEach(function (pair){
+      if (pair[1]) signalsEl.appendChild(traderSignalCardEl(pair[0], pair[1], modeledLandedEGPMT));
+    });
+
+    var ctx = computeTraderDemandSupplyContext(mirror);
+    var ctxLabels = [
+      ['demandStrength', 'traderIntelDemand', { HIGH: 'traderIntelStrengthHigh', LOW: 'traderIntelStrengthLow' }],
+      ['supplyTightness', 'traderIntelSupply', { TIGHT: 'traderIntelTightnessTight', AMPLE: 'traderIntelTightnessAmple' }],
+      ['executionStrength', 'traderIntelExecution', { STRONG: 'traderIntelExecStrong', WEAK: 'traderIntelExecWeak' }]
+    ];
+    var anyContext = false;
+    if (contextRow){
+      ctxLabels.forEach(function (row){
+        var field = ctx[row[0]];
+        if (!field) return;
+        anyContext = true;
+        var item = document.createElement('span'); item.className = 'ti-context-item';
+        var b = document.createElement('b'); b.textContent = t(row[2][field.value] || field.value);
+        item.appendChild(document.createTextNode(t(row[1]) + ': '));
+        item.appendChild(b);
+        contextRow.appendChild(item);
+      });
+      if (ctx.shipmentExpected && ctx.shipmentExpected.value){
+        anyContext = true;
+        var shipItem = document.createElement('span'); shipItem.className = 'ti-context-item';
+        var shipB = document.createElement('b'); shipB.textContent = ctx.shipmentTiming ? ctx.shipmentTiming.value : t('traderIntelShipmentYes');
+        shipItem.appendChild(document.createTextNode(t('traderIntelShipment') + ': '));
+        shipItem.appendChild(shipB);
+        contextRow.appendChild(shipItem);
+      }
+    }
+    if (contextWrap) contextWrap.hidden = !anyContext;
+
+    // ---- Executive Summary trader-context line: deterministic template
+    // text only, built from the SAME headline-priority rule
+    // (PURCHASE_EXECUTED > MARKET_INDICATION > OFFER_QUOTE) as the overlay
+    // above - no LLM prose, no invented commentary. ----
+    if (execTraderEl){
+      var headline = latestExecuted ? { eventType: 'PURCHASE_EXECUTED', record: latestExecuted }
+        : latestIndication ? { eventType: 'MARKET_INDICATION', record: latestIndication }
+        : latestOffer ? { eventType: 'OFFER_QUOTE', record: latestOffer } : null;
+      if (headline){
+        var hInterp = headline.record.interpretation;
+        var hPrice = headline.eventType === 'PURCHASE_EXECUTED' ? hInterp.executedPrice : headline.eventType === 'OFFER_QUOTE' ? hInterp.offerPrice : hInterp.localPriceEGPMT;
+        var text = t('execTraderContextLabel') + ': ' + t(TRADER_EVENT_TYPE_LABEL_KEYS[headline.eventType]);
+        if (hPrice !== null && hPrice !== undefined) text += ' — ' + fmt(hPrice, 0) + ' ' + (hInterp.unit || '');
+        var hPremium = computeTraderPremiumVsModeledLanded(headline.record, modeledLandedEGPMT);
+        if (hPremium) text += ' (' + t('execTraderContextPremiumPrefix') + ' ' + (hPremium.absoluteEGPMT >= 0 ? '+' : '') + fmt(hPremium.absoluteEGPMT, 0) + ' EGP/MT)';
+        if (hInterp.uncertainty === 'NEEDS_CLARIFICATION') text += ' · ' + t('traderIntelNeedsClarification');
+        execTraderEl.textContent = text;
+        execTraderEl.hidden = false;
+      } else {
+        execTraderEl.hidden = true;
       }
     }
   }
