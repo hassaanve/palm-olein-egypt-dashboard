@@ -802,6 +802,35 @@
      tokens), evidence badges reuse the EXISTING .evidence-badge ev-*
      classes verbatim - no new badge palette. ---------- */
   .trader-intel-card{background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-card);padding:24px 24px 20px;margin-bottom:24px;}
+  /* ---------- Phase B Slice 5: Cargo Intelligence (public, sanitized) ---------- */
+  .cargo-intel-empty{font-size:13px;color:var(--ink-500);margin:8px 0 0;}
+  .cargo-summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:16px 0 22px;}
+  .cargo-summary-stat{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
+  .cargo-summary-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-500);font-weight:700;}
+  .cargo-summary-value{font-family:var(--font-mono);font-size:18px;font-weight:800;color:var(--ink-900);margin-top:4px;}
+  .cargo-summary-sample{font-size:10.5px;color:var(--ink-500);margin-top:2px;}
+  .cargo-section-title{font-size:13px;font-weight:700;color:var(--ink-700);text-transform:uppercase;letter-spacing:.03em;margin:18px 0 8px;}
+  .cargo-list{display:flex;flex-direction:column;gap:10px;}
+  details.cargo-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0;overflow:hidden;}
+  details.cargo-card summary{list-style:none;cursor:pointer;padding:12px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;}
+  details.cargo-card summary::-webkit-details-marker{display:none;}
+  .cargo-ref{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-500);}
+  .cargo-origin{font-weight:700;color:var(--ink-900);}
+  .cargo-metric{font-family:var(--font-mono);font-size:13px;color:var(--ink-900);}
+  .cargo-metric-label{font-size:10.5px;color:var(--ink-500);margin-inline-end:4px;}
+  .cargo-badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:10.5px;font-weight:700;border:1px solid transparent;}
+  .cargo-badge.favorable,.cargo-badge.on_time,.cargo-badge.early,.cargo-badge.reconciled{background:rgba(63,196,136,.16);color:#1f9d6a;border-color:rgba(63,196,136,.4);}
+  .cargo-badge.unfavorable,.cargo-badge.late{background:rgba(232,85,90,.14);color:#c9434a;border-color:rgba(232,85,90,.4);}
+  .cargo-badge.on_target,.cargo-badge.reconciliation_in_progress{background:rgba(91,115,145,.16);color:var(--ink-700);border-color:rgba(91,115,145,.4);}
+  .cargo-badge.unknown,.cargo-badge.committed,.cargo-badge.in_transit_derived,.cargo-badge.arrived{background:rgba(232,184,75,.18);color:#a97a1d;border-color:rgba(232,184,75,.45);}
+  .cargo-badge.overdue_derived{background:rgba(232,85,90,.14);color:#c9434a;border-color:rgba(232,85,90,.4);}
+  .cargo-detail-body{padding:0 14px 14px;border-top:1px solid var(--line);}
+  .cargo-detail-row{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:5px 0;border-bottom:1px solid var(--line);}
+  .cargo-detail-row:last-child{border-bottom:none;}
+  .cargo-component-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px;}
+  .cargo-component-table th{text-align:start;color:var(--ink-500);font-weight:600;padding:4px 6px;font-size:10px;text-transform:uppercase;letter-spacing:.03em;}
+  .cargo-component-table td{padding:4px 6px;border-bottom:1px solid var(--line);}
+  .cargo-caveat{font-size:11px;color:var(--ink-500);margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);}
   .ti-empty{font-size:13px;color:var(--ink-500);margin:8px 0 0;}
   .ti-signals{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:14px;}
   .ti-signal{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
@@ -935,7 +964,7 @@
     <h1 data-i18n="title">RBD Palm Olein — Egypt</h1>
     <p class="subtitle" id="pageSubtitle" hidden data-i18n="subtitle">A transparent, adjustable model of the landed price of refined, bleached &amp; deodorized palm olein into Egypt — built from the Bursa Malaysia benchmark, freight, Egyptian customs duty and EGP/USD scenarios. Not a market quote: a computed estimate you can correct with real numbers as you get them.</p>
     <div class="meta-row">
-      <span><span data-i18n="metaSnapshot">Snapshot</span> <b>16 Aug 2026</b></span>
+      <span><span data-i18n="metaSnapshot">Snapshot</span> <b>17 Aug 2026</b></span>
       <span><span data-i18n="metaBasis">Basis</span> <b data-i18n="metaBasisValue">FOB Malaysia, Port Klang</b></span>
       <span><span data-i18n="metaDest">Destination</span> <b data-i18n="metaDestValue">Alexandria / Damietta</b></span>
     </div>
@@ -947,9 +976,37 @@
   <div class="tab-bar" role="tablist">
     <button class="tab-btn" id="tabBtnFull" type="button" role="tab" aria-selected="false" data-i18n="tabFull">Detailed Analysis</button>
     <button class="tab-btn active" id="tabBtnSummary" type="button" role="tab" aria-selected="true" data-i18n="tabSummary">Executive Summary</button>
+    <button class="tab-btn" id="tabBtnCargo" type="button" role="tab" aria-selected="false" data-i18n="tabCargo">Cargo Intelligence</button>
   </div>
 
-  <div id="tabPanelSummary" class="tab-panel">
+  <!-- Phase B Slice 5: Cargo / Purchase Intelligence - a FOURTH context,
+       distinct from Malaysia-today / Egypt-landed-today / buy-today-
+       expected-at-arrival above. Reads ONLY the sanitized, PUBLIC-safe
+       CARGO_INTELLIGENCE_MIRROR array (never raw B1/B3 provenance, never
+       purchase price/model benchmark, never per-component dollar values -
+       see scripts/lib/cargo-intelligence-mirror-model.js's header comment
+       for the full privacy boundary). Read-only: no write path exists on
+       this public page. -->
+  <div id="tabPanelCargo" class="tab-panel" hidden>
+    <section aria-label="Cargo Intelligence">
+      <div class="trader-intel-card" id="cargoIntelCard">
+        <h2 data-i18n="cargoIntelTitle">Cargo Intelligence</h2>
+        <p class="pj-subtitle" data-i18n="cargoIntelSubtitle" dir="auto"></p>
+        <p class="cargo-intel-empty" id="cargoIntelEmpty" data-i18n="cargoIntelEmptyState" dir="auto" hidden></p>
+        <div id="cargoIntelBody" hidden>
+          <div class="cargo-summary-grid" id="cargoSummaryGrid"></div>
+          <div class="cargo-section-title" id="cargoOpenTitle" data-i18n="cargoOpenSectionTitle">Open Cargos</div>
+          <div class="cargo-list" id="cargoOpenList"></div>
+          <p class="cargo-intel-empty" id="cargoOpenEmpty" data-i18n="cargoOpenEmptyState" dir="auto" hidden></p>
+          <div class="cargo-section-title" id="cargoReconciledTitle" data-i18n="cargoReconciledSectionTitle">Reconciled Cargos</div>
+          <div class="cargo-list" id="cargoReconciledList"></div>
+          <p class="cargo-intel-empty" id="cargoReconciledEmpty" data-i18n="cargoReconciledEmptyState" dir="auto" hidden></p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="tabPanelSummary" class="tab-panel"
     <section aria-label="Summary">
       <div class="product-identity" aria-label="Product identity">
         <div><small data-i18n="productIdentityLabel">Product</small><strong data-i18n="productRbdPalmOlein">RBD Palm Olein</strong></div>
@@ -1611,12 +1668,12 @@
   "use strict";
 
   var DEFAULTS = {
-    cpoMYR: 4575,
-    usdMyr: 4.0861,
-    refiningSpread: 38.5,
+    cpoMYR: 4568,
+    usdMyr: 4.0799,
+    refiningSpread: 43,
     refiningProcessingAdjustment: 15,
     oleinFractionationPremium: 15,
-    physicalMarketBasisAdjustment: 8.5,
+    physicalMarketBasisAdjustment: 13,
     origin: 'my',
     idLevyPct: 9,
     freight: 36,
@@ -1625,9 +1682,9 @@
     vatOn: false,
     vatPct: 14,
     marginPct: 6,
-    egpUsd: 50.23,
+    egpUsd: 50.20,
     cpoIDR: 15700,
-    usdIdr: 17820,
+    usdIdr: 17836,
     // Stage 3A — direct market-reported RBD Palm Olein FOB Malaysian Port
     // price, USD/MT (see DATA_PROVENANCE.rbdOleinFobMarketUSD below).
     // DISPLAY / MARKET-INTELLIGENCE ONLY: never read by computeLandedCore(),
@@ -1712,21 +1769,21 @@
   // a future task.
   var DATA_PROVENANCE = {
     cpoMYR: {
-      source:'agropost.wordpress.com dated "14 Aug 2026 – Palm Oil Prices at Closing" table (CPO FUTURES PRICES AT MDEX), Sep’26 contract (Aug’26 contract no longer listed — rolled)',
-      sourceType:'Market Report', lastUpdated:'2026-08-15', confidence:'Medium', status:'Manual',
+      source:'agropost.wordpress.com dated "17 Aug 2026 – Palm Oil Prices at Midday" table (CPO FUTURES PRICES AT MDEX), Sep’26 contract',
+      sourceType:'Market Report', lastUpdated:'2026-08-17', confidence:'Medium', status:'Manual',
       unit:'MYR/MT', refreshMethod:'Daily AI refresh',
       contractCode:'Not confirmed by source (referred to only as "Sep’26")', contractMonth:'September 2026',
-      priceType:'Last Traded (agropost "Last" column; not confirmed as official BMD settlement)', observationDate:'14 Aug 2026',
-      contractSelectionRule:'Nearest liquid FCPO contract (currently Sep’26, rolled from Aug’26 which is no longer quoted)'
+      priceType:'Last Traded (agropost "Last" column, midday session; not confirmed as official BMD settlement)', observationDate:'17 Aug 2026',
+      contractSelectionRule:'Nearest liquid FCPO contract (currently Sep’26, unchanged from previous run)'
     },
     usdMyr: {
-      source:'Bank Negara Malaysia — KL USD/MYR Reference Rate (FMIP, financialmarkets.bnm.gov.my), 4.0861 for 14 Aug 2026 (most recent published reference rate; markets closed 15-16 Aug 2026 weekend)',
-      sourceType:'Official Publication', lastUpdated:'2026-08-16', confidence:'High', status:'Manual',
-      unit:'MYR/USD', refreshMethod:'Daily AI refresh', observationDate:'14 Aug 2026'
+      source:'Bank Negara Malaysia — KL USD/MYR Reference Rate (FMIP, financialmarkets.bnm.gov.my), 4.0799 for 17 Aug 2026',
+      sourceType:'Official Publication', lastUpdated:'2026-08-17', confidence:'High', status:'Manual',
+      unit:'MYR/USD', refreshMethod:'Daily AI refresh', observationDate:'17 Aug 2026'
     },
     egpUsd: {
-      source:'BankLive-reported Central Bank of Egypt official USD/EGP buy/sell rates (50.1557 / 50.2957), 13 Aug 2026',
-      sourceType:'Official Publication', lastUpdated:'2026-08-13', confidence:'High', status:'Manual',
+      source:'BankLive-reported Central Bank of Egypt official USD/EGP buy/sell rates (50.1361 / 50.2719), 17 Aug 2026',
+      sourceType:'Official Publication', lastUpdated:'2026-08-17', confidence:'High', status:'Manual',
       unit:'EGP/USD', refreshMethod:'Daily AI refresh'
     },
     freight: {
@@ -1735,8 +1792,8 @@
       unit:'USD/MT', refreshMethod:'Daily automation, only on Egypt-route-specific evidence, else left unchanged — scripts/daily-refresh-prompt.txt'
     },
     refiningSpread: {
-      source:'mblionoleo.com dated "13 August 2026" FOB Malaysian Port table (RBD Palm Olein $1,147.50/MT vs CPO $1,109.00/MT), cross-checked against agropost.wordpress.com 14 Aug 2026 closing post (Aug’26 contract, RBD Palm Olein $1,145.00/MT, delta $2.50)',
-      sourceType:'Market Report', lastUpdated:'2026-08-15', confidence:'Medium', status:'Derived',
+      source:'agropost.wordpress.com dated "17 Aug 2026 – Palm Oil Prices at Midday" table (PHYSICAL MARKET PRICES FOB Malaysia), Sep’26 contract (RBD Palm Olein $1,160.00/MT vs CPO $1,117.00/MT); mblionoleo.com still shows its earlier dated table (13 Aug 2026, RBD Palm Olein $1,147.50/MT vs CPO $1,109.00/MT, spread $38.50) with no fresher print available this run',
+      sourceType:'Market Report', lastUpdated:'2026-08-17', confidence:'Medium', status:'Derived',
       unit:'USD/MT', refreshMethod:'Daily AI refresh'
     },
     insurancePct: {
@@ -1939,6 +1996,21 @@
       traderIntelStrengthHigh:'High', traderIntelStrengthLow:'Low', traderIntelTightnessTight:'Tight', traderIntelTightnessAmple:'Ample', traderIntelExecStrong:'Strong', traderIntelExecWeak:'Weak', traderIntelShipmentYes:'Yes',
       traderIntelProvisional:'Provisional', traderIntelNeedsClarification:'Needs clarification',
       traderIntelEvidenceTrader:'Trader (pseudonymous)', traderIntelEvidenceObservedAt:'Observed', traderIntelEvidenceEventType:'Event type', traderIntelEvidenceExtraction:'Extraction method/version', traderIntelEvidenceConfidence:'Confidence',
+      tabCargo:'Cargo Intelligence',
+      cargoIntelTitle:'Cargo Intelligence', cargoIntelSubtitle:'Purchase-level decision intelligence for committed cargos — a distinct context from the market view above, never merged with it.',
+      cargoIntelEmptyState:'No cargo purchase records yet.',
+      cargoOpenSectionTitle:'Open Cargos', cargoOpenEmptyState:'No open cargos.',
+      cargoReconciledSectionTitle:'Reconciled Cargos', cargoReconciledEmptyState:'No reconciled cargos yet.',
+      cargoSummaryOpen:'Open cargos', cargoSummaryReconciled:'Reconciled cargos', cargoSummaryAvgVariance:'Avg. landed variance', cargoSummaryOnTime:'On-time / early', cargoSummaryLate:'Late', cargoSummaryAvgArrival:'Avg. arrival variance',
+      cargoLifecycleCOMMITTED:'Committed', cargoLifecycleIN_TRANSIT_DERIVED:'In transit (derived)', cargoLifecycleOVERDUE_DERIVED:'Overdue (derived)', cargoLifecycleARRIVED:'Arrived', cargoLifecycleRECONCILIATION_IN_PROGRESS:'Reconciliation in progress', cargoLifecycleRECONCILED:'Reconciled',
+      cargoOrigin:'Origin', cargoDecisionDate:'Decision date', cargoExpectedArrival:'Expected arrival', cargoActualArrival:'Actual arrival', cargoDaysToArrival:'Days to arrival',
+      cargoExpectedLanded:'Expected landed', cargoActualLanded:'Actual landed', cargoTotalVariance:'Total variance', cargoAttribution:'Attribution', cargoReconciliation:'Reconciliation',
+      cargoArrivalEARLY:'Early', cargoArrivalON_TIME:'On time', cargoArrivalLATE:'Late', cargoArrivalUNKNOWN:'Unknown',
+      cargoComponentTable:'Component variance (status only)', cargoComponentName:'Component', cargoComponentStatus:'Status',
+      cargoBasisCaveat:'Expected includes a legacy ~6% adjustment with no actual counterpart; actual may include port clearance with no expected counterpart in the model — the total variance above reflects that basis difference, not pure estimation error.',
+      cargoMissingEvidence:'Missing evidence', cargoNotComplete:'Not complete',
+      cargoStatusFAVORABLE:'Favorable', cargoStatusUNFAVORABLE:'Unfavorable', cargoStatusON_TARGET:'On target', cargoStatusUNKNOWN:'Unknown', cargoStatusNOT_TRACKED:'Not tracked', cargoStatusNOT_COMPARABLE:'Not comparable',
+      cargoComponentOriginCost:'Origin cost', cargoComponentFreight:'Freight', cargoComponentInsurance:'Insurance', cargoComponentDutyCustoms:'Duty/Customs', cargoComponentVAT:'VAT', cargoComponentClearancePort:'Clearance/Port', cargoComponentLegacyLocalCommercialAdjustment:'Legacy Local Commercial Adjustment',
       execTraderContextLabel:'Egypt market intelligence', execTraderContextPremiumPrefix:'vs modeled landed:',
       execTrustInsufficient:'Not enough history', execStaleSuffix:'(stale)',
       execStaleBannerAsOf:'Dashboard data as of', execStaleBannerText:'Update overdue', execHorizonPrefix:'Forecast horizon', execHorizonDaysUnit:'days',
@@ -2066,7 +2138,7 @@
       caveatText:'RBD palm olein has no single public spot price for Egypt — it is a broker-quoted, opaque market. The model’s refining spread (olein price over CPO) was corrected on 29 Jul 2026 from an earlier $183/MT assumption to ~$35/MT, based on a directly-dated FOB Malaysia price sheet (MBLion Oleo) showing Aug ’26 CPO at $1,116/MT against RBD Olein at $1,150/MT — the earlier $183 figure came from a less reliable secondary source and had been overstating every implied FOB olein price on this page by roughly $150/MT. A fresher dated comparison on 12 Aug 2026 (agropost FOB Malaysia closing prices, Aug ’26 contract: CPO $1,107/MT vs RBD Olein $1,142.50/MT) puts the spread at ~$35.5/MT, the figure currently in use. EGP/USD forecasts for 2026 also diverge sharply by source (mid-40s to mid-50s) — the scenario band reflects that spread, not certainty. Treat every output as a starting estimate for negotiation, not a quote.',
       h3sources:'Sources',
       disclaimer:'Built 24 Jul 2026 from public web sources; commodity and currency data move daily. Re-run with current figures before using for a purchasing decision.',
-      ptSpot:'Spot', ptSpotSub:'16 Aug', ptAug:"Oct ’26", ptSep:"Nov ’26", ptOct:"Dec ’26", ptContract:'contract',
+      ptSpot:'Spot', ptSpotSub:'17 Aug', ptAug:"Oct ’26", ptSep:"Nov ’26", ptOct:"Dec ’26", ptContract:'contract',
       ttCpo:'CPO', ttImpliedFob:'Implied FOB olein', unitMyrMt:'MYR/MT',
       ttLow:'Low', ttBase:'Base', ttHigh:'High',
       h2s10:'Pricing Assumptions &amp; Data Quality',
@@ -2169,6 +2241,21 @@
       traderIntelStrengthHigh:'مرتفع', traderIntelStrengthLow:'منخفض', traderIntelTightnessTight:'ضيق', traderIntelTightnessAmple:'وفير', traderIntelExecStrong:'قوي', traderIntelExecWeak:'ضعيف', traderIntelShipmentYes:'نعم',
       traderIntelProvisional:'استرشادي', traderIntelNeedsClarification:'يحتاج توضيح',
       traderIntelEvidenceTrader:'التاجر (رمز غير معرّف)', traderIntelEvidenceObservedAt:'تاريخ الملاحظة', traderIntelEvidenceEventType:'نوع الحدث', traderIntelEvidenceExtraction:'طريقة/إصدار الاستخلاص', traderIntelEvidenceConfidence:'الثقة',
+      tabCargo:'ذكاء الشحنات والمشتريات',
+      cargoIntelTitle:'ذكاء الشحنات والمشتريات', cargoIntelSubtitle:'معلومات قرار على مستوى المشتريات للشحنات المعتمدة — سياق مستقل عن نظرة السوق أعلاه، لا يُدمج معها أبدًا.',
+      cargoIntelEmptyState:'لا توجد سجلات شراء شحنات حتى الآن.',
+      cargoOpenSectionTitle:'الشحنات المفتوحة', cargoOpenEmptyState:'لا توجد شحنات مفتوحة.',
+      cargoReconciledSectionTitle:'الشحنات المسوَّاة', cargoReconciledEmptyState:'لا توجد شحنات مسوَّاة بعد.',
+      cargoSummaryOpen:'الشحنات المفتوحة', cargoSummaryReconciled:'الشحنات المسوَّاة', cargoSummaryAvgVariance:'متوسط فرق التكلفة الواصلة', cargoSummaryOnTime:'في الموعد / مبكرة', cargoSummaryLate:'متأخرة', cargoSummaryAvgArrival:'متوسط فرق الوصول',
+      cargoLifecycleCOMMITTED:'معتمدة', cargoLifecycleIN_TRANSIT_DERIVED:'في الطريق (مشتق)', cargoLifecycleOVERDUE_DERIVED:'متأخرة عن الموعد (مشتق)', cargoLifecycleARRIVED:'وصلت', cargoLifecycleRECONCILIATION_IN_PROGRESS:'جارٍ التسوية', cargoLifecycleRECONCILED:'تمت التسوية',
+      cargoOrigin:'المنشأ', cargoDecisionDate:'تاريخ القرار', cargoExpectedArrival:'الوصول المتوقع', cargoActualArrival:'الوصول الفعلي', cargoDaysToArrival:'أيام حتى الوصول',
+      cargoExpectedLanded:'التكلفة الواصلة المتوقعة', cargoActualLanded:'التكلفة الواصلة الفعلية', cargoTotalVariance:'إجمالي الفرق', cargoAttribution:'دقة العزو', cargoReconciliation:'حالة التسوية',
+      cargoArrivalEARLY:'مبكر', cargoArrivalON_TIME:'في الموعد', cargoArrivalLATE:'متأخر', cargoArrivalUNKNOWN:'غير معروف',
+      cargoComponentTable:'فرق المكونات (الحالة فقط)', cargoComponentName:'المكوّن', cargoComponentStatus:'الحالة',
+      cargoBasisCaveat:'القيمة المتوقعة تشمل تعديلاً تجاريًا محليًا قديمًا ~٦٪ بلا مقابل فعلي، والقيمة الفعلية قد تشمل تخليصًا جمركيًا بالميناء بلا مقابل متوقع في النموذج — الفرق الإجمالي أعلاه يعكس هذا الاختلاف في الأساس، وليس خطأ تقدير بحت.',
+      cargoMissingEvidence:'دليل غير متوفر', cargoNotComplete:'غير مكتمل',
+      cargoStatusFAVORABLE:'إيجابي', cargoStatusUNFAVORABLE:'سلبي', cargoStatusON_TARGET:'مطابق للمتوقع', cargoStatusUNKNOWN:'غير معروف', cargoStatusNOT_TRACKED:'غير متتبَّع', cargoStatusNOT_COMPARABLE:'غير قابل للمقارنة',
+      cargoComponentOriginCost:'تكلفة المنشأ', cargoComponentFreight:'الشحن', cargoComponentInsurance:'التأمين', cargoComponentDutyCustoms:'الجمارك', cargoComponentVAT:'ضريبة القيمة المضافة', cargoComponentClearancePort:'التخليص/الميناء', cargoComponentLegacyLocalCommercialAdjustment:'التعديل التجاري المحلي القديم',
       execTraderContextLabel:'معلومات سوق مصر', execTraderContextPremiumPrefix:'مقابل التكلفة الواصلة المحسوبة:',
       execTrustInsufficient:'بيانات غير كافية', execStaleSuffix:'(قديم)',
       execStaleBannerAsOf:'بيانات اللوحة بتاريخ', execStaleBannerText:'التحديث متأخر', execHorizonPrefix:'أفق التوقع', execHorizonDaysUnit:'يومًا',
@@ -2296,7 +2383,7 @@
       caveatText:'لا يوجد سعر فوري علني موحّد لزيت النخيل الأولين المكرر في مصر — فهو سوق يعتمد على تسعير الوسطاء وغير شفاف. تم تصحيح هامش التكرير في النموذج (فارق سعر الأولين عن الزيت الخام) في 29 يوليو 2026 من افتراض سابق قدره 183 دولارًا للطن إلى نحو 35 دولارًا للطن، استنادًا إلى نشرة أسعار مؤرخة لتسليم السفينة من ماليزيا (MBLion Oleo) أظهرت أن سعر الزيت الخام لعقد أغسطس ’26 بلغ 1,116 دولارًا للطن مقابل 1,150 دولارًا للطن لأولين RBD — وكان الرقم السابق (183 دولارًا) مستمدًا من مصدر ثانوي أقل موثوقية، وكان يُبالغ في تقدير كل سعر ضمني لتسليم السفينة من الأولين في هذه الصفحة بنحو 150 دولارًا للطن. وتُظهر مقارنة أحدث ومؤرخة بتاريخ 12 أغسطس 2026 (أسعار إغلاق agropost لتسليم السفينة من ماليزيا، عقد أغسطس ’26: 1,107 دولارًا للزيت الخام مقابل 1,142.50 دولارًا لأولين RBD) أن الهامش بات نحو 35.5 دولارًا للطن، وهو الرقم المستخدم حاليًا. كذلك تتباين توقعات سعر صرف الجنيه/الدولار لعام 2026 بشكل كبير بين المصادر (من منتصف الأربعينيات إلى منتصف الخمسينيات) — ونطاق السيناريو أعلاه يعكس هذا التباين، لا اليقين. تعامل مع كل رقم في هذا النموذج كنقطة بداية للتفاوض، لا كعرض سعر نهائي.',
       h3sources:'المصادر',
       disclaimer:'تم إعداد هذا النموذج في 24 يوليو 2026 اعتمادًا على مصادر ويب عامة؛ وتتغير بيانات السلع والعملات يوميًا. يُرجى تحديث الأرقام قبل استخدام النموذج في أي قرار شراء.',
-      ptSpot:'فوري', ptSpotSub:'16 أغسطس', ptAug:"أكتوبر '26", ptSep:"نوفمبر '26", ptOct:"ديسمبر '26", ptContract:'عقد',
+      ptSpot:'فوري', ptSpotSub:'17 أغسطس', ptAug:"أكتوبر '26", ptSep:"نوفمبر '26", ptOct:"ديسمبر '26", ptContract:'عقد',
       ttCpo:'زيت النخيل الخام', ttImpliedFob:'سعر الأولين الضمني', unitMyrMt:'رينغيت/طن',
       ttLow:'الأدنى', ttBase:'الأساسي', ttHigh:'الأعلى',
       h2s10:'افتراضات التسعير وجودة البيانات',
@@ -2358,10 +2445,10 @@
   }
 
   var CURVE = [
-    { key:'spot', myr:4575, labelKey:'ptSpot', subKey:'ptSpotSub', weekOffset:0 },
-    { key:'aug',  myr:4711, labelKey:'ptAug',  subKey:'ptContract', weekOffset:5 },
-    { key:'sep',  myr:4807, labelKey:'ptSep',  subKey:'ptContract', weekOffset:9 },
-    { key:'oct',  myr:4880, labelKey:'ptOct',  subKey:'ptContract', weekOffset:14 }
+    { key:'spot', myr:4568, labelKey:'ptSpot', subKey:'ptSpotSub', weekOffset:0 },
+    { key:'aug',  myr:4705, labelKey:'ptAug',  subKey:'ptContract', weekOffset:8 },
+    { key:'sep',  myr:4816, labelKey:'ptSep',  subKey:'ptContract', weekOffset:13 },
+    { key:'oct',  myr:4900, labelKey:'ptOct',  subKey:'ptContract', weekOffset:17 }
   ];
 
   var FX_SCENARIOS = { stableEnd: 49.9, baseEnd: 50.6, depEnd: 52.8 };
@@ -2482,6 +2569,20 @@
   // computeLanded()/computeLandedCore(), FORECAST_SNAPSHOTS,
   // MARKET_SNAPSHOTS, or any recommendation logic.
   var TRADER_INTELLIGENCE_MIRROR = [];
+  // Phase B Slice 5 (extended by Slice 5.1): Cargo Intelligence. Sanitized,
+  // public-safe cargo records only - see scripts/lib/cargo-intelligence-
+  // mirror-model.js's header comment for the exact privacy boundary (no
+  // purchase price, no model benchmark, no per-component dollar values, no
+  // provenance/contract/evidence text). Sole deterministic writer:
+  // scripts/generate-cargo-intelligence-mirror.js via
+  // scripts/lib/cargo-intelligence-mirror-transaction.js, automatically
+  // regenerated every scripts/daily-refresh.ps1 run from the private
+  // canonical data/cargo-decisions.json + data/cargo-actuals.json - never
+  // hand-edited, never written by the research agent. DISPLAY/EVIDENCE
+  // ONLY, same as TRADER_INTELLIGENCE_MIRROR above: never read by DEFAULTS,
+  // HISTORY, computeLanded()/computeLandedCore(), FORECAST_SNAPSHOTS,
+  // MARKET_SNAPSHOTS, or any recommendation logic.
+  var CARGO_INTELLIGENCE_MIRROR = [];
 
   // Real record of what this model actually computed each day it ran (Malaysia
   // origin, VAT off — matches the hero figure's own formula at the time). Not
@@ -2502,7 +2603,8 @@
     { date:'2026-08-12', landedUSD:1290, landedEGP:64838 },
     { date:'2026-08-13', landedUSD:1274, landedEGP:63976 },
     { date:'2026-08-15', landedUSD:1295, landedEGP:65035 },
-    { date:'2026-08-16', landedUSD:1294, landedEGP:65019 }
+    { date:'2026-08-16', landedUSD:1294, landedEGP:65019 },
+    { date:'2026-08-17', landedUSD:1299, landedEGP:65224 }
   ];
 
   // Forecast-accountability log: each snapshot freezes exactly what the
@@ -2547,7 +2649,11 @@
           baseLandedEgp: 64847,
           lowLandedEgp: 64697,
           highLandedEgp: 65321,
-          status: 'Pending'
+          status: 'Evaluated',
+          actualDateUsed: '2026-08-17',
+          actualLandedEgp: 65224,
+          absoluteErrorEgp: 377,
+          absolutePercentageError: 0.58
         },
         {
           targetDate: '2026-08-24',
@@ -3055,6 +3161,82 @@
           baseLandedEgp: 69200,
           lowLandedEgp: 68243,
           highLandedEgp: 72209,
+          status: 'Pending'
+        }
+      ]
+    },
+    {
+      issuedDate: '2026-08-17',
+      modelVersion: 'v1-linear-curve-fx-scenario',
+      sourceSnapshotDate: '2026-08-17',
+      currentFcpoMYR: 4568,
+      currentUsdMyr: 4.0799,
+      currentEgpUsd: 50.2,
+      forecastPoints: [
+        {
+          targetDate: '2026-08-24',
+          horizonWeeks: 1,
+          fcpoMYR: 4585,
+          estimatedFobUsd: 1166.83,
+          baseLandedUsd: 1303.83,
+          baseLandedEgp: 65496,
+          lowLandedEgp: 65420,
+          highLandedEgp: 65735,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-08-31',
+          horizonWeeks: 2,
+          fcpoMYR: 4602,
+          estimatedFobUsd: 1171.03,
+          baseLandedUsd: 1308.38,
+          baseLandedEgp: 65768,
+          lowLandedEgp: 65615,
+          highLandedEgp: 66248,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-09-07',
+          horizonWeeks: 3,
+          fcpoMYR: 4619,
+          estimatedFobUsd: 1175.23,
+          baseLandedUsd: 1312.93,
+          baseLandedEgp: 66041,
+          lowLandedEgp: 65811,
+          highLandedEgp: 66763,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-09-14',
+          horizonWeeks: 4,
+          fcpoMYR: 4637,
+          estimatedFobUsd: 1179.42,
+          baseLandedUsd: 1317.48,
+          baseLandedEgp: 66313,
+          lowLandedEgp: 66006,
+          highLandedEgp: 67279,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-10-12',
+          horizonWeeks: 8,
+          fcpoMYR: 4705,
+          estimatedFobUsd: 1196.21,
+          baseLandedUsd: 1335.68,
+          baseLandedEgp: 67407,
+          lowLandedEgp: 66784,
+          highLandedEgp: 69366,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-11-09',
+          horizonWeeks: 12,
+          fcpoMYR: 4794,
+          estimatedFobUsd: 1217.98,
+          baseLandedUsd: 1359.28,
+          baseLandedEgp: 68779,
+          lowLandedEgp: 67828,
+          highLandedEgp: 71770,
           status: 'Pending'
         }
       ]
@@ -3864,6 +4046,160 @@
           tier: 'Stale',
           reason: 'Last observation (13 Aug 2026) is 3 day(s) old, past the 2-day freshness window',
           ageDays: 3
+        }
+      }
+    },
+    {
+      schemaVersion: 1,
+      snapshotDate: '2026-08-17',
+      capturedAt: '2026-08-17T11:30:28.682Z',
+      landedFormulaVersion: 'v1-fob-freight-insurance-cif-duty-vat-margin',
+      malaysia: {
+        cpoMYR: 4568,
+        usdMyr: 4.0799,
+        refiningProcessingAdjustment: 15,
+        oleinFractionationPremium: 15,
+        physicalMarketBasisAdjustment: 13,
+        totalRbdAdjustment: 43,
+        estimatedFobOleinUsd: 1162.6353,
+        rbdOleinFobMarketUSD: 1147.5
+      },
+      fx: {
+        usdMyr: 4.0799,
+        egpUsd: 50.2,
+        usdIdr: 17836
+      },
+      freight: {
+        freight: 36,
+        origin: 'my',
+        transitDays: 35,
+        clearanceDays: 7
+      },
+      importCosts: {
+        insurancePct: 0.75,
+        egyptDutyPct: 1.5,
+        vatOn: false,
+        vatPct: 14,
+        marginPct: 6
+      },
+      outputs: {
+        fobOleinUsd: 1162.6353,
+        originCostUsd: 0,
+        cifUsd: 1207.625,
+        dutyUsd: 18.1144,
+        vatUsd: 0,
+        marginUsd: 73.5444,
+        landedUSD: 1299.2838,
+        landedEGP: 65224.05
+      },
+      provenance: {
+        cpoMYR: {
+          source: 'agropost.wordpress.com dated "17 Aug 2026 – Palm Oil Prices at Midday" table (CPO FUTURES PRICES AT MDEX), Sep’26 contract',
+          sourceType: 'Market Report',
+          lastUpdated: '2026-08-17',
+          confidence: 'Medium',
+          status: 'Manual',
+          unit: 'MYR/MT',
+          refreshMethod: 'Daily AI refresh',
+          contractCode: 'Not confirmed by source (referred to only as "Sep’26")',
+          contractMonth: 'September 2026',
+          priceType: 'Last Traded (agropost "Last" column, midday session; not confirmed as official BMD settlement)',
+          observationDate: '17 Aug 2026',
+          contractSelectionRule: 'Nearest liquid FCPO contract (currently Sep’26, unchanged from previous run)'
+        },
+        usdMyr: {
+          source: 'Bank Negara Malaysia — KL USD/MYR Reference Rate (FMIP, financialmarkets.bnm.gov.my), 4.0799 for 17 Aug 2026',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-08-17',
+          confidence: 'High',
+          status: 'Manual',
+          unit: 'MYR/USD',
+          refreshMethod: 'Daily AI refresh',
+          observationDate: '17 Aug 2026'
+        },
+        egpUsd: {
+          source: 'BankLive-reported Central Bank of Egypt official USD/EGP buy/sell rates (50.1361 / 50.2719), 17 Aug 2026',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-08-17',
+          confidence: 'High',
+          status: 'Manual',
+          unit: 'EGP/USD',
+          refreshMethod: 'Daily AI refresh'
+        },
+        freight: {
+          source: 'No Egypt-route source documented; nearest §09 citation (MPOB West Malaysia–Sumatra rates) is a different route',
+          sourceType: 'Not documented (route mismatch)',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily automation, only on Egypt-route-specific evidence, else left unchanged — scripts/daily-refresh-prompt.txt'
+        },
+        refiningSpread: {
+          source: 'agropost.wordpress.com dated "17 Aug 2026 – Palm Oil Prices at Midday" table (PHYSICAL MARKET PRICES FOB Malaysia), Sep’26 contract (RBD Palm Olein $1,160.00/MT vs CPO $1,117.00/MT); mblionoleo.com still shows its earlier dated table (13 Aug 2026, RBD Palm Olein $1,147.50/MT vs CPO $1,109.00/MT, spread $38.50) with no fresher print available this run',
+          sourceType: 'Market Report',
+          lastUpdated: '2026-08-17',
+          confidence: 'Medium',
+          status: 'Derived',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily AI refresh'
+        },
+        insurancePct: {
+          source: 'Not documented',
+          sourceType: 'Not documented',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Hardcoded',
+          unit: '%',
+          refreshMethod: 'Not refreshed by automation (static assumption)'
+        },
+        egyptDutyPct: {
+          source: 'WTO Tariff & Trade Data — Egypt member profile (§09 sources)',
+          sourceType: 'Regulatory / trade data',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: '%',
+          refreshMethod: 'Re-checked only on evidence of change — scripts/daily-refresh-prompt.txt'
+        },
+        rbdOleinFobMarketUSD: {
+          product: 'RBD Palm Olein',
+          priceBasis: 'FOB Malaysian Port (physical, dated price sheet)',
+          source: 'MBLion Oleo dated homepage table (mblionoleo.com) — the dated "FOB Malaysian Port" table only, never its undated scrolling ticker',
+          sourceType: 'Market Report (dated physical price sheet)',
+          observationDate: '13 Aug 2026',
+          contractOrDeliveryMonth: 'Not designated (spot/nearest table, no contract month stated by source)',
+          confidence: 'Medium',
+          status: 'Manual',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily automation, dated MBLion table only, cross-checked against Agropost — scripts/daily-refresh-prompt.txt',
+          crossCheckSource: 'Agropost dated closing-price post (agropost.wordpress.com), Aug’26 contract "Selling" price',
+          crossCheckValue: 1145,
+          crossCheckObservationDate: '14 Aug 2026',
+          crossCheckDeltaUSD: 2.5
+        }
+      },
+      evidence: {
+        cpoMYR: {
+          tier: 'Estimated',
+          reason: 'Provenance is insufficient for a stronger tier'
+        },
+        usdMyr: {
+          tier: 'Verified',
+          reason: 'High-confidence, directly sourced figure'
+        },
+        egpUsd: {
+          tier: 'Verified',
+          reason: 'High-confidence, directly sourced figure'
+        },
+        freight: {
+          tier: 'Low Confidence',
+          reason: 'Source confidence is recorded as Low'
+        },
+        rbdOleinFobMarketUSD: {
+          tier: 'Stale',
+          reason: 'Last observation (13 Aug 2026) is 4 day(s) old, past the 2-day freshness window',
+          ageDays: 4
         }
       }
     }
@@ -4942,6 +5278,7 @@
     // the rest of renderAll() or affect the modeled Executive Summary
     // narrative computed just above (renderExecutiveSummary already ran).
     try { renderTraderIntelligenceOverlay(); } catch (e) { /* widget-local failure only */ }
+    try { renderCargoIntelligence(); } catch (e) { /* widget-local failure only */ }
     renderAssumptionAudit();
     renderForecastAccuracy();
     // Informational-only widget; a failure here must never block the rest
@@ -5387,6 +5724,156 @@
         execTraderEl.hidden = true;
       }
     }
+  }
+
+  // ---------- Phase B Slice 5: Cargo Intelligence (public, sanitized) ----------
+  // Reads ONLY the sanitized CARGO_INTELLIGENCE_MIRROR array embedded by
+  // scripts/generate-cargo-intelligence-mirror.js - never raw B1/B3 data,
+  // never purchase price/model benchmark, never per-component dollar
+  // values (see that generator's own model file for the exact privacy
+  // boundary). A FOURTH context, deliberately never merged with the
+  // Malaysia-today / Egypt-landed-today / buy-today-expected sections
+  // above.
+  var CARGO_COMPONENT_LABEL_KEYS = {
+    Freight: 'cargoComponentFreight', Insurance: 'cargoComponentInsurance',
+    DutyCustoms: 'cargoComponentDutyCustoms', VAT: 'cargoComponentVAT',
+    ClearancePort: 'cargoComponentClearancePort',
+    LegacyLocalCommercialAdjustment: 'cargoComponentLegacyLocalCommercialAdjustment'
+  };
+  function cargoBadge(status, textKeyPrefix){
+    var span = document.createElement('span');
+    span.className = 'cargo-badge ' + String(status).toLowerCase();
+    span.textContent = t(textKeyPrefix + status) || status;
+    return span;
+  }
+  function cargoRow(labelKey, valueText){
+    var row = document.createElement('div'); row.className = 'cargo-detail-row';
+    var l = document.createElement('span'); l.textContent = t(labelKey);
+    var v = document.createElement('span'); v.setAttribute('dir', 'ltr'); v.textContent = valueText;
+    row.appendChild(l); row.appendChild(v);
+    return row;
+  }
+  function buildCargoSummaryStat(labelKey, value, sampleSize){
+    var wrap = document.createElement('div'); wrap.className = 'cargo-summary-stat';
+    var label = document.createElement('div'); label.className = 'cargo-summary-label'; label.textContent = t(labelKey);
+    var val = document.createElement('div'); val.className = 'cargo-summary-value'; val.setAttribute('dir', 'ltr'); val.textContent = value;
+    wrap.appendChild(label); wrap.appendChild(val);
+    if (sampleSize !== undefined && sampleSize !== null){
+      var sample = document.createElement('div'); sample.className = 'cargo-summary-sample'; sample.textContent = 'n=' + sampleSize;
+      wrap.appendChild(sample);
+    }
+    return wrap;
+  }
+  function buildCargoCard(rec, isReconciled){
+    var details = document.createElement('details'); details.className = 'cargo-card';
+    var summary = document.createElement('summary');
+
+    var ref = document.createElement('span'); ref.className = 'cargo-ref'; ref.setAttribute('dir', 'ltr'); ref.textContent = rec.cargoRef.split('::').slice(1, 4).join(' · ');
+    var origin = document.createElement('span'); origin.className = 'cargo-origin'; origin.textContent = rec.originId;
+    summary.appendChild(ref); summary.appendChild(origin);
+
+    var landedLabel = document.createElement('span'); landedLabel.className = 'cargo-metric-label'; landedLabel.textContent = t('cargoExpectedLanded') + ':';
+    var landedVal = document.createElement('span'); landedVal.className = 'cargo-metric'; landedVal.setAttribute('dir', 'ltr'); landedVal.textContent = '$' + fmt(rec.expectedLandedUSD, 2);
+    summary.appendChild(landedLabel); summary.appendChild(landedVal);
+
+    if (isReconciled && rec.totalLandedVarianceUSD !== null){
+      var varLabel = document.createElement('span'); varLabel.className = 'cargo-metric-label'; varLabel.textContent = t('cargoTotalVariance') + ':';
+      var varVal = document.createElement('span'); varVal.className = 'cargo-metric'; varVal.setAttribute('dir', 'ltr');
+      varVal.textContent = (rec.totalLandedVarianceUSD >= 0 ? '+' : '') + fmt(rec.totalLandedVarianceUSD, 2) + (rec.totalLandedVariancePercent !== null ? ' (' + rec.totalLandedVariancePercent.toFixed(1) + '%)' : '');
+      summary.appendChild(varLabel); summary.appendChild(varVal);
+      summary.appendChild(cargoBadge(rec.totalVarianceStatus, 'cargoStatus'));
+    }
+    summary.appendChild(cargoBadge(rec.lifecycleStatus, 'cargoLifecycle'));
+    details.appendChild(summary);
+
+    var body = document.createElement('div'); body.className = 'cargo-detail-body';
+    body.appendChild(cargoRow('cargoOrigin', rec.originId));
+    body.appendChild(cargoRow('cargoDecisionDate', rec.decisionDate));
+    body.appendChild(cargoRow('cargoExpectedArrival', rec.expectedArrivalDate));
+    var arrivalRow = document.createElement('div'); arrivalRow.className = 'cargo-detail-row';
+    var arrivalLabel = document.createElement('span'); arrivalLabel.textContent = t('cargoActualArrival');
+    var arrivalVal = document.createElement('span'); arrivalVal.setAttribute('dir', 'ltr');
+    if (rec.actualArrivalDate){ arrivalVal.textContent = rec.actualArrivalDate + ' '; arrivalVal.appendChild(cargoBadge(rec.arrivalStatus, 'cargoArrival')); }
+    else if (rec.daysToArrival !== null){ arrivalVal.textContent = t('cargoMissingEvidence') + ' (' + t('cargoDaysToArrival') + ': ' + rec.daysToArrival + ')'; }
+    else { arrivalVal.textContent = t('cargoMissingEvidence'); }
+    arrivalRow.appendChild(arrivalLabel); arrivalRow.appendChild(arrivalVal);
+    body.appendChild(arrivalRow);
+
+    body.appendChild(cargoRow('cargoExpectedLanded', '$' + fmt(rec.expectedLandedUSD, 2)));
+    var actualLandedRow = document.createElement('div'); actualLandedRow.className = 'cargo-detail-row';
+    var alLabel = document.createElement('span'); alLabel.textContent = t('cargoActualLanded');
+    var alVal = document.createElement('span'); alVal.setAttribute('dir', 'ltr');
+    alVal.textContent = rec.actualLandedUSD !== null ? '$' + fmt(rec.actualLandedUSD, 2) : t('cargoNotComplete');
+    actualLandedRow.appendChild(alLabel); actualLandedRow.appendChild(alVal);
+    body.appendChild(actualLandedRow);
+
+    if (isReconciled){
+      body.appendChild(cargoRow('cargoReconciliation', rec.reconciliationQualityState));
+      body.appendChild(cargoRow('cargoAttribution', rec.attributionState));
+      var table = document.createElement('table'); table.className = 'cargo-component-table'; table.setAttribute('dir', 'ltr');
+      var thead = document.createElement('tr');
+      var th1 = document.createElement('th'); th1.textContent = t('cargoComponentName');
+      var th2 = document.createElement('th'); th2.textContent = t('cargoComponentStatus');
+      thead.appendChild(th1); thead.appendChild(th2); table.appendChild(thead);
+      Object.keys(rec.componentStatuses || {}).forEach(function(key){
+        var tr = document.createElement('tr');
+        var tdName = document.createElement('td'); tdName.textContent = t(CARGO_COMPONENT_LABEL_KEYS[key]) || key;
+        var tdStatus = document.createElement('td'); tdStatus.appendChild(cargoBadge(rec.componentStatuses[key], 'cargoStatus'));
+        tr.appendChild(tdName); tr.appendChild(tdStatus); table.appendChild(tr);
+      });
+      body.appendChild(table);
+      var caveat = document.createElement('div'); caveat.className = 'cargo-caveat'; caveat.textContent = t('cargoBasisCaveat');
+      body.appendChild(caveat);
+    }
+
+    details.appendChild(body);
+    return details;
+  }
+  function renderCargoIntelligence(){
+    var emptyEl = document.getElementById('cargoIntelEmpty');
+    var bodyEl = document.getElementById('cargoIntelBody');
+    if (!bodyEl) return;
+    var mirror = (typeof CARGO_INTELLIGENCE_MIRROR !== 'undefined') ? CARGO_INTELLIGENCE_MIRROR : [];
+
+    if (!mirror.length){
+      if (emptyEl) emptyEl.hidden = false;
+      bodyEl.hidden = true;
+      return;
+    }
+    if (emptyEl) emptyEl.hidden = true;
+    bodyEl.hidden = false;
+
+    var open = mirror.filter(function(r){ return r.lifecycleStatus !== 'RECONCILED'; });
+    var reconciled = mirror.filter(function(r){ return r.lifecycleStatus === 'RECONCILED'; });
+
+    var summaryGrid = document.getElementById('cargoSummaryGrid');
+    summaryGrid.innerHTML = '';
+    summaryGrid.appendChild(buildCargoSummaryStat('cargoSummaryOpen', String(open.length)));
+    summaryGrid.appendChild(buildCargoSummaryStat('cargoSummaryReconciled', String(reconciled.length)));
+    var withVariance = reconciled.filter(function(r){ return r.totalLandedVariancePercent !== null; });
+    if (withVariance.length){
+      var avgVar = withVariance.reduce(function(s,r){ return s + r.totalLandedVariancePercent; }, 0) / withVariance.length;
+      summaryGrid.appendChild(buildCargoSummaryStat('cargoSummaryAvgVariance', (avgVar >= 0 ? '+' : '') + avgVar.toFixed(1) + '%', withVariance.length));
+    }
+    var withArrival = mirror.filter(function(r){ return r.arrivalStatus === 'EARLY' || r.arrivalStatus === 'ON_TIME' || r.arrivalStatus === 'LATE'; });
+    if (withArrival.length){
+      var onTimeCount = withArrival.filter(function(r){ return r.arrivalStatus === 'EARLY' || r.arrivalStatus === 'ON_TIME'; }).length;
+      var lateCount = withArrival.filter(function(r){ return r.arrivalStatus === 'LATE'; }).length;
+      summaryGrid.appendChild(buildCargoSummaryStat('cargoSummaryOnTime', String(onTimeCount), withArrival.length));
+      summaryGrid.appendChild(buildCargoSummaryStat('cargoSummaryLate', String(lateCount), withArrival.length));
+      var avgDays = withArrival.reduce(function(s,r){ return s + r.arrivalVarianceDays; }, 0) / withArrival.length;
+      summaryGrid.appendChild(buildCargoSummaryStat('cargoSummaryAvgArrival', (avgDays >= 0 ? '+' : '') + avgDays.toFixed(1) + 'd', withArrival.length));
+    }
+
+    var openList = document.getElementById('cargoOpenList'); openList.innerHTML = '';
+    var openEmpty = document.getElementById('cargoOpenEmpty');
+    if (!open.length){ if (openEmpty) openEmpty.hidden = false; }
+    else { if (openEmpty) openEmpty.hidden = true; open.forEach(function(r){ openList.appendChild(buildCargoCard(r, false)); }); }
+
+    var reconciledList = document.getElementById('cargoReconciledList'); reconciledList.innerHTML = '';
+    var reconciledEmpty = document.getElementById('cargoReconciledEmpty');
+    if (!reconciled.length){ if (reconciledEmpty) reconciledEmpty.hidden = false; }
+    else { if (reconciledEmpty) reconciledEmpty.hidden = true; reconciled.forEach(function(r){ reconciledList.appendChild(buildCargoCard(r, true)); }); }
   }
 
   // ---------- Confidence Engine V1 badge rendering (UI integration slice 1) ----------
@@ -6090,19 +6577,26 @@
   // ---------- Tabs ----------
   function setTab(tab){
     var isFull = tab === 'full';
+    var isCargo = tab === 'cargo';
+    var isSummary = !isFull && !isCargo;
     document.getElementById('tabPanelFull').hidden = !isFull;
-    document.getElementById('tabPanelSummary').hidden = isFull;
+    document.getElementById('tabPanelSummary').hidden = !isSummary;
+    document.getElementById('tabPanelCargo').hidden = !isCargo;
     document.getElementById('tabBtnFull').classList.toggle('active', isFull);
-    document.getElementById('tabBtnSummary').classList.toggle('active', !isFull);
+    document.getElementById('tabBtnSummary').classList.toggle('active', isSummary);
+    document.getElementById('tabBtnCargo').classList.toggle('active', isCargo);
     document.getElementById('tabBtnFull').setAttribute('aria-selected', String(isFull));
-    document.getElementById('tabBtnSummary').setAttribute('aria-selected', String(!isFull));
+    document.getElementById('tabBtnSummary').setAttribute('aria-selected', String(isSummary));
+    document.getElementById('tabBtnCargo').setAttribute('aria-selected', String(isCargo));
     // The long methodology paragraph only belongs to the Detailed Analysis
-    // view - Executive Summary stays compact so the commercial numbers sit
-    // higher on the screen.
+    // view - Executive Summary/Cargo Intelligence stay compact so the
+    // commercial numbers sit higher on the screen.
     document.getElementById('pageSubtitle').hidden = !isFull;
+    if (isCargo) renderCargoIntelligence();
   }
   document.getElementById('tabBtnFull').addEventListener('click', function(){ setTab('full'); });
   document.getElementById('tabBtnSummary').addEventListener('click', function(){ setTab('summary'); });
+  document.getElementById('tabBtnCargo').addEventListener('click', function(){ setTab('cargo'); });
 
   // ---------- Detailed Analysis: expand/collapse all groups ----------
   function setAllGroups(open){
