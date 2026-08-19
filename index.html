@@ -1693,7 +1693,7 @@
     // FOB olein figure from cpoMYR/usdMyr + totalRbdAdjustment() exactly as
     // before - this field exists purely so a trader can see a directly
     // market-reported price alongside that derived one, not to replace it.
-    rbdOleinFobMarketUSD: 1147.50,
+    rbdOleinFobMarketUSD: 1185.00,
     lang: 'en'
   };
   var state = Object.assign({}, DEFAULTS);
@@ -1816,17 +1816,17 @@
     // exchange-cleared or transaction-level quote.
     rbdOleinFobMarketUSD: {
       product:'RBD Palm Olein',
-      priceBasis:'FOB Malaysian Port (physical, dated price sheet)',
-      source:'MBLion Oleo dated homepage table (mblionoleo.com) — the dated "FOB Malaysian Port" table only, never its undated scrolling ticker',
+      priceBasis:'FOB Malaysia (physical, dated price sheet)',
+      source:'Agropost dated "PHYSICAL MARKET PRICES FOB Malaysia" table (agropost.wordpress.com), 19 Aug 2026 "Palm Oil Prices at Midday" post — Sep’26 contract, RBD Palm Olein $1,185.00/MT selling vs CPO $1,140.00/MT selling (spread $45/MT)',
       sourceType:'Market Report (dated physical price sheet)',
-      observationDate:'13 Aug 2026',
-      contractOrDeliveryMonth:'Not designated (spot/nearest table, no contract month stated by source)',
+      observationDate:'19 Aug 2026',
+      contractOrDeliveryMonth:'September 2026 (Sep’26, as labeled on the source table)',
       confidence:'Medium', status:'Manual', unit:'USD/MT',
-      refreshMethod:'Daily automation, dated MBLion table only, cross-checked against Agropost — scripts/daily-refresh-prompt.txt',
-      crossCheckSource:'Agropost dated closing-price post (agropost.wordpress.com), Aug’26 contract "Selling" price',
-      crossCheckValue:1145.00,
-      crossCheckObservationDate:'14 Aug 2026',
-      crossCheckDeltaUSD:2.50
+      refreshMethod:'Daily automation — freshest of the MBLion/Agropost dated tables selected by observation date, scripts/daily-refresh-prompt.txt (commit 00edf0d)',
+      crossCheckSource:'MBLion Oleo dated homepage table (mblionoleo.com) — the dated "FOB Malaysian Port" table, still showing its 13 Aug 2026 print unchanged as of this run',
+      crossCheckValue:1147.50,
+      crossCheckObservationDate:'13 Aug 2026',
+      crossCheckDeltaUSD:37.50
     }
   };
 
