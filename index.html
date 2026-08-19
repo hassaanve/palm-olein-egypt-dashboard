@@ -1047,6 +1047,20 @@
                  exists purely to prevent that confusion; no value/formula
                  changed. -->
             <span class="mj-stage-note" id="execCard1RefNote" data-i18n="execCard1RefNote" dir="auto">Reference market quote — not used in the current landed-cost calculation.</span>
+            <!-- Day-over-day trend (2026-08-20) - the SAME
+                 computeDayOverDayMovement() basis (modeled FOB olein vs.
+                 the previous MARKET_SNAPSHOTS entry) as the Detailed
+                 Analysis hero chip and the WhatsApp Daily Brief's block
+                 {{3}} - never a second, independently-defined comparison.
+                 Deliberately labeled "Modeled FOB movement", distinct from
+                 this card's own market-reported headline value above,
+                 since the two track different figures (see the FOB price
+                 semantics note above). -->
+            <div class="mj-secondary" id="execCard1Movement">
+              <span class="mj-secondary-label" data-i18n="execCard1MovementLabel">Modeled FOB movement</span>
+              <span class="mj-secondary-value" id="execCard1MovementValue" dir="ltr">—</span>
+              <span class="mj-secondary-meta" id="execCard1MovementMeta" dir="auto">—</span>
+            </div>
             <div class="mj-secondary">
               <span class="mj-secondary-label" data-i18n="execCard1FcpoLabel">FCPO Benchmark</span>
               <span class="mj-secondary-value" id="execCard1FcpoValue" dir="ltr">—</span>
@@ -1111,6 +1125,23 @@
               <span class="mj-market-indication-source" id="execCard2MarketIndicationSource" dir="auto"></span>
               <span class="mj-market-indication-warn" id="execCard2MarketIndicationWarn" dir="auto"></span>
               <div class="mj-market-indication-diff" id="execCard2MarketIndicationDiff" dir="auto"></div>
+            </div>
+            <!-- Buy-Today Expected Cost at Egypt Port (trading-desk
+                 estimate, added 2026-08-20) - DISPLAY ONLY. FOB olein +
+                 DEFAULTS.portArrivalCostUSD via
+                 computeExpectedPortArrivalCost(). Deliberately distinct
+                 from the "If Landed Today" headline above (which still
+                 includes duty/VAT/margin) - never feeds DEFAULTS,
+                 HISTORY, computeLanded()/computeLandedCore(),
+                 forecast/market snapshots, or the recommendation logic. -->
+            <div class="mj-market-indication" id="execCard2PortArrival">
+              <div class="mj-market-indication-head">
+                <span class="mj-market-indication-title" data-i18n="portArrivalHeading">Buy-Today Expected Cost at Egypt Port</span>
+                <span class="evidence-badge" id="execCard2PortArrivalBadge" dir="ltr">—</span>
+              </div>
+              <div class="mj-market-indication-value" dir="ltr"><span id="execCard2PortArrivalValue">—</span><span class="mj-market-indication-unit">USD/MT</span></div>
+              <span class="mj-market-indication-source" id="execCard2PortArrivalSource" dir="auto"></span>
+              <span class="mj-market-indication-warn" id="execCard2PortArrivalWarn" dir="auto"></span>
             </div>
             <details class="mj-why">
               <summary data-i18n="execCardWhyLabel">Source / Why this number?</summary>
@@ -1334,7 +1365,7 @@
       <div class="hero-number" dir="ltr"><span id="heroMarketUSD">—</span><span class="hero-unit">USD / MT</span></div>
       <span class="hero-sub" data-i18n="heroMarketBasis" dir="auto">Modeled FOB Olein — FCPO benchmark + refining spread (not a physical broker quote)</span>
       <div style="margin-top:8px">
-        <span class="delta-chip" id="heroDayChange" dir="ltr"><span class="arrow">—</span><span id="heroDayChangeText">…</span></span>
+        <span class="delta-chip" id="heroDayChange" dir="ltr"><span class="arrow">—</span><span id="heroDayChangeWord"></span><span id="heroDayChangeText">…</span></span>
         <span class="delta-note" id="heroDayChangeNote" dir="auto">…</span>
       </div>
     </div>
@@ -1703,6 +1734,22 @@
     // before - this field exists purely so a trader can see a directly
     // market-reported price alongside that derived one, not to replace it.
     rbdOleinFobMarketUSD: 1185.00,
+    // Buy-Today Expected Cost at Egypt Port (added 2026-08-20) - a
+    // trading-desk internal estimate bundling Malaysia->Egypt port-arrival
+    // costs (freight + port handling + related port-side costs) into one
+    // quick buy-today reference figure. NOT a market-sourced quote - see
+    // DATA_PROVENANCE.portArrivalCostUSD. Deliberately a NEW, SEPARATE
+    // concept from DEFAULTS.freight (unchanged - still the only freight
+    // figure computeLandedCore() reads) and from "Egypt Landed Today"
+    // (computeLandedCore()'s full duty/VAT/margin-loaded output, also
+    // unchanged) - this field is read ONLY by
+    // computeExpectedPortArrivalCost() to produce a separate, clearly
+    // labeled Executive Summary figure. Never read by computeLandedCore(),
+    // computeLanded(), cpoAtWeek(), fxAtWeek(), CURVE, HISTORY, or
+    // FORECAST_SNAPSHOTS. See PROJECT_DECISIONS.md's 2026-08-20 entry:
+    // this reverses the 2026-08-19/20 "skip it, proceed without" decision
+    // now that an explicit human-provided source classification exists.
+    portArrivalCostUSD: 130,
     lang: 'en'
   };
   var state = Object.assign({}, DEFAULTS);
@@ -1836,6 +1883,16 @@
       crossCheckValue:1147.50,
       crossCheckObservationDate:'13 Aug 2026',
       crossCheckDeltaUSD:37.50
+    },
+    // Buy-Today Expected Cost at Egypt Port (added 2026-08-20) - see
+    // DEFAULTS.portArrivalCostUSD comment. Deliberately classified as an
+    // internal estimate, never "Verified"/"Market-Reported" - this is a
+    // trading-desk figure, not an independently sourced quote, and is not
+    // gated by the daily-refresh automation the way freight/FX/CPO are.
+    portArrivalCostUSD: {
+      source:'Trading-desk internal estimate (not an independently sourced market quote) — a bundled Malaysia→Egypt port-arrival cost figure (freight + port handling + related port-side costs) the desk uses for a quick buy-today reference',
+      sourceType:'Internal / Trading-desk estimate', lastUpdated:'2026-08-20', confidence:'Low', status:'Estimated',
+      unit:'USD/MT', refreshMethod:'Not refreshed by automation — static desk assumption, updated only on an explicit human-provided revision'
     }
   };
 
@@ -2048,6 +2105,10 @@
       marketIndicationSourcePrefix:'Trader-reported',
       marketIndicationWarn:'Indicative — VAT and full commercial basis pending confirmation',
       marketIndicationDiffLabel:'Difference vs modeled landed cost',
+      portArrivalHeading:'Buy-Today Expected Cost at Egypt Port',
+      portArrivalBadgeLabel:'Estimated',
+      portArrivalSourcePrefix:'Trading-desk estimate — bundled freight + port-arrival cost',
+      portArrivalWarn:'Internal estimate, not a market-sourced quote — excludes duty, VAT and margin (see "Egypt Landed Today" above for the full cost)',
       execCard3Eyebrow:'12-Week Modeled Outlook',
       execCard3Question:'Where does the canonical forecast expect Egypt landed cost to go from here?',
       execCard3ChangeLabel:'vs. Egypt Today',
@@ -2072,6 +2133,15 @@
       heroMarketBasis:'Modeled FOB Olein — FCPO benchmark + refining spread (not a physical broker quote)',
       heroDayChangeNoBaseline:'No prior observation available for comparison',
       heroDayChangeSincePrefix:'since',
+      // Day-over-day movement trend words (2026-08-20) - the explicit
+      // canonical wording for computeDayOverDayMovement()'s direction
+      // ('up'/'down'/'flat'), used everywhere that specific trend concept
+      // is shown (hero chip, Executive Summary, WhatsApp block {{3}}).
+      // Deliberately separate from execDirectionRising/Stable/Falling
+      // (buildCostChangeNarrative's own, unrelated forecast-relative
+      // wording) - never reused for that different concept.
+      trendWordUp:'Up', trendWordDown:'Down', trendWordStable:'Stable',
+      execCard1MovementLabel:'Modeled FOB movement',
       h2s1:'Cost build-up',
       s1desc:'How the international benchmark becomes today’s modeled commercial landed cost in Egypt. The stage boundary below distinguishes supported import inputs from local margin without inventing missing port charges.',
       costStage1Kicker:'Origin', costStage1:'FOB / origin price', costStage2Kicker:'International', costStage2:'Freight + marine insurance',
@@ -2297,6 +2367,10 @@
       marketIndicationSourcePrefix:'معلومة من تاجر',
       marketIndicationWarn:'استرشادي — ضريبة القيمة المضافة والأساس التجاري الكامل قيد التأكيد',
       marketIndicationDiffLabel:'الفرق مقابل التكلفة الواصلة المحسوبة بالنموذج',
+      portArrivalHeading:'التكلفة المتوقعة عند وصول الميناء المصري (شراء اليوم)',
+      portArrivalBadgeLabel:'تقديري',
+      portArrivalSourcePrefix:'تقدير من مكتب التداول — يشمل الشحن وتكاليف وصول الميناء',
+      portArrivalWarn:'تقدير داخلي وليس سعرًا مرجعيًا من السوق — لا يشمل الرسوم الجمركية وضريبة القيمة المضافة والهامش (راجع "التكلفة الواصلة لمصر اليوم" أعلاه للتكلفة الكاملة)',
       execCard3Eyebrow:'توقع نموذجي لمدة 12 أسبوعًا',
       execCard3Question:'إلى أين تتوقع البيانات الأساسية أن تتجه التكلفة الواصلة لمصر من هنا؟',
       execCard3ChangeLabel:'مقارنةً بمصر اليوم',
@@ -2321,6 +2395,8 @@
       heroMarketBasis:'الأولين تسليم السفينة (نموذجي) — مؤشر FCPO + هامش التكرير (وليس عرض سعر فعلي من وسيط)',
       heroDayChangeNoBaseline:'لا توجد لقطة سابقة متاحة للمقارنة',
       heroDayChangeSincePrefix:'منذ',
+      trendWordUp:'صعود', trendWordDown:'هبوط', trendWordStable:'استقرار',
+      execCard1MovementLabel:'حركة الأولين النموذجي',
       h2s1:'تكوين التكلفة',
       s1desc:'كيف يتحول السعر القياسي الدولي إلى التكلفة التجارية الواصلة المحسوبة اليوم في مصر، مع فصل مدخلات الاستيراد المدعومة عن هامش التوزيع المحلي دون اختلاق رسوم موانئ غير متاحة.',
       costStage1Kicker:'المنشأ', costStage1:'سعر المنشأ / تسليم السفينة', costStage2Kicker:'دولي', costStage2:'الشحن + التأمين البحري',
@@ -3328,6 +3404,82 @@
         },
         {
           targetDate: '2026-11-11',
+          horizonWeeks: 12,
+          fcpoMYR: 4868,
+          estimatedFobUsd: 1242.46,
+          baseLandedUsd: 1385.81,
+          baseLandedEgp: 70122,
+          lowLandedEgp: 69152,
+          highLandedEgp: 73171,
+          status: 'Pending'
+        }
+      ]
+    },
+    {
+      issuedDate: '2026-08-20',
+      modelVersion: 'v1-linear-curve-fx-scenario',
+      sourceSnapshotDate: '2026-08-20',
+      currentFcpoMYR: 4648,
+      currentUsdMyr: 4.0651,
+      currentEgpUsd: 50.72,
+      forecastPoints: [
+        {
+          targetDate: '2026-08-27',
+          horizonWeeks: 1,
+          fcpoMYR: 4665,
+          estimatedFobUsd: 1192.67,
+          baseLandedUsd: 1331.84,
+          baseLandedEgp: 67537,
+          lowLandedEgp: 67460,
+          highLandedEgp: 67782,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-09-03',
+          horizonWeeks: 2,
+          fcpoMYR: 4683,
+          estimatedFobUsd: 1196.94,
+          baseLandedUsd: 1336.47,
+          baseLandedEgp: 67759,
+          lowLandedEgp: 67603,
+          highLandedEgp: 68249,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-09-10',
+          horizonWeeks: 3,
+          fcpoMYR: 4700,
+          estimatedFobUsd: 1201.21,
+          baseLandedUsd: 1341.1,
+          baseLandedEgp: 67980,
+          lowLandedEgp: 67746,
+          highLandedEgp: 68718,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-09-17',
+          horizonWeeks: 4,
+          fcpoMYR: 4718,
+          estimatedFobUsd: 1205.49,
+          baseLandedUsd: 1345.73,
+          baseLandedEgp: 68202,
+          lowLandedEgp: 67888,
+          highLandedEgp: 69189,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-10-15',
+          horizonWeeks: 8,
+          fcpoMYR: 4787,
+          estimatedFobUsd: 1222.58,
+          baseLandedUsd: 1364.27,
+          baseLandedEgp: 69086,
+          lowLandedEgp: 68450,
+          highLandedEgp: 71087,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-11-12',
           horizonWeeks: 12,
           fcpoMYR: 4868,
           estimatedFobUsd: 1242.46,
@@ -4454,6 +4606,159 @@
           ageDays: 6
         }
       }
+    },
+    {
+      schemaVersion: 1,
+      snapshotDate: '2026-08-20',
+      capturedAt: '2026-08-19T23:29:25.899Z',
+      landedFormulaVersion: 'v1-fob-freight-insurance-cif-duty-vat-margin',
+      malaysia: {
+        cpoMYR: 4648,
+        usdMyr: 4.0651,
+        refiningProcessingAdjustment: 15,
+        oleinFractionationPremium: 15,
+        physicalMarketBasisAdjustment: 15,
+        totalRbdAdjustment: 45,
+        estimatedFobOleinUsd: 1188.3913,
+        rbdOleinFobMarketUSD: 1185
+      },
+      fx: {
+        usdMyr: 4.0651,
+        egpUsd: 50.72,
+        usdIdr: 17830
+      },
+      freight: {
+        freight: 36,
+        origin: 'my',
+        transitDays: 35,
+        clearanceDays: 7
+      },
+      importCosts: {
+        insurancePct: 0.75,
+        egyptDutyPct: 1.5,
+        vatOn: false,
+        vatPct: 14,
+        marginPct: 6
+      },
+      outputs: {
+        fobOleinUsd: 1188.3913,
+        originCostUsd: 0,
+        cifUsd: 1233.5742,
+        dutyUsd: 18.5036,
+        vatUsd: 0,
+        marginUsd: 75.1247,
+        landedUSD: 1327.2025,
+        landedEGP: 67315.71
+      },
+      provenance: {
+        cpoMYR: {
+          source: 'agropost.wordpress.com dated "19 Aug 2026 – Palm Oil Prices at Midday" table (CPO FUTURES PRICES AT MDEX), Sep’26 contract',
+          sourceType: 'Market Report',
+          lastUpdated: '2026-08-19',
+          confidence: 'Medium',
+          status: 'Manual',
+          unit: 'MYR/MT',
+          refreshMethod: 'Daily AI refresh',
+          contractCode: 'Not confirmed by source (referred to only as "Sep’26")',
+          contractMonth: 'September 2026',
+          priceType: 'Last Traded (agropost "Last" column, midday session; not confirmed as official BMD settlement)',
+          observationDate: '19 Aug 2026',
+          contractSelectionRule: 'Nearest liquid FCPO contract (currently Sep’26, unchanged from previous run)'
+        },
+        usdMyr: {
+          source: 'Bank Negara Malaysia — KL USD/MYR Reference Rate (FMIP, financialmarkets.bnm.gov.my), 4.0651 for 19 Aug 2026',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-08-19',
+          confidence: 'High',
+          status: 'Manual',
+          unit: 'MYR/USD',
+          refreshMethod: 'Daily AI refresh',
+          observationDate: '19 Aug 2026'
+        },
+        egpUsd: {
+          source: 'BankLive-reported Central Bank of Egypt official USD/EGP buy/sell rates (50.6483 / 50.7877), 19 Aug 2026',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-08-19',
+          confidence: 'High',
+          status: 'Manual',
+          unit: 'EGP/USD',
+          refreshMethod: 'Daily AI refresh'
+        },
+        freight: {
+          source: 'No Egypt-route source documented; nearest §09 citation (MPOB West Malaysia–Sumatra rates) is a different route',
+          sourceType: 'Not documented (route mismatch)',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily automation, only on Egypt-route-specific evidence, else left unchanged — scripts/daily-refresh-prompt.txt'
+        },
+        refiningSpread: {
+          source: 'agropost.wordpress.com dated "19 Aug 2026 – Palm Oil Prices at Midday" table (PHYSICAL MARKET PRICES FOB Malaysia), Sep’26 contract (RBD Palm Olein $1,185.00/MT selling vs CPO $1,140.00/MT selling); mblionoleo.com still shows its earlier dated table (13 Aug 2026, RBD Palm Olein $1,147.50/MT vs CPO $1,109.00/MT, spread $38.50) with no fresher print available this run',
+          sourceType: 'Market Report',
+          lastUpdated: '2026-08-19',
+          confidence: 'Medium',
+          status: 'Derived',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily AI refresh'
+        },
+        insurancePct: {
+          source: 'Not documented',
+          sourceType: 'Not documented',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Hardcoded',
+          unit: '%',
+          refreshMethod: 'Not refreshed by automation (static assumption)'
+        },
+        egyptDutyPct: {
+          source: 'WTO Tariff & Trade Data — Egypt member profile (§09 sources)',
+          sourceType: 'Regulatory / trade data',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: '%',
+          refreshMethod: 'Re-checked only on evidence of change — scripts/daily-refresh-prompt.txt'
+        },
+        rbdOleinFobMarketUSD: {
+          product: 'RBD Palm Olein',
+          priceBasis: 'FOB Malaysia (physical, dated price sheet)',
+          source: 'Agropost dated "PHYSICAL MARKET PRICES FOB Malaysia" table (agropost.wordpress.com), 19 Aug 2026 "Palm Oil Prices at Midday" post — Sep’26 contract, RBD Palm Olein $1,185.00/MT selling vs CPO $1,140.00/MT selling (spread $45/MT)',
+          sourceType: 'Market Report (dated physical price sheet)',
+          observationDate: '19 Aug 2026',
+          contractOrDeliveryMonth: 'September 2026 (Sep’26, as labeled on the source table)',
+          confidence: 'Medium',
+          status: 'Manual',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily automation — freshest of the MBLion/Agropost dated tables selected by observation date, scripts/daily-refresh-prompt.txt (commit 00edf0d)',
+          crossCheckSource: 'MBLion Oleo dated homepage table (mblionoleo.com) — the dated "FOB Malaysian Port" table, still showing its 13 Aug 2026 print unchanged as of this run',
+          crossCheckValue: 1147.5,
+          crossCheckObservationDate: '13 Aug 2026',
+          crossCheckDeltaUSD: 37.5
+        }
+      },
+      evidence: {
+        cpoMYR: {
+          tier: 'Estimated',
+          reason: 'Provenance is insufficient for a stronger tier'
+        },
+        usdMyr: {
+          tier: 'Verified',
+          reason: 'High-confidence, directly sourced figure'
+        },
+        egpUsd: {
+          tier: 'Verified',
+          reason: 'High-confidence, directly sourced figure'
+        },
+        freight: {
+          tier: 'Low Confidence',
+          reason: 'Source confidence is recorded as Low'
+        },
+        rbdOleinFobMarketUSD: {
+          tier: 'Low Confidence',
+          reason: 'Disagrees with MBLion Oleo dated homepage table (mblionoleo.com) — the dated "FOB Malaysian Port" table, still showing its 13 Aug 2026 print unchanged as of this run by 37.5 USD/MT, beyond the 20 USD/MT tolerance - not silently treated as cross-checked'
+        }
+      }
     }
   ];
 
@@ -4632,6 +4937,22 @@
     // blocks Indonesia before this legacy arithmetic can be treated as an
     // Indonesia evidence chain.
     return computeLandedCore(cpoMYR / state.usdMyr, state.origin === 'id', egpUsdRate);
+  }
+
+  // ---------- Buy-Today Expected Cost at Egypt Port (trading-desk
+  // estimate, added 2026-08-20) ----------
+  // Deliberately SEPARATE from computeLandedCore()/computeLanded() above -
+  // "Egypt Landed Today" keeps meaning exactly what it always has (FOB +
+  // freight + insurance + duty + VAT + margin, all unchanged). This
+  // function instead answers a different trader question: "if I buy
+  // today, what does it roughly cost to get the cargo to an Egyptian
+  // port" - FOB olein + DEFAULTS.portArrivalCostUSD, a bundled
+  // trading-desk estimate (freight + port handling + related costs),
+  // BEFORE any duty/VAT/margin. Never called by computeLandedCore(),
+  // computeLanded(), cpoAtWeek(), fxAtWeek(), or any forecast/snapshot
+  // function - display-only, exactly like rbdOleinFobMarketUSD.
+  function computeExpectedPortArrivalCost(fobOleinUSD, portArrivalCostUSD){
+    return { fobOleinUSD: fobOleinUSD, portArrivalCostUSD: portArrivalCostUSD, expectedPortArrivalUSD: fobOleinUSD + portArrivalCostUSD };
   }
 
   // ---------- Price Journey (Market Learning Engine, Phase A Slice 2) ----------
@@ -5423,26 +5744,53 @@
   // from the canonical data/market-snapshots.json) - never the wall clock,
   // never a forecast point. See computeDayOverDayMovement()'s own header
   // comment for the full rationale. ----------
-  function renderMarketPriceAndMovement(base){
-    document.getElementById('heroMarketUSD').textContent = fmt(base.fobOlein, 2);
+  // Canonical translation-key lookup for computeDayOverDayMovement()'s
+  // direction ('up'/'down'/'flat') - the single source of truth for the
+  // day-over-day movement trend word (English Up/Down/Stable, Arabic
+  // صعود/هبوط/استقرار - see T.en/T.ar's trendWordUp/Down/Stable). Reused by
+  // the hero chip and Executive Summary Card 1 below, and mirrored
+  // (server-side, no shared runtime) by
+  // scripts/lib/whatsapp-template-v2-params.js's own trendDirectionWord()
+  // for WhatsApp block {{3}}. Deliberately unrelated to
+  // execDirectionRising/Stable/Falling, which is buildCostChangeNarrative's
+  // own separate forecast-relative wording - never reused for that.
+  function trendWordKey(direction){
+    if (direction === 'up') return 'trendWordUp';
+    if (direction === 'down') return 'trendWordDown';
+    return 'trendWordStable';
+  }
 
-    var chip = document.getElementById('heroDayChange');
-    var arrow = chip.querySelector('.arrow');
-    var txt = document.getElementById('heroDayChangeText');
-    var note = document.getElementById('heroDayChangeNote');
-    chip.classList.remove('up','down');
-
+  // Computes the SAME day-over-day movement basis used everywhere else
+  // (modeled FOB olein vs. the previous MARKET_SNAPSHOTS entry) - never a
+  // second, independently-defined comparison. Shared by
+  // renderMarketPriceAndMovement() (hero chip) and renderCard1MarketToday()
+  // (Executive Summary) so the two consumers can never drift onto
+  // different baselines.
+  function computeCurrentDayOverDayMovement(fobOleinUSD){
     var snaps = (typeof MARKET_SNAPSHOTS !== 'undefined' && MARKET_SNAPSHOTS) || [];
     var todaySnap = snaps.length ? snaps[snaps.length-1] : null;
     var prevSnap = snaps.length > 1 ? snaps[snaps.length-2] : null;
     var todayDate = todaySnap ? todaySnap.snapshotDate : null;
     var prevValue = prevSnap ? prevSnap.malaysia.estimatedFobOleinUsd : null;
     var prevDate = prevSnap ? prevSnap.snapshotDate : null;
+    return computeDayOverDayMovement(fobOleinUSD, todayDate, prevValue, prevDate);
+  }
 
-    var movement = computeDayOverDayMovement(base.fobOlein, todayDate, prevValue, prevDate);
+  function renderMarketPriceAndMovement(base){
+    document.getElementById('heroMarketUSD').textContent = fmt(base.fobOlein, 2);
+
+    var chip = document.getElementById('heroDayChange');
+    var arrow = chip.querySelector('.arrow');
+    var word = document.getElementById('heroDayChangeWord');
+    var txt = document.getElementById('heroDayChangeText');
+    var note = document.getElementById('heroDayChangeNote');
+    chip.classList.remove('up','down');
+
+    var movement = computeCurrentDayOverDayMovement(base.fobOlein);
 
     if (!movement.hasBaseline){
       arrow.textContent = '—';
+      word.textContent = '';
       txt.textContent = '—';
       note.textContent = t('heroDayChangeNoBaseline');
       return;
@@ -5451,6 +5799,7 @@
     if (movement.direction === 'up'){ chip.classList.add('up'); arrow.textContent = '▲'; }
     else if (movement.direction === 'down'){ chip.classList.add('down'); arrow.textContent = '▼'; }
     else { arrow.textContent = '—'; }
+    word.textContent = t(trendWordKey(movement.direction)) + ' ';
 
     var sign = movement.deltaAbs >= 0 ? '+' : '';
     txt.textContent = sign + fmt(movement.deltaAbs,2) + ' USD (' + sign + fmt(movement.deltaPct,1) + '%)';
@@ -6239,7 +6588,7 @@
   }
 
   // ---------- Card 1: Malaysia Market Today ----------
-  function renderCard1MarketToday(){
+  function renderCard1MarketToday(base){
     var value = state.rbdOleinFobMarketUSD;
     var prov = DATA_PROVENANCE.rbdOleinFobMarketUSD;
     var tierInfo = getEvidenceTier('rbdOleinFobMarketUSD');
@@ -6257,6 +6606,21 @@
       noteEl.textContent = (isStale ? t('execCard1StaleLabel') : t('execCard1AsOf')) + ' —';
     }
     noteEl.classList.toggle('mj-stage-note--warn', isStale);
+
+    // Day-over-day trend - same computeCurrentDayOverDayMovement() basis as
+    // the Detailed Analysis hero chip (see that function's own comment).
+    var movementValueEl = document.getElementById('execCard1MovementValue');
+    var movementMetaEl = document.getElementById('execCard1MovementMeta');
+    var movement = computeCurrentDayOverDayMovement(base.fobOlein);
+    if (!movement.hasBaseline){
+      movementValueEl.textContent = '—';
+      movementMetaEl.textContent = t('heroDayChangeNoBaseline');
+    } else {
+      var mSign = movement.deltaAbs >= 0 ? '+' : '';
+      movementValueEl.textContent = t(trendWordKey(movement.direction)) + ' ' +
+        mSign + fmt(movement.deltaAbs,2) + ' USD (' + mSign + fmt(movement.deltaPct,1) + '%)';
+      movementMetaEl.textContent = t('heroDayChangeSincePrefix') + ' ' + movement.previousDate;
+    }
 
     document.getElementById('execCard1FcpoValue').textContent = fmt(state.cpoMYR) + ' MYR/MT';
     var cpoProv = DATA_PROVENANCE.cpoMYR;
@@ -6581,7 +6945,7 @@
   // scenario's own already-computed result - no landed-cost formula is
   // duplicated or reimplemented here.
   function renderExecutiveSummary(base){
-    renderCard1MarketToday();
+    renderCard1MarketToday(base);
 
     // Data quality: worst confidence among the critical pricing inputs -
     // reuses the same High/Medium/Low classification already used by
@@ -6706,6 +7070,18 @@
         miDiffEl.appendChild(miDiffBdi);
       }
     }
+
+    // ---- Card 2 addendum: Buy-Today Expected Cost at Egypt Port
+    // (trading-desk estimate) - computeExpectedPortArrivalCost() only,
+    // never computeLandedCore()/computeLanded(). Always shown (unlike the
+    // Market Indication block above, which depends on optional
+    // hand-curated data) since DEFAULTS.portArrivalCostUSD is always
+    // present.
+    var portArrival = computeExpectedPortArrivalCost(base.fobOlein, state.portArrivalCostUSD);
+    document.getElementById('execCard2PortArrivalValue').textContent = fmt(portArrival.expectedPortArrivalUSD);
+    renderEvidenceBadge('execCard2PortArrivalBadge', 'ev-estimated', '≈', 'portArrivalBadgeLabel', t('portArrivalWarn'));
+    document.getElementById('execCard2PortArrivalSource').textContent = t('portArrivalSourcePrefix');
+    document.getElementById('execCard2PortArrivalWarn').textContent = t('portArrivalWarn');
 
     // ---- Card 7-Day & Card 3 (12-Week): explicit horizonWeeks lookup,
     // never forecastPoints[forecastPoints.length-1] or any other array-
