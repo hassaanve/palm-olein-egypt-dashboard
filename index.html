@@ -1330,6 +1330,15 @@
 
   <section aria-label="Current estimate" class="hero">
     <div class="hero-figure">
+      <span class="hero-label" data-i18n="heroMarketLabel">Market / Exchange Price, today</span>
+      <div class="hero-number" dir="ltr"><span id="heroMarketUSD">—</span><span class="hero-unit">USD / MT</span></div>
+      <span class="hero-sub" data-i18n="heroMarketBasis" dir="auto">Modeled FOB Olein — FCPO benchmark + refining spread (not a physical broker quote)</span>
+      <div style="margin-top:8px">
+        <span class="delta-chip" id="heroDayChange" dir="ltr"><span class="arrow">—</span><span id="heroDayChangeText">…</span></span>
+        <span class="delta-note" id="heroDayChangeNote" dir="auto">…</span>
+      </div>
+    </div>
+    <div class="hero-figure">
       <span class="hero-label" data-i18n="heroLabel">Estimated Egypt Landed Cost, today</span>
       <div class="hero-number" dir="ltr"><span id="heroEGP">—</span><span class="hero-unit">EGP / MT</span></div>
       <div class="hero-sub" dir="ltr"><span id="heroUSD">—</span> USD/MT&nbsp;&nbsp;·&nbsp;&nbsp;<span id="heroKG">—</span> EGP/kg</div>
@@ -2059,6 +2068,10 @@
       heroDeltaNote:'Base-case path over the next ~12 weeks, from the forecast below',
       heroMethodNote:'This is a modeled commercial landed-cost estimate, not a verified Egyptian local-market quotation. Its FOB olein component is derived from the FCPO benchmark plus the configurable RBD adjustment.',
       heroDeltaSuffix:'over ~12 weeks (base case)',
+      heroMarketLabel:'Market / Exchange Price, today',
+      heroMarketBasis:'Modeled FOB Olein — FCPO benchmark + refining spread (not a physical broker quote)',
+      heroDayChangeNoBaseline:'No prior observation available for comparison',
+      heroDayChangeSincePrefix:'since',
       h2s1:'Cost build-up',
       s1desc:'How the international benchmark becomes today’s modeled commercial landed cost in Egypt. The stage boundary below distinguishes supported import inputs from local margin without inventing missing port charges.',
       costStage1Kicker:'Origin', costStage1:'FOB / origin price', costStage2Kicker:'International', costStage2:'Freight + marine insurance',
@@ -2304,6 +2317,10 @@
       heroDeltaNote:'المسار الأساسي على مدى نحو 12 أسبوعًا القادمة، من التوقعات أدناه',
       heroMethodNote:'هذه تكلفة تجارية واصلة محسوبة وليست سعرًا محليًا مصريًا موثقًا. يُشتق مكوّن الأولين تسليم السفينة من مؤشر FCPO مضافًا إليه تعديل RBD القابل للضبط.',
       heroDeltaSuffix:'خلال نحو 12 أسبوعًا (السيناريو الأساسي)',
+      heroMarketLabel:'سعر السوق / البورصة اليوم',
+      heroMarketBasis:'الأولين تسليم السفينة (نموذجي) — مؤشر FCPO + هامش التكرير (وليس عرض سعر فعلي من وسيط)',
+      heroDayChangeNoBaseline:'لا توجد لقطة سابقة متاحة للمقارنة',
+      heroDayChangeSincePrefix:'منذ',
       h2s1:'تكوين التكلفة',
       s1desc:'كيف يتحول السعر القياسي الدولي إلى التكلفة التجارية الواصلة المحسوبة اليوم في مصر، مع فصل مدخلات الاستيراد المدعومة عن هامش التوزيع المحلي دون اختلاق رسوم موانئ غير متاحة.',
       costStage1Kicker:'المنشأ', costStage1:'سعر المنشأ / تسليم السفينة', costStage2Kicker:'دولي', costStage2:'الشحن + التأمين البحري',
@@ -4888,6 +4905,34 @@
     return { hasPoint:true, isFlat:isFlat, changePct:changePct, changeRounded:changeRounded, driver:driver, fcpoImpact:fcpoImpact, fxImpact:fxImpact, outlookFcpo:outlookFcpo, outlookFx:outlookFx };
   }
 
+  // ---------- Day-over-day historical movement (صعود/هبوط) ----------
+  // Distinct on purpose from buildCostChangeNarrative() above: that function
+  // compares TODAY against a FORECAST point ("we expect the price to move")
+  // - this function compares TODAY against the PREVIOUS actual observed
+  // value ("the price actually moved"). Never confuse the two callers; never
+  // feed a forecast value into this function or an actual historical value
+  // into buildCostChangeNarrative(). A pure function of its four explicit
+  // inputs only - no clock read, no fabricated baseline. `previousValue`/
+  // `previousDate` must be the caller's own choice of "the most recent
+  // observation strictly before currentDate" - this function does not
+  // search a dataset itself, so it can never silently pick an ambiguous or
+  // wrong baseline; a missing baseline must be passed as null/undefined,
+  // never as 0 or a fabricated number.
+  function computeDayOverDayMovement(currentValue, currentDate, previousValue, previousDate){
+    if (previousValue === null || previousValue === undefined || !previousDate){
+      return { hasBaseline:false, direction:null, deltaAbs:0, deltaPct:0, previousDate:null, daysSincePrevious:null };
+    }
+    var deltaAbs = currentValue - previousValue;
+    var deltaPct = previousValue !== 0 ? (deltaAbs / previousValue * 100) : 0;
+    var direction = deltaAbs > 0 ? 'up' : (deltaAbs < 0 ? 'down' : 'flat');
+    var daysSincePrevious = null;
+    if (currentDate && previousDate){
+      var msPerDay = 24*60*60*1000;
+      daysSincePrevious = Math.round((new Date(currentDate+'T00:00:00Z').getTime() - new Date(previousDate+'T00:00:00Z').getTime()) / msPerDay);
+    }
+    return { hasBaseline:true, direction:direction, deltaAbs:deltaAbs, deltaPct:deltaPct, previousDate:previousDate, daysSincePrevious:daysSincePrevious };
+  }
+
   // ---------- Assumptions form ----------
   var FIELDS = [
     { key:'cpoMYR', tKey:'fldCpo', unit:'MYR/MT', step:1 },
@@ -5370,6 +5415,48 @@
     txt.textContent = (pct>=0?'+':'') + fmt(pct,1) + '% ' + t('heroDeltaSuffix');
   }
 
+  // ---------- Market price + historical day-over-day movement (صعود/هبوط)
+  // ---------- Deliberately separate from renderForecastChart's heroDelta
+  // chip above (forecast-relative, "we expect"): this chip is historical
+  // ("the price actually moved since the previous observation"). Baseline
+  // is the PREVIOUS entry in the embedded MARKET_SNAPSHOTS mirror (synced
+  // from the canonical data/market-snapshots.json) - never the wall clock,
+  // never a forecast point. See computeDayOverDayMovement()'s own header
+  // comment for the full rationale. ----------
+  function renderMarketPriceAndMovement(base){
+    document.getElementById('heroMarketUSD').textContent = fmt(base.fobOlein, 2);
+
+    var chip = document.getElementById('heroDayChange');
+    var arrow = chip.querySelector('.arrow');
+    var txt = document.getElementById('heroDayChangeText');
+    var note = document.getElementById('heroDayChangeNote');
+    chip.classList.remove('up','down');
+
+    var snaps = (typeof MARKET_SNAPSHOTS !== 'undefined' && MARKET_SNAPSHOTS) || [];
+    var todaySnap = snaps.length ? snaps[snaps.length-1] : null;
+    var prevSnap = snaps.length > 1 ? snaps[snaps.length-2] : null;
+    var todayDate = todaySnap ? todaySnap.snapshotDate : null;
+    var prevValue = prevSnap ? prevSnap.malaysia.estimatedFobOleinUsd : null;
+    var prevDate = prevSnap ? prevSnap.snapshotDate : null;
+
+    var movement = computeDayOverDayMovement(base.fobOlein, todayDate, prevValue, prevDate);
+
+    if (!movement.hasBaseline){
+      arrow.textContent = '—';
+      txt.textContent = '—';
+      note.textContent = t('heroDayChangeNoBaseline');
+      return;
+    }
+
+    if (movement.direction === 'up'){ chip.classList.add('up'); arrow.textContent = '▲'; }
+    else if (movement.direction === 'down'){ chip.classList.add('down'); arrow.textContent = '▼'; }
+    else { arrow.textContent = '—'; }
+
+    var sign = movement.deltaAbs >= 0 ? '+' : '';
+    txt.textContent = sign + fmt(movement.deltaAbs,2) + ' USD (' + sign + fmt(movement.deltaPct,1) + '%)';
+    note.textContent = t('heroDayChangeSincePrefix') + ' ' + movement.previousDate;
+  }
+
   // ---------- Egypt FX Bank Monitor (§07, INFORMATIONAL ONLY) ----------
   // Pure functions - read EGYPT_FX_BANKS/EGYPT_BANK_REGISTRY only, never
   // read or write state.egpUsd/DEFAULTS/DATA_PROVENANCE, never called by
@@ -5485,6 +5572,7 @@
     document.getElementById('heroUSD').textContent = fmt(base.landedUSD);
     document.getElementById('heroKG').textContent = fmt(base.landedEGP/1000, 2);
 
+    renderMarketPriceAndMovement(base);
     renderBuildUp(base);
 
     var curvePoints = CURVE.map(function(c){
