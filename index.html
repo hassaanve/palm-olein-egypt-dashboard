@@ -2291,6 +2291,8 @@
   // Daily Report market-price authority after this bridge is loaded.
   var RBD_OLEIN_CANONICAL_SNAPSHOT = null;
   var MARKET_BOARD_OBSERVATIONS = [];
+  var PRODUCTION_SNAPSHOT = null;
+  var PRODUCTION_FORECAST_SNAPSHOT = null;
   var RBD_OLEIN_CANONICAL_STATUS = { status:'UNAVAILABLE', detail:'No validated canonical market snapshot loaded' };
   var canonicalHydrationAttempted = false;
   var feature003ApplicationReady = false;
@@ -2298,6 +2300,8 @@
     feature003ApplicationReady = canonicalHydrationAttempted === true;
     window.feature003ApplicationReady = feature003ApplicationReady;
     document.documentElement.setAttribute('data-feature003-ready', feature003ApplicationReady ? 'true' : 'false');
+    document.documentElement.setAttribute('data-feature003-snapshot-ready', canonicalSnapshotIsValid(RBD_OLEIN_CANONICAL_SNAPSHOT) ? 'true' : 'false');
+    if (PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.snapshotId) document.documentElement.setAttribute('data-feature003-snapshot-id', PRODUCTION_SNAPSHOT.snapshotId);
     if (document.body) document.body.setAttribute('data-feature003-ready', feature003ApplicationReady ? 'true' : 'false');
     if (feature003ApplicationReady && new URLSearchParams(window.location.search).has('feature003-overflow-test')) {
       var selectors = ['.masthead','.tab-bar','#tabPanelDaily','.dr-head','#drCardMarket','#drCardPort','#drCardOutlook','#drMarketBoardMobile','#drNotesCard'];
@@ -2305,6 +2309,17 @@
       selectors.forEach(function(selector){ var el = document.querySelector(selector), rect = el && el.getBoundingClientRect(); boxes[selector] = rect ? { left:rect.left, right:rect.right, width:rect.width } : null; });
       document.documentElement.setAttribute('data-feature003-overflow-metrics', JSON.stringify({ clientWidth:document.documentElement.clientWidth, scrollWidth:document.documentElement.scrollWidth, boxes:boxes, marketMobile:!!document.querySelector('#drMarketBoardMobile .dr-board-mobile-card'), marketTableHidden:window.getComputedStyle(document.querySelector('.dr-market-board-table')).display === 'none', navScrollWidth:document.querySelector('.tab-bar').scrollWidth, navClientWidth:document.querySelector('.tab-bar').clientWidth }));
     }
+  }
+
+  function applyProductionSnapshot(snapshot){
+    if (!snapshot || snapshot.schemaVersion !== 1 || !canonicalSnapshotIsValid(snapshot.rbd) || !snapshot.snapshotId || !snapshot.forecast || !snapshot.forecast.snapshot) return false;
+    RBD_OLEIN_CANONICAL_SNAPSHOT = snapshot.rbd;
+    PRODUCTION_SNAPSHOT = snapshot;
+    PRODUCTION_FORECAST_SNAPSHOT = snapshot.forecast.snapshot;
+    MARKET_BOARD_OBSERVATIONS = Object.keys(snapshot.marketBoard || {}).map(function(key){ return snapshot.marketBoard[key]; });
+    RBD_OLEIN_CANONICAL_STATUS = { status:'READY', detail:null, snapshotId:snapshot.snapshotId };
+    state.rbdOleinFobMarketUSD = snapshot.rbd.canonicalPriceUSDPerMT;
+    return true;
   }
 
   // Product → Origin → Evidence Chain. Only RBD Palm Olein is active; no
@@ -7587,6 +7602,7 @@
   }
 
   function latestForecastSnapshot(){
+    if (PRODUCTION_FORECAST_SNAPSHOT) return PRODUCTION_FORECAST_SNAPSHOT;
     return FORECAST_SNAPSHOTS.length ? FORECAST_SNAPSHOTS[FORECAST_SNAPSHOTS.length - 1] : null;
   }
 
@@ -8202,7 +8218,22 @@
   }
   function loadCanonicalMarketState(){
     if (!window.fetch || window.location.protocol === 'file:') { canonicalHydrationAttempted = true; RBD_OLEIN_CANONICAL_STATUS = { status:'UNAVAILABLE', detail:'Refresh service requires the local integration server' }; renderAll(); return; }
-    Promise.all([window.fetch('/api/rbd-olein/canonical?feature003=' + Date.now(), { cache:'no-store' }).then(function(response){ if (!response.ok) throw new Error('canonical snapshot unavailable'); return response.json(); }), window.fetch('/api/market-board/observations?feature003=' + Date.now(), { cache:'no-store' }).then(function(response){ return response.ok ? response.json() : { records: [] }; })]).then(function(payload){
+    // Production is a static GitHub Pages artifact. The public snapshot is
+    // the primary runtime contract; the local API remains a development
+    // integration seam only. No browser-side credential or GitHub token is
+    // ever used. A missing/invalid public artifact fails closed rather than
+    // falling back to DEFAULTS/current-price values.
+    window.fetch('feature003-production-snapshot.json?feature003=' + Date.now(), { cache:'no-store' }).then(function(response){
+      if (!response.ok) throw new Error('production snapshot unavailable');
+      return response.json();
+    }).then(function(snapshot){
+      if (!applyProductionSnapshot(snapshot)) throw new Error('production snapshot failed the consumer gate');
+      canonicalHydrationAttempted = true; renderAll();
+    }).catch(function(productionError){
+      // Local development keeps its existing API path when the checked-out
+      // snapshot artifact has not yet been generated. This branch is never a
+      // public fallback to embedded financial defaults.
+      Promise.all([window.fetch('/api/rbd-olein/canonical?feature003=' + Date.now(), { cache:'no-store' }).then(function(response){ if (!response.ok) throw new Error('canonical snapshot unavailable'); return response.json(); }), window.fetch('/api/market-board/observations?feature003=' + Date.now(), { cache:'no-store' }).then(function(response){ return response.ok ? response.json() : { records: [] }; })]).then(function(payload){
       var dataset = payload[0], boardDataset = payload[1]; MARKET_BOARD_OBSERVATIONS = boardDataset && Array.isArray(boardDataset.records) ? boardDataset.records : [];
       var records = dataset && Array.isArray(dataset.records) ? dataset.records : [], latest = null, i;
       records.forEach(function (candidate) {
@@ -8213,11 +8244,12 @@
       RBD_OLEIN_CANONICAL_STATUS = { status: canonicalSnapshotIsValid(latest) ? 'READY' : 'STALE_OR_INVALID', detail: canonicalSnapshotIsValid(latest) ? null : 'snapshot failed the consumer gate' };
       if (canonicalSnapshotIsValid(latest)) state.rbdOleinFobMarketUSD = latest.canonicalPriceUSDPerMT;
       canonicalHydrationAttempted = true; renderAll();
-    }).catch(function(error){ canonicalHydrationAttempted = true; RBD_OLEIN_CANONICAL_STATUS = { status:'UNAVAILABLE', detail:error.message }; renderAll(); });
+      }).catch(function(error){ canonicalHydrationAttempted = true; RBD_OLEIN_CANONICAL_STATUS = { status:'UNAVAILABLE', detail:productionError.message + '; ' + error.message }; renderAll(); });
+    });
   }
   function runRealMarketRefresh(){
     var button = document.getElementById('drRefreshBtn'), hint = document.getElementById('drRefreshHint');
-    if (!window.fetch || window.location.protocol === 'file:'){ hint.textContent = t('drRefreshUnavailable'); return; }
+    if (!window.fetch || window.location.protocol === 'file:' || /github\.io$/i.test(window.location.hostname)){ hint.textContent = t('drRefreshUnavailable'); return; }
     button.disabled = true; hint.textContent = t('drRefreshLoading');
     window.fetch('/api/rbd-olein/refresh', { method:'POST', headers:{ 'Content-Type':'application/json' }, cache:'no-store' }).then(function(response){ return response.json().then(function(body){ return { ok:response.ok, body:body }; }); }).then(function(result){
       if (!result.ok || !canonicalSnapshotIsValid(result.body.canonicalSnapshot)) throw new Error(result.body && result.body.status ? result.body.status : 'refresh validation failed');
@@ -8340,7 +8372,7 @@
     // explicit horizonWeeks lookup, never an array-position assumption) -
     // no forecast is recomputed here, only re-presented with a USD
     // equivalent, a confidence score, and the mandated color rule added.
-    var latestForecast = latestForecastSnapshot();
+    var latestForecast = canonicalSnapshotIsValid(RBD_OLEIN_CANONICAL_SNAPSHOT) ? latestForecastSnapshot() : null;
     var forecastPointsList = latestForecast && latestForecast.forecastPoints ? latestForecast.forecastPoints : [];
     var point7Day = findForecastPointByHorizon(forecastPointsList, 1);
     var worstConfidenceForConfidenceScore = computeCriticalFieldsWorstConfidence();
@@ -8594,7 +8626,7 @@
     // last in HORIZONS_WEEKS" (week 12 today) with no on-screen horizon
     // label. Both cards render through the same renderModeledOutlookCard()
     // helper so their wording/rounding can never drift apart.
-    var latestForecast = latestForecastSnapshot();
+    var latestForecast = canonicalSnapshotIsValid(RBD_OLEIN_CANONICAL_SNAPSHOT) ? latestForecastSnapshot() : null;
     var forecastPoints = latestForecast && latestForecast.forecastPoints ? latestForecast.forecastPoints : [];
     var point7Day = findForecastPointByHorizon(forecastPoints, 1);
     var point12Week = findForecastPointByHorizon(forecastPoints, 12);
