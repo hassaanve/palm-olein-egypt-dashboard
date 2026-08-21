@@ -18,6 +18,15 @@
     --sea-tint:#0090A833;
     --bad:#C63C3C;
     --bad-tint:#C63C3C1A;
+    /* Daily Report (التقرير اليومي) direction colors - deliberately NEW,
+       dedicated tokens, never aliased to --bad/--sea above (which are
+       Executive Summary's own legacy, protected direction palette). This is
+       the user's mandated, non-conventional mapping - UP=RED, DOWN=BLUE,
+       STABLE=GREEN - and applies everywhere in .daily-report, including
+       chart strokes/fills, never a charting-library default. */
+    --dr-up:#C6303C; --dr-up-tint:#C6303C1A;
+    --dr-down:#1D63C4; --dr-down-tint:#1D63C41A;
+    --dr-stable:#128A55; --dr-stable-tint:#128A551A;
     /* Evidence-quality color system (Stage 3B) - deliberately separate hues
        from --sea/--bad above, which are reserved for price-direction (up/down)
        so the two visual languages never collide on the same figure. */
@@ -60,6 +69,15 @@
     --exec-red:#FF6B6B; --exec-red-tint:#FF6B6B29;
     --exec-good:#39D6C4;
     --exec-shadow:0 1px 2px rgba(3,7,15,.5), 0 14px 32px rgba(3,7,15,.35);
+    /* Daily Report (التقرير اليومي) dark-card glows (2026-08-20 redesign) -
+       fixed, non-theme-variant, same convention as --exec-* above (the
+       Daily Report's 3 cards are always the dark trading-terminal
+       surface, regardless of the page's own light/dark theme toggle).
+       Card 3's glow uses --dr-up/--dr-down/--dr-stable directly (already
+       defined above) - these two are only for Card 1/2, which aren't
+       direction-coded. */
+    --dr-glow-blue:#4C8DFF40;
+    --dr-glow-amber:#E8B84B40;
   }
   @media (prefers-color-scheme: dark){
     :root{
@@ -79,6 +97,9 @@
       --sea-tint:#0DA07C33;
       --bad:#E8555A;
       --bad-tint:#E8555A26;
+      --dr-up:#FF5D6C; --dr-up-tint:#FF5D6C26;
+      --dr-down:#5B9CFF; --dr-down-tint:#5B9CFF26;
+      --dr-stable:#3FC488; --dr-stable-tint:#3FC48826;
       --ev-green:#3FC488; --ev-green-tint:#3FC48826;
       --ev-teal:#3FC3DA; --ev-teal-tint:#3FC3DA26;
       --ev-amber:#E3B341; --ev-amber-tint:#E3B34126;
@@ -97,6 +118,7 @@
     --line:#23334C; --line-soft:#1A2A40;
     --accent:#4C8DFF; --accent-strong:#7CAEFF; --accent-tint:#4C8DFF26; --accent-tint-2:#4C8DFF14;
     --sea:#0DA07C; --sea-tint:#0DA07C33; --bad:#E8555A; --bad-tint:#E8555A26;
+    --dr-up:#FF5D6C; --dr-up-tint:#FF5D6C26; --dr-down:#5B9CFF; --dr-down-tint:#5B9CFF26; --dr-stable:#3FC488; --dr-stable-tint:#3FC48826;
     --ev-green:#3FC488; --ev-green-tint:#3FC48826;
     --ev-teal:#3FC3DA; --ev-teal-tint:#3FC3DA26;
     --ev-amber:#E3B341; --ev-amber-tint:#E3B34126;
@@ -112,6 +134,7 @@
     --line:#D3E3F5; --line-soft:#E3EDF9;
     --accent:#1D6FEB; --accent-strong:#0F4FB0; --accent-tint:#1D6FEB26; --accent-tint-2:#1D6FEB14;
     --sea:#0090A8; --sea-tint:#0090A833; --bad:#C63C3C; --bad-tint:#C63C3C1A;
+    --dr-up:#C6303C; --dr-up-tint:#C6303C1A; --dr-down:#1D63C4; --dr-down-tint:#1D63C41A; --dr-stable:#128A55; --dr-stable-tint:#128A551A;
     --ev-green:#128A55; --ev-green-tint:#128A551A;
     --ev-teal:#0B7285; --ev-teal-tint:#0B72851A;
     --ev-amber:#9A6700; --ev-amber-tint:#9A67001A;
@@ -129,13 +152,6 @@
     font-size:16px;
     line-height:1.5;
     -webkit-font-smoothing:antialiased;
-    /* Mobile hardening safety net: with the viewport meta tag now present,
-       nothing should legitimately overflow the page box horizontally -
-       this only guards against an unforeseen long unbroken token, it does
-       not mask or replace a real responsive-layout fix. Nested
-       intentionally-scrollable containers (.table-wrap) keep their own
-       overflow-x:auto and are unaffected by this outer rule. */
-    overflow-x:hidden;
   }
   html[lang="ar"] body{ font-family:var(--font-body-ar); line-height:1.75; }
   html[lang="ar"] h1, html[lang="ar"] h2{ font-family:var(--font-display-ar); }
@@ -152,10 +168,11 @@
   /* ---------- Masthead ---------- */
   /* Full-bleed dark "navy terminal" product header, deliberately fixed
      (not theme-following) - the trading-terminal identity described in
-     the approved mockup. Compact by default (Executive is now the landing
-     view) - the full explanatory subtitle only shows when Detailed
-     Analysis is active, toggled by setTab(); no page-load flash since
-     this is the default. */
+     the approved mockup. Compact by default (Daily Report is now the
+     landing view, Executive Summary the secondary business view) - the
+     full explanatory subtitle only shows when Detailed Analysis is
+     active, toggled by setTab(); no page-load flash since this is the
+     default. */
   .masthead-band{background:linear-gradient(155deg, var(--hdr-bg-2) 0%, var(--hdr-bg) 70%);border-bottom:1px solid var(--hdr-line);}
   .masthead{max-width:1180px;margin:0 auto;padding:18px 28px 16px;}
   #pageSubtitle[hidden]{display:none;}
@@ -900,6 +917,387 @@
   @media (max-width:900px){.page{padding-inline:20px}.masthead{padding-inline:20px}.exec-decision-grid{grid-template-columns:1fr}.exec-decision-card{min-height:0}.exec-chart{min-height:250px}.cost-chain{grid-template-columns:1fr 1fr}.cost-chain-step:after{display:none}}
   @media (max-width:600px){.page{padding:20px 14px 56px}.masthead{padding-inline:14px}.hero{padding:22px 18px}.exec-summary-head h2{font-size:25px}.exec-decision-card{padding:21px 18px}.exec-chart-card{padding:18px 10px 12px}.exec-chart{min-height:210px}.exec-status-chip{flex-basis:50%;}.exec-forecast-row{grid-template-columns:72px 1fr}.cost-chain{grid-template-columns:1fr}.ag-body{padding:20px 14px 5px}}
 
+  /* Legacy masthead mobile overflow/oversize fix (2026-08-20 UAT
+     correction, newly authorized targeted fix - see repo instructions).
+     Desktop layout/data untouched: .mast-top only gains flex-wrap so the
+     eyebrow label and the EN/AR/theme controls reflow onto their own line
+     instead of forcing the masthead wider than the viewport, and the
+     title/padding shrink a step further than the 600px rule above. */
+   @media (max-width:600px){
+    .masthead,.page,.tab-bar{box-sizing:border-box;max-width:100%;min-width:0;}
+    .masthead{width:100%;padding:14px 16px 12px;}
+    .mast-top{flex-wrap:wrap;row-gap:8px;margin-bottom:6px;}
+    .mast-top > :first-child{min-width:0;flex:1 1 150px;}
+    .mast-controls{flex:0 1 auto;max-width:100%;}
+    h1{max-width:100%;font-size:22px;margin:0 0 4px;overflow-wrap:anywhere;}
+    .meta-row{gap:6px 14px;font-size:11px;}
+    .meta-row > span{min-width:0;max-width:100%;overflow-wrap:anywhere;}
+  }
+  /* Top tab strip: 4 Arabic labels don't fit one line at 390px without
+     either wrapping awkwardly or overflowing the page - a horizontally
+     scrollable strip (explicitly permitted) keeps every tab reachable
+     without ever widening the page itself (overflow-x is contained to
+     the strip, not the body). */
+  @media (max-width:600px){
+    .tab-bar{overflow:visible;flex-wrap:wrap;gap:4px;margin-bottom:16px;}
+    .tab-btn{flex:1 1 calc(50% - 4px);min-width:0;padding:8px 6px;font-size:12px;line-height:1.35;white-space:normal;text-align:center;}
+  }
+
+  /* ---------- Daily Report (التقرير اليومي) - executive decision-screen,
+     2026-08-20 consolidated redesign (presentation-only pass - see
+     PROJECT_DECISIONS.md; no calculation call site below changed).
+     Three primary decision cards, ALWAYS the fixed dark "trading-terminal"
+     surface (--exec-* tokens - the SAME ones Executive Summary's own
+     header/three-card row already use, regardless of the page's own
+     light/dark theme toggle) - deliberately not the "white card + colored
+     top border" pattern used earlier in this feature's history. See the
+     --dr-up/--dr-down/--dr-stable and --dr-glow-* token blocks near the
+     top of this stylesheet. Numerals use --font-display/--font-body
+     tabular-nums, --font-mono only for the Card 2 equation's aligned
+     figures. */
+  .daily-report .dr-shell{max-width:1180px;margin:0 auto;}
+
+  .dr-head{
+    background:linear-gradient(155deg,var(--hdr-bg-2) 0%,var(--hdr-bg) 100%);
+    border:1px solid var(--hdr-line);border-radius:18px;
+    padding:18px 22px;margin-bottom:22px;box-shadow:var(--exec-shadow);
+  }
+  .dr-head-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .dr-title{font-family:var(--font-display);font-size:clamp(22px,2.8vw,30px);font-weight:800;color:var(--hdr-ink);margin:0 0 3px;}
+  html[lang="ar"] .dr-title{font-family:var(--font-display-ar);}
+  .dr-head-row{font-size:13px;color:var(--hdr-ink-dim);}
+  html[lang="ar"] .dr-head-row{font-family:var(--font-body-ar);}
+  .dr-head-fresh-row{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid var(--hdr-line);}
+  .dr-head-fresh{display:inline-flex;align-items:center;gap:5px;padding:3px 11px;border-radius:999px;background:var(--ev-green-tint);color:var(--ev-green);font-weight:700;font-size:11.5px;white-space:nowrap;}
+  html[lang="ar"] .dr-head-fresh{font-family:var(--font-body-ar);}
+  .dr-head-fresh-icon{font-size:10px;}
+  .dr-head-fresh.dr-fresh-stale{background:var(--ev-amber-tint);color:var(--ev-amber);}
+  .dr-head-fresh-value{font-family:var(--font-body);font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--hdr-ink);direction:ltr;unicode-bidi:isolate;}
+
+  /* Primary action - moved to the top of the page (2026-08-20 UAT), a
+     premium pill rather than a weak full-width bar. Still ships disabled
+     until the GitHub connector prerequisite exists (see
+     PROJECT_DECISIONS.md) - a sequencing gate, not fake refresh
+     behavior. The disabled-hint now lives directly under the button
+     (.dr-refresh-wrap), not beside the data-update timestamp - 2026-08-20
+     UAT correction: sharing a row with the timestamp made the hint
+     compete with it; the hint is now visibly secondary to its own button. */
+  .dr-refresh-wrap{display:flex;flex-direction:column;align-items:center;gap:5px;}
+  .dr-refresh-btn{
+    display:inline-flex;align-items:center;gap:9px;flex:none;
+    font-family:var(--font-body);font-size:14.5px;font-weight:700;color:#fff;
+    background:linear-gradient(135deg,var(--accent) 0%,var(--accent-strong) 100%);
+    border:0;border-radius:999px;padding:12px 22px;cursor:pointer;box-shadow:0 6px 18px rgba(29,111,235,.35);
+  }
+  html[lang="ar"] .dr-refresh-btn{font-family:var(--font-body-ar);}
+  .dr-refresh-icon{font-size:17px;line-height:1;}
+  /* Disabled state reads as an intentional "ghost" button (bordered
+     outline on the card's own dark surface) rather than a dead grey
+     overlay (2026-08-20 UAT correction) - opacity stays at 1 so it never
+     looks like a rendering glitch, contrast comes from the border/fill
+     choice instead. */
+  .dr-refresh-btn:disabled{
+    background:linear-gradient(135deg, var(--exec-card-bg-2) 0%, var(--exec-card-bg) 100%);
+    color:var(--hdr-ink-dim);border:1px solid var(--exec-line);
+    cursor:not-allowed;opacity:1;box-shadow:inset 0 1px 3px rgba(0,0,0,.4);
+  }
+  .dr-refresh-btn:disabled .dr-refresh-icon{opacity:.55;}
+  .dr-refresh-hint{font-size:11.5px;color:var(--hdr-ink-dim);}
+  html[lang="ar"] .dr-refresh-hint{font-family:var(--font-body-ar);}
+
+  /* A soft "tray" behind the grid (2026-08-20 UAT correction) - the three
+     always-dark cards previously sat directly on the page's plain white
+     background and read as three unrelated floating rectangles. Uses the
+     SAME light-theme surface tokens as the rest of the page (.hero uses
+     an identical surface/surface-2/line/shadow-card recipe) so it reads
+     as one designed section, not a second dark treatment. */
+  .dr-card-grid{
+    display:grid;gap:16px;margin-bottom:22px;padding:18px;border-radius:24px;
+    background:linear-gradient(165deg,var(--surface-2) 0%,var(--paper-0) 65%);
+    border:1px solid var(--line-soft);
+  }
+  /* align-items:start (2026-08-20 UAT correction) - explicitly opt OUT of
+     CSS Grid's default per-row stretch. Cards no longer force each other
+     to a shared height; each sizes to its own content, so Outlook (the
+     card with the most content) is naturally taller than Market/Port
+     instead of dragging them into matching dead space - see .dr-card's
+     own justify-content note below. */
+  .dr-card-grid--3{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;grid-template-rows:minmax(470px,auto);}
+  @media (max-width:900px){.dr-card-grid--3{grid-template-columns:1fr;}}
+
+  /* Centered composition for every KPI card - icon badge, hero figure,
+     label, provenance/meta, each one hugging the next (justify-content:
+     flex-start, not space-between - 2026-08-20 UAT correction: the prior
+     space-between pinned meta to the bottom and stretched every internal
+     gap to fill whatever height the row's tallest sibling forced, which
+     read as "too tall / too empty"). Height is now purely content-driven. */
+  .dr-card{
+    position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;min-width:0;
+    justify-content:flex-start;min-height:0;height:100%;padding:16px 18px 14px;
+    background:linear-gradient(165deg, color-mix(in srgb, var(--exec-card-bg-2) 90%, var(--dr-card-glow, var(--dr-glow-blue)) 10%) 0%, var(--exec-card-bg) 78%);
+    border:1px solid var(--exec-line);border-radius:18px;color:var(--exec-ink);
+    box-shadow:var(--exec-shadow);
+  }
+  .dr-card:before{content:"";position:absolute;inset:0;background:radial-gradient(260px 220px at 88% -12%, var(--dr-card-glow, var(--dr-glow-blue)) 0%, transparent 70%);pointer-events:none;}
+  .dr-card--market{--dr-card-glow:var(--dr-glow-blue);}
+  .dr-card--port{--dr-card-glow:var(--dr-glow-amber);}
+  /* Outlook's glow tracks the SAME up/down/stable tokens its icon/:before
+     overrides already use below - set as --dr-card-glow too so the base
+     gradient's color-mix (added 2026-08-20 UAT correction, just above)
+     also picks up the correct hue instead of falling back to blue. */
+  .dr-card--outlook{--dr-card-glow:var(--dr-stable-tint);}
+  .dr-card--outlook.up{--dr-card-glow:var(--dr-up-tint);}
+  .dr-card--outlook.down{--dr-card-glow:var(--dr-down-tint);}
+  .dr-card--market{background:linear-gradient(155deg,#17325d 0%,#0e1626 76%);}
+  .dr-card--port{background:linear-gradient(155deg,#55401b 0%,#151c2a 76%);}
+  .dr-card--outlook{background:linear-gradient(155deg,#124a4a 0%,#0e1626 76%);}
+  .dr-card--outlook.up{background:linear-gradient(155deg,#5b2028 0%,#0e1626 76%);}
+  .dr-card--outlook.down{background:linear-gradient(155deg,#173f70 0%,#0e1626 76%);}
+  .dr-card--outlook{gap:5px;padding-block:14px;}
+  .dr-card--outlook .dr-confidence{margin-top:2px;}
+  .dr-card--outlook .dr-confidence-footnote{font-size:8.5px;line-height:1.25;margin-top:3px;}
+  .dr-card--outlook .dr-details{margin-top:2px;}
+  .dr-card > *{position:relative;z-index:1;}
+  .dr-card-icon{
+    position:absolute;z-index:1;inset-block-start:14px;inset-inline-end:14px;
+    width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:16px;background:var(--dr-card-glow, var(--dr-glow-blue));border:1px solid var(--exec-line);
+  }
+  .dr-card--outlook .dr-card-icon{background:var(--dr-stable-tint);}
+  .dr-card--outlook.up .dr-card-icon{background:var(--dr-up-tint);}
+  .dr-card--outlook.down .dr-card-icon{background:var(--dr-down-tint);}
+  .dr-card-eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.04em;color:var(--exec-ink-dim);text-transform:uppercase;}
+  html[lang="ar"] .dr-card-eyebrow{font-family:var(--font-body-ar);letter-spacing:0;text-transform:none;}
+  .dr-card-hero{display:flex;align-items:baseline;justify-content:center;gap:7px;font-family:var(--font-body);font-variant-numeric:tabular-nums;margin-top:4px;}
+  html[lang="ar"] .dr-card-hero{font-family:var(--font-display-ar);}
+  .dr-card-hero span{font-size:clamp(28px,3.2vw,36px);font-weight:800;color:var(--exec-ink);line-height:1;}
+  .dr-card-hero small{font-size:12px;color:var(--exec-ink-dim);font-family:var(--font-body);}
+  html[lang="ar"] .dr-card-hero small{font-family:var(--font-body-ar);}
+  /* EGP is a full second headline KPI, not metadata (2026-08-20 UAT
+     correction: the first pass made this too small/too dim to read as a
+     hero figure). Same weight as the USD hero and close in size - USD
+     stays visually primary through size and full-brightness color alone,
+     not through shrinking EGP into a footnote. */
+  .dr-card-secondary{display:flex;align-items:baseline;justify-content:center;gap:6px;font-family:var(--font-body);font-variant-numeric:tabular-nums;}
+  html[lang="ar"] .dr-card-secondary{font-family:var(--font-display-ar);}
+  .dr-card-secondary span{font-size:clamp(22px,2.6vw,28px);font-weight:800;color:var(--exec-ink);opacity:.88;}
+  .dr-card-secondary small{font-size:11.5px;color:var(--exec-ink-dim);font-family:var(--font-body);opacity:.85;}
+  html[lang="ar"] .dr-card-secondary small{font-family:var(--font-body-ar);}
+  .dr-card-meta{font-size:10.5px;color:var(--exec-ink-dim);margin-top:2px;}
+  .dr-card-meta.dr-meta-warn{color:var(--ev-amber);}
+  /* Card 1 sparkline - reads the same MARKET_SNAPSHOTS window as before;
+     color now comes from the chart's own first/last plotted value
+     (renderDailySparkline's own trend), fully decoupled from the removed
+     Current Direction card - see renderDailySparkline()'s own comment. */
+  .dr-sparkline{width:100%;max-width:100%;height:38px;margin:4px 0 0;}
+  .dr-sparkline path.dr-spark-line{fill:none;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round;}
+  .dr-sparkline path.dr-spark-fill{stroke:none;opacity:.16;}
+  .dr-sparkline circle{opacity:.95;}
+
+  .dr-market-board{margin:0 0 22px;padding:22px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(160deg,var(--surface-2),var(--surface));box-shadow:var(--shadow-card);}
+  .dr-market-board-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px;}
+  .dr-market-board-title{margin:0;color:var(--ink-900);font-size:clamp(20px,2.4vw,28px);font-weight:800;}
+  html[lang="ar"] .dr-market-board-title{font-family:var(--font-display-ar);}
+  .dr-market-board-subtitle{margin:4px 0 0;color:var(--ink-700);font-size:12px;}
+  .dr-market-board-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;}
+  .dr-market-board-table{width:100%;min-width:700px;border-collapse:collapse;table-layout:fixed;}
+  .dr-market-board-table th,.dr-market-board-table td{padding:13px 14px;border-bottom:1px solid var(--line-soft);text-align:start;vertical-align:middle;}
+  .dr-market-board-table th{background:var(--surface-2);color:var(--ink-500);font-size:10px;letter-spacing:.05em;text-transform:uppercase;}
+  html[lang="ar"] .dr-market-board-table th{letter-spacing:0;text-transform:none;font-family:var(--font-body-ar);}
+  .dr-market-board-table tbody tr:last-child td{border-bottom:0;}
+  .dr-market-board-table tbody tr.dr-board-primary{background:linear-gradient(90deg,rgba(29,111,235,.12),rgba(18,138,85,.06));box-shadow:inset 4px 0 0 var(--accent);}
+  .dr-board-product-ar{display:block;color:var(--ink-900);font-weight:800;font-size:14px;}
+  .dr-board-product-en{display:block;margin-top:3px;color:var(--ink-500);font-size:11px;direction:ltr;unicode-bidi:isolate;}
+  .dr-board-price{font-family:var(--font-body);font-size:18px;font-weight:800;color:var(--ink-900);font-variant-numeric:tabular-nums;direction:ltr;unicode-bidi:isolate;}
+  .dr-board-price small{font-family:var(--font-body);font-size:10px;color:var(--ink-500);font-weight:600;}
+  .dr-board-secondary{font-family:var(--font-body);font-size:12px;color:var(--ink-700);direction:ltr;unicode-bidi:isolate;}
+  .dr-board-meta{color:var(--ink-500);font-size:11px;line-height:1.45;}
+  .dr-board-badge{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;font-size:11px;font-weight:800;white-space:nowrap;}
+  .dr-board-badge.trusted{color:var(--ev-green);background:var(--ev-green-tint);}
+  .dr-board-badge.review{color:var(--ev-amber);background:var(--ev-amber-tint);}
+  .dr-board-badge.conflict{color:var(--dr-up);background:var(--dr-up-tint);}
+  .dr-board-badge.stale{color:var(--ev-gray);background:var(--ev-gray-tint);}
+  .dr-board-badge.unavailable{color:var(--ev-gray);background:var(--ev-gray-tint);}
+   .dr-market-board-mobile{display:none;}
+   .dr-board-mobile-card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 12px;padding:14px 12px;border-bottom:1px solid var(--line-soft);background:var(--surface);}
+   .dr-board-mobile-card:last-child{border-bottom:0;}
+   .dr-board-mobile-card.primary{background:linear-gradient(100deg,rgba(29,111,235,.12),rgba(18,138,85,.06));box-shadow:inset 4px 0 0 var(--accent);}
+   .dr-board-mobile-product{min-width:0;overflow-wrap:anywhere;word-break:break-word;}
+   .dr-board-mobile-price{align-self:center;text-align:end;white-space:nowrap;}
+   .dr-board-mobile-price .dr-board-price{font-size:18px;}
+   .dr-board-mobile-secondary,.dr-board-mobile-status,.dr-board-mobile-timing{min-width:0;font-size:11px;color:var(--ink-700);}
+   .dr-board-mobile-secondary{direction:ltr;text-align:end;}
+   .dr-board-mobile-status{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+   .dr-board-mobile-timing{grid-column:1 / -1;padding-top:2px;line-height:1.5;overflow-wrap:anywhere;}
+   @media (max-width:600px){
+     .dr-market-board{padding:16px 12px;}
+     .dr-market-board-head{align-items:flex-start;flex-direction:column;gap:4px;}
+     .dr-market-board-wrap{overflow:visible;}
+     .dr-market-board-table{display:none;}
+     .dr-market-board-mobile{display:block;border:1px solid var(--line);border-radius:16px;overflow:hidden;}
+     .dr-board-product-ar{font-size:13px;}
+   }
+
+  /* Progressive disclosure: source/provenance detail collapsed by default. */
+  .dr-details{width:100%;margin-top:8px;text-align:start;}
+  .dr-details summary{cursor:pointer;list-style:none;font-size:11.5px;font-weight:700;color:var(--exec-teal);text-align:center;}
+  .dr-details summary::-webkit-details-marker{display:none;}
+  .dr-details summary:before{content:"▾ ";}
+  .dr-details[open] summary:before{content:"▴ ";}
+  html[lang="ar"] .dr-details summary{font-family:var(--font-body-ar);}
+  .dr-details-body{margin-top:8px;padding-top:8px;border-top:1px dashed var(--exec-line);font-size:11.5px;color:var(--exec-ink-dim);line-height:1.5;}
+  .dr-details-body .evidence-badge{margin-bottom:6px;}
+
+  /* Card 2: the $130 rule as a visual equation. */
+  .dr-equation{width:100%;display:flex;flex-direction:column;align-items:center;gap:0;margin-top:4px;}
+  .dr-eq-item{display:flex;flex-direction:column;align-items:center;gap:1px;padding:2px 0;}
+  .dr-eq-value{font-family:var(--font-body);font-variant-numeric:tabular-nums;font-size:17px;font-weight:800;color:var(--exec-ink);}
+  html[lang="ar"] .dr-eq-value{font-family:var(--font-display-ar);}
+  .dr-eq-label{font-size:10px;color:var(--exec-ink-dim);font-family:var(--font-body);}
+  html[lang="ar"] .dr-eq-label{font-family:var(--font-body-ar);}
+  .dr-equation-op{font-size:13px;color:var(--exec-gold);font-weight:800;line-height:1;padding:1px 0;}
+  .dr-eq-divider{width:66%;height:1px;background:var(--exec-line);margin:5px 0 3px;}
+  .dr-eq-item.dr-eq-total .dr-eq-value{color:var(--exec-gold);font-size:20px;}
+
+  /* Model Confidence - a visible bar/gauge AND a qualitative word,
+     explicitly styled apart from the up/down/stable direction palette
+     (reuses the existing evidence-quality hues) and never presented as
+     backtested accuracy - see computeForecastConfidence()'s own comment. */
+  .dr-confidence{width:100%;margin-top:4px;}
+  .dr-confidence-row{font-size:11px;font-weight:700;color:var(--exec-ink-dim);text-transform:uppercase;letter-spacing:.03em;margin-bottom:3px;}
+  html[lang="ar"] .dr-confidence-row{font-family:var(--font-body-ar);letter-spacing:0;text-transform:none;}
+  .dr-confidence-value-row{display:flex;align-items:baseline;justify-content:center;gap:7px;margin-bottom:5px;}
+  .dr-confidence-value-row b{font-size:24px;font-family:var(--font-body);font-variant-numeric:tabular-nums;color:var(--exec-ink);}
+  html[lang="ar"] .dr-confidence-value-row b{font-family:var(--font-display-ar);}
+  .dr-confidence-qual{font-size:12.5px;font-weight:700;color:var(--exec-gray);}
+  html[lang="ar"] .dr-confidence-qual{font-family:var(--font-body-ar);}
+  .dr-confidence-track{position:relative;height:9px;border-radius:999px;background:var(--exec-line-soft);border:1px solid var(--exec-line);overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.35);}
+  .dr-confidence-fill{height:100%;border-radius:999px;background:var(--exec-gray);box-shadow:0 0 8px 0 var(--exec-gray);transition:width .2s ease;}
+  /* Purpose-built segmented gauge, not a generic browser progress bar
+     (2026-08-20 UAT) - ten fixed-width notches (one per 10% of score)
+     painted over BOTH the filled and unfilled portion of the same track,
+     using the card's own background as the "cut", so the gauge always
+     reads as discrete segments regardless of the exact fill width. Pure
+     CSS, no extra markup/JS - the underlying score/fill % is unchanged. */
+  .dr-confidence-track:after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:repeating-linear-gradient(90deg, transparent 0, transparent calc(10% - 2px), var(--exec-card-bg) calc(10% - 2px), var(--exec-card-bg) 10%);
+  }
+  .dr-confidence-fill.dr-conf-high{background:var(--ev-green);box-shadow:0 0 8px 0 var(--ev-green);}
+  .dr-confidence-fill.dr-conf-mid{background:var(--ev-amber);box-shadow:0 0 8px 0 var(--ev-amber);}
+  .dr-card--outlook:has(.dr-conf-high) .dr-confidence-qual{color:var(--ev-green);}
+  .dr-card--outlook:has(.dr-conf-mid) .dr-confidence-qual{color:var(--ev-amber);}
+  .dr-confidence-footnote{display:block;font-size:9.5px;color:var(--exec-ink-dim);margin-top:5px;line-height:1.4;}
+
+  /* Card 3 (7-Day Outlook) is now the ONLY directional signal on the
+     Daily Report - the removed Current Direction card's up/down/stable
+     CSS rule (color driven purely by the .up/.down/.stable class) is kept
+     here verbatim so the mandated, non-conventional color mapping is
+     completely unaffected by that removal. */
+  .dr-direction-word{font-family:var(--font-display);font-size:clamp(24px,3vw,30px);font-weight:800;color:var(--exec-ink);display:flex;align-items:center;gap:8px;justify-content:center;}
+  html[lang="ar"] .dr-direction-word{font-family:var(--font-display-ar);}
+  .dr-direction-word .dr-dir-arrow{font-size:.85em;}
+  .dr-forecast-basis{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;width:100%;gap:6px;margin-top:2px;padding:7px 8px;border:1px solid var(--exec-line);border-radius:10px;background:rgba(0,0,0,.14);}
+  .dr-forecast-basis-item{display:flex;flex-direction:column;gap:2px;min-width:0;}
+  .dr-forecast-basis-item span{font-size:9px;line-height:1.25;color:var(--exec-ink-dim);}
+  .dr-forecast-basis-item b{font-family:var(--font-body);font-size:13px;line-height:1.15;font-variant-numeric:tabular-nums;color:var(--exec-ink);direction:ltr;unicode-bidi:isolate;white-space:nowrap;}
+  .dr-forecast-basis-item:last-child{text-align:end;}
+  .dr-forecast-basis-arrow{color:var(--exec-gold);font-size:15px;font-weight:800;direction:ltr;}
+  .dr-direction-word--sm{font-size:clamp(19px,2.2vw,22px);gap:6px;}
+  .dr-card--outlook.up:before{background:radial-gradient(220px 180px at 88% -12%, var(--dr-up-tint) 0%, transparent 65%);}
+  .dr-card--outlook.down:before{background:radial-gradient(220px 180px at 88% -12%, var(--dr-down-tint) 0%, transparent 65%);}
+  .dr-card--outlook.stable:before{background:radial-gradient(220px 180px at 88% -12%, var(--dr-stable-tint) 0%, transparent 65%);}
+  .dr-card--outlook.up .dr-direction-word{color:var(--dr-up);}
+  .dr-card--outlook.down .dr-direction-word{color:var(--dr-down);}
+  .dr-card--outlook.stable .dr-direction-word{color:var(--dr-stable);}
+
+  /* Bidi-safe numeric+unit lines - each line is its own dir="ltr" block
+     (see renderDeltaLines()) so a sign, decimal, or unit can never be
+     reordered by the surrounding RTL card. */
+  .dr-delta-block{width:100%;margin-top:6px;}
+  .dr-delta-label{font-size:10.5px;color:var(--exec-ink-dim);margin-bottom:3px;}
+  html[lang="ar"] .dr-delta-label{font-family:var(--font-body-ar);}
+  .dr-delta-lines{display:flex;flex-direction:column;align-items:center;gap:1px;}
+  .dr-delta-line{font-family:var(--font-body);font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--exec-ink-dim);}
+
+  /* Trader Notes - two-column premium panel (input | recent notes) on
+     desktop, stacked on mobile. Storage/write-path unchanged - still
+     inert on the published page (loopback-only local server), same
+     honest hint as before. Uses the page's normal theme-following
+     surface (NOT the fixed-dark card treatment above) - a deliberately
+     calmer, "notebook" surface distinct from the KPI decision strip. */
+  .dr-notes-card{
+    display:grid;grid-template-columns:1.15fr 1fr;gap:26px;
+    background:linear-gradient(180deg,var(--surface),var(--surface-2));border:1px solid var(--line);
+    border-radius:18px;box-shadow:var(--shadow-card);padding:22px 24px 20px;
+  }
+  @media (max-width:800px){.dr-notes-card{grid-template-columns:1fr;}}
+  .dr-notes-col--list{border-inline-start:1px dashed var(--line);padding-inline-start:24px;}
+  @media (max-width:800px){.dr-notes-col--list{border-inline-start:0;padding-inline-start:0;border-top:1px dashed var(--line);padding-top:18px;}}
+  .dr-notes-title{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:750;color:var(--ink-900);margin:0 0 4px;}
+  html[lang="ar"] .dr-notes-title{font-family:var(--font-display-ar);}
+  .dr-notes-title-icon{font-size:16px;}
+  .dr-notes-hint{font-size:12px;color:var(--ink-500);margin:0 0 12px;}
+  .dr-notes-textarea{width:100%;min-height:96px;resize:vertical;font-family:var(--font-body);font-size:13.5px;color:var(--ink-900);background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-sizing:border-box;}
+  html[lang="ar"] .dr-notes-textarea{font-family:var(--font-body-ar);}
+  .dr-notes-textarea:disabled{opacity:.6;cursor:not-allowed;}
+  .dr-notes-save-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;}
+  .dr-notes-save-btn{font-family:var(--font-body);font-size:13px;font-weight:700;color:#fff;background:var(--accent-strong);border:0;border-radius:999px;padding:9px 22px;cursor:pointer;box-shadow:0 4px 12px rgba(29,111,235,.28);}
+  html[lang="ar"] .dr-notes-save-btn{font-family:var(--font-body-ar);}
+  .dr-notes-save-btn:disabled{background:var(--ink-500);cursor:not-allowed;opacity:.5;box-shadow:none;}
+  .dr-notes-count{font-size:11px;color:var(--ink-500);font-variant-numeric:tabular-nums;direction:ltr;}
+  .dr-notes-save-hint{display:block;font-size:11px;color:var(--ink-500);margin-top:8px;}
+  .dr-notes-list-title{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--ink-500);text-transform:uppercase;letter-spacing:.03em;margin-bottom:12px;}
+  html[lang="ar"] .dr-notes-list-title{font-family:var(--font-body-ar);letter-spacing:0;text-transform:none;}
+  .dr-notes-empty{font-size:13px;color:var(--ink-500);}
+  .dr-notes-list{display:flex;flex-direction:column;gap:10px;}
+  .dr-note{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
+  .dr-note-text{font-size:14px;color:var(--ink-900);white-space:pre-wrap;line-height:1.5;}
+  .dr-note time{display:block;font-size:11px;color:var(--ink-500);margin-top:6px;text-align:end;}
+
+  /* Daily Report mobile compaction (2026-08-20 UAT correction) - the
+     product must read as a compact TRADING BRIEFING on a phone, not the
+     desktop's three cards simply stacked full-height. Nothing here
+     changes what data is shown, only spacing/order/icon-badge scale. The
+     header reorder uses display:contents so .dr-head-title-row's two
+     children (titleblock, refresh-wrap) become direct flex items of
+     .dr-head alongside .dr-head-fresh-row, letting `order` reshuffle all
+     three into the mandated title -> timestamp -> refresh sequence
+     without touching the HTML/JS (which still address them by id). */
+  @media (max-width:600px){
+    .daily-report .dr-shell{width:100%;min-width:0;box-sizing:border-box;}
+    .dr-head{display:flex;width:100%;min-width:0;box-sizing:border-box;flex-direction:column;padding:14px 16px;margin-bottom:14px;overflow:hidden;}
+    .dr-head-title-row{display:contents;}
+    .dr-head-titleblock{order:1;width:100%;min-width:0;}
+    .dr-head-fresh-row{order:2;margin-top:2px;}
+    .dr-refresh-wrap{order:3;align-items:center;margin-top:12px;width:100%;}
+    .dr-title{font-size:21px;}
+    .dr-head-row{font-size:12.5px;}
+    .dr-refresh-btn{width:min(100%,240px);justify-content:center;}
+    .dr-refresh-hint{max-width:100%;text-align:center;overflow-wrap:anywhere;}
+
+    .dr-card-grid{width:100%;box-sizing:border-box;padding:10px;border-radius:18px;gap:12px;margin-bottom:16px;grid-template-rows:none;}
+    .dr-card{box-sizing:border-box;gap:6px;padding:16px 16px 14px;height:auto;min-height:0;}
+    .dr-card-icon{width:28px;height:28px;inset-block-start:10px;inset-inline-end:10px;}
+    .dr-card-icon svg{width:14px;height:14px;}
+    .dr-card-hero span{font-size:30px;}
+    .dr-card-secondary span{font-size:24px;}
+    .dr-direction-word{font-size:26px;}
+    .dr-sparkline{height:42px;margin-top:4px;}
+    .dr-equation{margin-top:5px;}
+    .dr-eq-item{padding:1px 0;}
+    .dr-eq-divider{margin:3px 0 2px;}
+    .dr-delta-block{margin-top:3px;}
+    .dr-confidence{margin-top:6px;}
+    .dr-confidence-footnote{margin-top:3px;}
+
+    .dr-notes-card{padding:16px 16px 14px;gap:16px;}
+    .dr-notes-textarea{min-height:60px;}
+    .dr-notes-title{font-size:15px;margin-bottom:2px;}
+    .dr-notes-hint{margin-bottom:8px;}
+    .dr-notes-col--list{padding-top:14px;}
+  }
+
   /* ---------- Footer / methodology ---------- */
   footer.methodology{
     border-top:2px solid var(--ink-900);padding-top:22px;
@@ -964,7 +1362,7 @@
     <h1 data-i18n="title">RBD Palm Olein — Egypt</h1>
     <p class="subtitle" id="pageSubtitle" hidden data-i18n="subtitle">A transparent, adjustable model of the landed price of refined, bleached &amp; deodorized palm olein into Egypt — built from the Bursa Malaysia benchmark, freight, Egyptian customs duty and EGP/USD scenarios. Not a market quote: a computed estimate you can correct with real numbers as you get them.</p>
     <div class="meta-row">
-      <span><span data-i18n="metaSnapshot">Snapshot</span> <b>21 Aug 2026</b></span>
+      <span><span data-i18n="metaSnapshot">Snapshot</span> <b id="mastheadSnapshotDate">—</b></span>
       <span><span data-i18n="metaBasis">Basis</span> <b data-i18n="metaBasisValue">FOB Malaysia, Port Klang</b></span>
       <span><span data-i18n="metaDest">Destination</span> <b data-i18n="metaDestValue">Alexandria / Damietta</b></span>
     </div>
@@ -974,9 +1372,138 @@
 <div class="page">
 
   <div class="tab-bar" role="tablist">
+    <button class="tab-btn active" id="tabBtnDaily" type="button" role="tab" aria-selected="true" data-i18n="tabDaily">التقرير اليومي</button>
     <button class="tab-btn" id="tabBtnFull" type="button" role="tab" aria-selected="false" data-i18n="tabFull">Detailed Analysis</button>
-    <button class="tab-btn active" id="tabBtnSummary" type="button" role="tab" aria-selected="true" data-i18n="tabSummary">Executive Summary</button>
+    <button class="tab-btn" id="tabBtnSummary" type="button" role="tab" aria-selected="false" data-i18n="tabSummary">Executive Summary</button>
     <button class="tab-btn" id="tabBtnCargo" type="button" role="tab" aria-selected="false" data-i18n="tabCargo">Cargo Intelligence</button>
+  </div>
+
+  <!-- Daily Report (التقرير اليومي) - new default-landing tab (V1 scaffold).
+       Presentation layer only: every value here is filled in by
+       renderDailyReport(base), which reads the SAME canonical data/functions
+       as Executive Summary (computeCurrentDayOverDayMovement,
+       computeExpectedPortArrivalCost, the 7-day forecast point, getEvidenceTier)
+       - no parallel calculation engine. See PROJECT_DECISIONS.md for the
+       feature record. -->
+  <div id="tabPanelDaily" class="tab-panel daily-report">
+    <section aria-label="Daily Report" class="dr-shell">
+      <div class="dr-head">
+        <div class="dr-head-title-row">
+          <div class="dr-head-titleblock">
+            <h1 class="dr-title" data-i18n="drTitle">التقرير اليومي</h1>
+            <div class="dr-head-row" data-i18n="drHeadSub">ملخص قرار الشراء</div>
+          </div>
+          <div class="dr-refresh-wrap">
+            <button type="button" class="dr-refresh-btn" id="drRefreshBtn">
+              <span class="dr-refresh-icon" aria-hidden="true">↻</span>
+              <span data-i18n="drRefreshLabel">تحديث البيانات الآن</span>
+            </button>
+            <span class="dr-refresh-hint" id="drRefreshHint" data-i18n="drRefreshReadyHint"></span>
+          </div>
+        </div>
+        <div class="dr-head-fresh-row">
+          <span class="dr-head-fresh" id="drHeadFresh">
+            <span class="dr-head-fresh-icon" aria-hidden="true">✓</span>
+            <span data-i18n="drDataUpdateLabel">تاريخ تحديث البيانات</span>
+          </span>
+          <span class="dr-head-fresh-value" id="drHeadDate"></span>
+        </div>
+      </div>
+      <div class="dr-card-grid dr-card-grid--3">
+        <div class="dr-card dr-card--market" id="drCardMarket">
+          <div class="dr-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 10 13 13 21 4"></polyline></svg></div>
+          <div class="dr-card-eyebrow" data-i18n="drCard1Eyebrow">سعر أولين النخيل المكرر اليوم</div>
+          <div class="dr-card-hero"><span id="drCard1ValueUSD">—</span><small data-i18n="drUnitUsd">USD/MT</small></div>
+          <div class="dr-card-secondary"><span id="drCard1ValueEGP">—</span><small data-i18n="drUnitEgp">EGP/MT</small></div>
+          <svg class="dr-sparkline" id="drCard1Sparkline" viewBox="0 0 190 42" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <details class="dr-details">
+            <summary data-i18n="drSourceDetails">المصدر والتفاصيل</summary>
+            <div class="dr-details-body">
+              <span class="evidence-badge" id="drCard1Evidence"></span>
+              <div id="drCard1Meta"></div>
+            </div>
+          </details>
+        </div>
+        <div class="dr-card dr-card--port" id="drCardPort">
+          <div class="dr-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5.5" r="2"></circle><line x1="12" y1="7.5" x2="12" y2="21"></line><path d="M5.5 13a6.5 6.5 0 0 0 13 0"></path><line x1="5.5" y1="13" x2="7.7" y2="13"></line><line x1="18.5" y1="13" x2="16.3" y2="13"></line></svg></div>
+          <div class="dr-card-eyebrow" data-i18n="drCard2Eyebrow">السعر المتوقع في ميناء مصر</div>
+          <div class="dr-card-hero"><span id="drCard2ValueUSD">—</span><small data-i18n="drUnitUsd">USD/MT</small></div>
+          <div class="dr-card-secondary"><span id="drCard2ValueEGP">—</span><small data-i18n="drUnitEgp">EGP/MT</small></div>
+          <div class="dr-equation" id="drCard2Equation"></div>
+          <details class="dr-details">
+            <summary data-i18n="drCard2Details">التفاصيل والتنبيه</summary>
+            <div class="dr-details-body" id="drCard2Meta"></div>
+          </details>
+        </div>
+        <div class="dr-card dr-card--outlook" id="drCardOutlook">
+           <div class="dr-card-icon" id="drCardOutlookIcon" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="4" cy="18" r="1.6" fill="currentColor" stroke="none"></circle><path d="M6 16.5 18 6" stroke-dasharray="0.5 3.3"></path><circle cx="19.5" cy="4.7" r="2" fill="currentColor" stroke="none"></circle></svg></div>
+           <div class="dr-card-eyebrow" data-i18n="drCard4Eyebrow">توقع 7 أيام</div>
+           <div class="dr-direction-word dr-direction-word--sm" id="drCard4Word">—</div>
+           <div class="dr-forecast-basis" id="drCard4Baseline">
+             <div class="dr-forecast-basis-item"><span data-i18n="drForecastBaselineLabel">تكلفة مصر المحسوبة اليوم</span><b id="drCard4BaselineUSD" dir="ltr">—</b></div>
+             <span class="dr-forecast-basis-arrow" aria-hidden="true">→</span>
+             <div class="dr-forecast-basis-item"><span data-i18n="drForecastTargetLabel">توقع 7 أيام</span><b id="drCard4TargetExactUSD" dir="ltr">—</b></div>
+           </div>
+           <div class="dr-card-hero"><span id="drCard4TargetUSD">—</span><small data-i18n="drUnitUsd">USD/MT</small></div>
+          <div class="dr-card-secondary"><span id="drCard4TargetEGP">—</span><small data-i18n="drUnitEgp">EGP/MT</small></div>
+          <div class="dr-delta-block">
+            <div class="dr-delta-label" data-i18n="drExpectedChangeLabel">التغير المتوقع مقارنةً بتكلفة مصر المحسوبة اليوم</div>
+            <div class="dr-delta-lines" id="drCard4Change"></div>
+          </div>
+          <svg class="dr-sparkline" id="drCard4MiniChart" viewBox="0 0 190 42" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <div class="dr-confidence" id="drCard4Confidence">
+            <div class="dr-confidence-row">
+              <span data-i18n="drConfidenceHeading">الثقة في التوقع</span>
+            </div>
+            <div class="dr-confidence-value-row">
+              <b id="drCard4ConfidenceValue">—</b>
+              <span class="dr-confidence-qual" id="drCard4ConfidenceQual"></span>
+            </div>
+            <div class="dr-confidence-track"><div class="dr-confidence-fill" id="drCard4ConfidenceFill"></div></div>
+            <span class="dr-confidence-footnote" id="drCard4ConfidenceFootnote"></span>
+          </div>
+          <details class="dr-details">
+            <summary data-i18n="drSourceDetails">المصدر والتفاصيل</summary>
+            <div class="dr-details-body">
+              <div class="dr-card-meta" id="drCard4Meta"></div>
+            </div>
+          </details>
+        </div>
+      </div>
+      <section class="dr-market-board" id="drMarketBoard" aria-labelledby="drMarketBoardTitle">
+        <div class="dr-market-board-head">
+          <div>
+            <h2 class="dr-market-board-title" id="drMarketBoardTitle" data-i18n="drMarketBoardTitle">لوحة بيانات سوق زيت النخيل</h2>
+            <p class="dr-market-board-subtitle" data-i18n="drMarketBoardSubtitle">رؤية السوق ومصدر السعر المعتمد</p>
+          </div>
+          <span class="dr-board-meta" id="drMarketBoardStatus"></span>
+        </div>
+        <div class="dr-market-board-wrap">
+             <table class="dr-market-board-table">
+            <thead><tr><th data-i18n="drBoardProduct">المنتج</th><th data-i18n="drBoardPrice">السعر</th><th data-i18n="drBoardEgp">المعادل بالجنيه</th><th data-i18n="drBoardStatus">الحالة</th><th data-i18n="drBoardTiming">الرصد / التحديث</th></tr></thead>
+            <tbody id="drMarketBoardBody"></tbody>
+             </table>
+             <div class="dr-market-board-mobile" id="drMarketBoardMobile" aria-label="Mobile market data board"></div>
+           </div>
+      </section>
+      <div class="dr-notes-card" id="drNotesCard">
+        <div class="dr-notes-col dr-notes-col--input">
+          <h2 class="dr-notes-title"><span class="dr-notes-title-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg></span><span data-i18n="drNotesTitle">ملاحظات التاجر</span></h2>
+          <p class="dr-notes-hint" data-i18n="drNotesHint"></p>
+          <textarea class="dr-notes-textarea" id="drNotesTextarea" disabled maxlength="1000" data-i18n-placeholder="drNotesPlaceholder"></textarea>
+          <div class="dr-notes-save-row">
+            <button type="button" class="dr-notes-save-btn" id="drNotesSaveBtn" disabled data-i18n="drNotesSaveLabel">حفظ الملاحظة</button>
+            <span class="dr-notes-count" id="drNotesCount">0 / 1000</span>
+          </div>
+          <span class="dr-notes-save-hint" id="drNotesSaveHint" data-i18n="drNotesSaveHint"></span>
+        </div>
+        <div class="dr-notes-col dr-notes-col--list">
+          <div class="dr-notes-list-title"><span class="dr-notes-title-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="14" y2="18"></line></svg></span><span data-i18n="drNotesListTitle">آخر الملاحظات</span></div>
+          <div class="dr-notes-empty" id="drNotesEmpty" data-i18n="drNotesEmptyState" dir="auto"></div>
+          <div class="dr-notes-list" id="drNotesList" hidden></div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- Phase B Slice 5: Cargo / Purchase Intelligence - a FOURTH context,
@@ -1006,7 +1533,7 @@
     </section>
   </div>
 
-  <div id="tabPanelSummary" class="tab-panel"
+  <div id="tabPanelSummary" class="tab-panel" hidden>
     <section aria-label="Summary">
       <div class="product-identity" aria-label="Product identity">
         <div><small data-i18n="productIdentityLabel">Product</small><strong data-i18n="productRbdPalmOlein">RBD Palm Olein</strong></div>
@@ -1750,9 +2277,35 @@
     // this reverses the 2026-08-19/20 "skip it, proceed without" decision
     // now that an explicit human-provided source classification exists.
     portArrivalCostUSD: 130,
-    lang: 'en'
+    // Daily Report (التقرير اليومي) is the default landing tab and its
+    // default language is Arabic/RTL - this is the ONE shared language
+    // toggle for the whole page (setLanguage()), so Detailed Analysis /
+    // Executive Summary also open in Arabic on first load until the EN
+    // toggle is clicked, same mechanism as the existing toggle already
+    // supports. See PROJECT_DECISIONS.md's Daily Report entry.
+    lang: 'ar'
   };
   var state = Object.assign({}, DEFAULTS);
+  // Feature 003 canonical market bridge. The legacy DEFAULTS value remains
+  // available to protected legacy calculations, but it is never the normal
+  // Daily Report market-price authority after this bridge is loaded.
+  var RBD_OLEIN_CANONICAL_SNAPSHOT = null;
+  var MARKET_BOARD_OBSERVATIONS = [];
+  var RBD_OLEIN_CANONICAL_STATUS = { status:'UNAVAILABLE', detail:'No validated canonical market snapshot loaded' };
+  var canonicalHydrationAttempted = false;
+  var feature003ApplicationReady = false;
+  function updateFeature003Ready(){
+    feature003ApplicationReady = canonicalHydrationAttempted === true;
+    window.feature003ApplicationReady = feature003ApplicationReady;
+    document.documentElement.setAttribute('data-feature003-ready', feature003ApplicationReady ? 'true' : 'false');
+    if (document.body) document.body.setAttribute('data-feature003-ready', feature003ApplicationReady ? 'true' : 'false');
+    if (feature003ApplicationReady && new URLSearchParams(window.location.search).has('feature003-overflow-test')) {
+      var selectors = ['.masthead','.tab-bar','#tabPanelDaily','.dr-head','#drCardMarket','#drCardPort','#drCardOutlook','#drMarketBoardMobile','#drNotesCard'];
+      var boxes = {};
+      selectors.forEach(function(selector){ var el = document.querySelector(selector), rect = el && el.getBoundingClientRect(); boxes[selector] = rect ? { left:rect.left, right:rect.right, width:rect.width } : null; });
+      document.documentElement.setAttribute('data-feature003-overflow-metrics', JSON.stringify({ clientWidth:document.documentElement.clientWidth, scrollWidth:document.documentElement.scrollWidth, boxes:boxes, marketMobile:!!document.querySelector('#drMarketBoardMobile .dr-board-mobile-card'), marketTableHidden:window.getComputedStyle(document.querySelector('.dr-market-board-table')).display === 'none', navScrollWidth:document.querySelector('.tab-bar').scrollWidth, navClientWidth:document.querySelector('.tab-bar').clientWidth }));
+    }
+  }
 
   // Product → Origin → Evidence Chain. Only RBD Palm Olein is active; no
   // product inherits another product's benchmark, adjustments or methodology.
@@ -2012,7 +2565,33 @@
     en: {
       eyebrow:'Commodity Landed-Cost Model',
       themeBtn:'Theme',
+      tabDaily:'Daily Report',
       tabFull:'Detailed Analysis', tabSummary:'Executive Summary',
+      // ---- Daily Report (التقرير اليومي) - V1 scaffold ----
+      drTitle:'Daily Report', drSubtitle:'Today\'s market price, expected Egypt port price, current direction, and the 7-day outlook — one page, one validated rate.',
+      drHeadSub:'Purchase Decision Summary',
+      drCard1Eyebrow:'RBD Palm Olein Market Price Today', drCard2Eyebrow:'Expected Egypt Port Price', drCard3Eyebrow:'Current Direction', drCard4Eyebrow:'7-Day Outlook',
+      drUnitUsd:'USD/MT', drUnitEgp:'EGP/MT',
+      drSourceDetails:'Source & details', drCard2Details:'Details & disclaimer',
+      drRefreshLabel:'Refresh Data Now', drRefreshDisabledHint:'Manual refresh isn\'t available right now.', drRefreshReadyHint:'Fetch and validate approved market sources', drRefreshLoading:'Refreshing validated market data…', drRefreshSuccess:'Last successful refresh', drRefreshFailure:'Refresh failed — last validated data preserved', drRefreshUnavailable:'Refresh service unavailable',
+      drMarketBoardTitle:'Palm Oil Market Data Board', drMarketBoardSubtitle:'Market visibility and the approved price evidence', drBoardProduct:'Product', drBoardPrice:'Price', drBoardEgp:'EGP equivalent', drBoardStatus:'Status', drBoardTiming:'Observation / update', drBoardDailyPrice:'Daily Report price', drBoardUnavailable:'Needs review — no approved direct value', drBoardSource:'Source', drQualityTrusted:'Trusted', drQualityReview:'Needs Verification', drQualityConflict:'Source Conflict', drQualityStale:'Stale Data', drQualityUnavailable:'Needs Verification', drBoardObserved:'Observed', drBoardCaptured:'Updated', drBoardTimingUnavailable:'No validated update metadata', drCanonicalUnavailable:'No current validated RBD Palm Olein snapshot is available.',
+      drNotesTitle:'Trader Notes', drNotesEmptyState:'No notes yet.',
+      drNotesHint:'Add what you\'re hearing today from the market, suppliers, freight, or other traders…',
+      drNotesPlaceholder:'Type a note…', drNotesSaveLabel:'Save Note',
+      drNotesSaveHint:'Available from the local Trader Notes tool.', drNotesListTitle:'Recent Notes',
+      drPortAdjustmentLabel:'Trader Port Adjustment', drCard2MarketRow:'RBD Palm Olein Market Price', drCard2TotalRow:'Expected Egypt Port Price',
+      drTargetLabel:'Target', drChangeLabel:'Change vs. today',
+      drConfidenceLabel:'Model Confidence', drConfidenceFootnote:'Based on input data quality and forecast scenario-band width — not a backtested accuracy measure.',
+      drDataUpdateLabel:'Data update date',
+      drExpectedChangeLabel:'Expected Change vs. Modeled Egypt Landed Cost Today', drForecastBaselineLabel:'Modeled Egypt Landed Cost Today', drForecastTargetLabel:'7-Day Forecast', drForecastBasis:'Scenario target: modeled Egypt landed cost, not the RBD market quote or FCPO price',
+      drConfidenceHeading:'Confidence in Forecast',
+      drConfLow:'Low confidence', drConfMedium:'Medium confidence', drConfHigh:'High confidence',
+      // Card 4 is a forecast, not an observed fact - deliberately distinct
+      // wording from trendWordKey()'s صعود/هبوط/استقرار (Card 3, the hero
+      // chip, and WhatsApp all keep that exact factual vocabulary
+      // untouched). Colors still come from the same plain direction value
+      // (up/down/stable) via directionCssClass() - only this text differs.
+      drForecastWordUp:'Likely Up', drForecastWordDown:'Likely Down', drForecastWordStable:'Likely Stable',
       detailExpandAll:'Expand all', detailCollapseAll:'Collapse all',
       grpCostTitle:'Cost & Assumptions', grpCostDesc:"How today's landed cost is built, and the assumptions you can adjust.",
       grpOutlookTitle:'Market Outlook', grpOutlookDesc:'Benchmark evidence and modeled Egypt price direction for a local trader.',
@@ -2276,7 +2855,33 @@
     ar: {
       eyebrow:'نموذج تسعير السلعة عند الوصول',
       themeBtn:'المظهر',
+      tabDaily:'التقرير اليومي',
       tabFull:'التحليل التفصيلي', tabSummary:'الملخص التنفيذي',
+      // ---- التقرير اليومي (Daily Report) - V1 scaffold ----
+      drTitle:'التقرير اليومي', drSubtitle:'سعر السوق اليوم، والسعر المتوقع بميناء مصر، والاتجاه الحالي، وتوقعات 7 أيام — في صفحة واحدة وبسعر صرف واحد معتمد.',
+      drHeadSub:'ملخص قرار الشراء',
+      drCard1Eyebrow:'سعر أولين النخيل المكرر اليوم', drCard2Eyebrow:'السعر المتوقع في ميناء مصر', drCard3Eyebrow:'الاتجاه الحالي', drCard4Eyebrow:'توقع 7 أيام',
+      drUnitUsd:'USD/MT', drUnitEgp:'EGP/MT',
+      drSourceDetails:'المصدر والتفاصيل', drCard2Details:'التفاصيل والتنبيه',
+      drRefreshLabel:'تحديث البيانات الآن', drRefreshDisabledHint:'التحديث اليدوي غير متاح حالياً.', drRefreshReadyHint:'جلب مصادر السوق المعتمدة والتحقق منها', drRefreshLoading:'جارٍ تحديث بيانات السوق المعتمدة…', drRefreshSuccess:'آخر تحديث ناجح', drRefreshFailure:'فشل التحديث — تم الحفاظ على آخر بيانات معتمدة', drRefreshUnavailable:'خدمة التحديث غير متاحة',
+      drMarketBoardTitle:'لوحة بيانات سوق زيت النخيل', drMarketBoardSubtitle:'رؤية السوق وأدلة السعر المعتمد', drBoardProduct:'المنتج', drBoardPrice:'السعر', drBoardEgp:'المعادل بالجنيه', drBoardStatus:'الحالة', drBoardTiming:'الرصد / التحديث', drBoardDailyPrice:'سعر التقرير اليومي', drBoardUnavailable:'يحتاج مراجعة — لا توجد قيمة مباشرة معتمدة', drBoardSource:'المصدر', drQualityTrusted:'موثوق', drQualityReview:'يحتاج مراجعة', drQualityConflict:'اختلاف بين المصادر', drQualityStale:'بيانات غير محدثة', drQualityUnavailable:'يحتاج مراجعة', drBoardObserved:'وقت تسجيل السعر', drBoardCaptured:'آخر تحديث ناجح', drBoardTimingUnavailable:'لا توجد بيانات تحديث معتمدة', drCanonicalUnavailable:'لا تتوفر حالياً لقطة معتمدة وحديثة لسعر أولين النخيل المكرر.',
+      drNotesTitle:'ملاحظات التاجر', drNotesEmptyState:'لا توجد ملاحظات بعد.',
+      drNotesHint:'أضف ما تسمعه اليوم من السوق، الموردين، الشحن أو التجار...',
+      drNotesPlaceholder:'اكتب ملاحظة...', drNotesSaveLabel:'حفظ الملاحظة',
+      drNotesSaveHint:'متاح عبر أداة ملاحظات التاجر المحلية.', drNotesListTitle:'آخر الملاحظات',
+      drPortAdjustmentLabel:'تقدير الوصول للميناء', drCard2MarketRow:'سعر أولين النخيل المكرر', drCard2TotalRow:'السعر المتوقع بميناء مصر',
+      drTargetLabel:'الهدف', drChangeLabel:'التغير مقارنة باليوم',
+      drConfidenceLabel:'درجة ثقة النموذج', drConfidenceFootnote:'مبنية على جودة البيانات المُدخلة واتساع نطاق سيناريو التوقع — وليست مقياس دقة تاريخي مُختبر.',
+      drDataUpdateLabel:'تاريخ تحديث البيانات',
+      drExpectedChangeLabel:'التغير المتوقع مقارنةً بتكلفة مصر المحسوبة اليوم', drForecastBaselineLabel:'تكلفة مصر المحسوبة اليوم', drForecastTargetLabel:'توقع 7 أيام', drForecastBasis:'هدف السيناريو: تكلفة مصر المحسوبة، وليس سعر سوق الأولين أو سعر FCPO',
+      drConfidenceHeading:'الثقة في التوقع',
+      drConfLow:'ثقة منخفضة', drConfMedium:'ثقة متوسطة', drConfHigh:'ثقة مرتفعة',
+      // Card 4 هو توقع وليس واقعة مرصودة - عبارات مختلفة عمدًا عن
+      // trendWordKey()'s صعود/هبوط/استقرار (تبقى هذه هي المفردات الوحيدة
+      // في البطاقة 3 وشريحة الصفحة الرئيسية ورسالة واتساب دون أي تغيير).
+      // الألوان لا تزال مأخوذة من نفس قيمة الاتجاه (up/down/stable) عبر
+      // directionCssClass() - فقط هذا النص يختلف.
+      drForecastWordUp:'صعود محتمل', drForecastWordDown:'هبوط محتمل', drForecastWordStable:'استقرار محتمل',
       detailExpandAll:'توسيع الكل', detailCollapseAll:'طي الكل',
       grpCostTitle:'التكلفة والافتراضات', grpCostDesc:'كيفية تكوين التكلفة الواصلة اليوم، والافتراضات التي يمكنك تعديلها.',
       grpOutlookTitle:'توقعات السوق', grpOutlookDesc:'أدلة السوق المرجعية واتجاه السعر المحسوب في مصر لخدمة قرار التاجر المحلي.',
@@ -2676,6 +3281,23 @@
   // HISTORY, computeLanded()/computeLandedCore(), FORECAST_SNAPSHOTS,
   // MARKET_SNAPSHOTS, or any recommendation logic.
   var CARGO_INTELLIGENCE_MIRROR = [];
+
+  // Daily Report (التقرير اليومي) - Trader Notes. Deliberately NOT the
+  // Trader Intelligence privacy pattern above: these notes are raw text
+  // meant to be shown back to the trader verbatim, not sanitized/mirrored
+  // - see scripts/lib/trader-notes-model.js's header comment. Canonical,
+  // durable, file-based store: data/trader-notes.json. Sole writer:
+  // scripts/trader-notes-local-server.js (a loopback-only local tool,
+  // never wired into any public write path). This embedded array is a
+  // MANUAL, explicit sync target (scripts/sync-trader-notes-to-dashboard.js)
+  // - not automatically regenerated by scripts/daily-refresh.ps1 in V1 -
+  // so it may lag the canonical store until someone runs that sync script
+  // and republishes; the empty-state UI handles that gracefully. DISPLAY
+  // ONLY: never read by DEFAULTS, HISTORY, computeLanded()/
+  // computeLandedCore(), computeExpectedPortArrivalCost(),
+  // FORECAST_SNAPSHOTS, MARKET_SNAPSHOTS, or any recommendation logic - a
+  // note can never alter an authoritative value or the $130 business rule.
+  var TRADER_NOTES = [];
 
   // Real record of what this model actually computed each day it ran (Malaysia
   // origin, VAT off — matches the hero figure's own formula at the time). Not
@@ -6174,6 +6796,7 @@
 
     renderOutlook(forecastPoints);
     renderExecutiveSummary(base);
+    renderDailyReport(base);
     renderRbdMismatchWarning();
     // Presentation-only; a failure here must never block the rest of the
     // dashboard from rendering (same defensive pattern as the FX bank
@@ -6190,6 +6813,7 @@
     // Informational-only widget; a failure here must never block the rest
     // of the dashboard from rendering (see §07 header comment).
     try { renderEgyptFxBankMonitor(); } catch (e) { /* widget-local failure only */ }
+    updateFeature003Ready();
   }
 
   function renderOutlookCards(elId, items){
@@ -6823,12 +7447,17 @@
 
   // ---------- Card 1: Malaysia Market Today ----------
   function renderCard1MarketToday(base){
-    var value = state.rbdOleinFobMarketUSD;
-    var prov = DATA_PROVENANCE.rbdOleinFobMarketUSD;
-    var tierInfo = getEvidenceTier('rbdOleinFobMarketUSD');
+    // The Executive Summary must not render the legacy DEFAULTS quote before
+    // canonical hydration.  A validated current canonical snapshot is the
+    // only runtime source for this market-reported number.
+    var canonical = canonicalSnapshotIsValid(RBD_OLEIN_CANONICAL_SNAPSHOT) ? RBD_OLEIN_CANONICAL_SNAPSHOT : null;
+    var value = canonical ? canonical.canonicalPriceUSDPerMT : null;
+    var prov = canonical ? { observationDate:canonical.observationDate } : null;
+    var tierInfo = canonical ? canonicalQuality(canonical) : { tier:'Unavailable', reason:'No validated current RBD Palm Olein canonical snapshot is available' };
 
-    document.getElementById('execCard1Value').textContent = fmt(value);
-    renderEvidenceBadgeFromTier('execCard1Evidence', tierInfo);
+    document.getElementById('execCard1Value').textContent = value === null ? '—' : fmt(value);
+    if (canonical) renderCanonicalQualityBadge('execCard1Evidence', canonical);
+    else renderEvidenceBadgeFromTier('execCard1Evidence', tierInfo);
 
     var obsDate = prov ? prov.observationDate : null;
     var noteEl = document.getElementById('execCard1Note');
@@ -7178,13 +7807,79 @@
   // (the same function the rest of the model uses) and from the arrival
   // scenario's own already-computed result - no landed-cost formula is
   // duplicated or reimplemented here.
-  function renderExecutiveSummary(base){
-    renderCard1MarketToday(base);
-
-    // Data quality: worst confidence among the critical pricing inputs -
-    // reuses the same High/Medium/Low classification already used by
-    // DATA_PROVENANCE/ASSUMPTION_META, not a new scale. Computed once,
-    // shared by Card 2's data-quality warning and the status-strip chip.
+  // ---------- Daily Report (التقرير اليومي) ----------
+  // Presentation layer only: Card 1 mirrors renderCard1MarketToday()'s own
+  // source (state.rbdOleinFobMarketUSD + getEvidenceTier('rbdOleinFobMarketUSD'),
+  // the Stage 3A direct market-reported field - not a second, independently
+  // chosen "market price"). Card 3 reuses computeCurrentDayOverDayMovement()
+  // verbatim - the SAME basis as the Detailed Analysis hero chip and
+  // Executive Summary Card 1, so all three can never drift onto different
+  // baselines. Every EGP figure on this page multiplies by state.egpUsd -
+  // the same rate Executive Summary itself displays - never a second rate.
+  // Card 2 (portArrivalCostUSD) and Card 4 (7-day outlook) land in Step 3.
+  function directionCssClass(direction){
+    if (direction === 'up') return 'up';
+    if (direction === 'down') return 'down';
+    return 'stable';
+  }
+  function drDirectionArrow(direction){
+    if (direction === 'up') return '▲';
+    if (direction === 'down') return '▼';
+    return '—';
+  }
+  // Plain inline SVG, no charting library - the only color source is the
+  // caller-supplied direction, read from the --dr-up/--dr-down/--dr-stable
+  // tokens so the mandated color rule applies here exactly as it does to
+  // every other direction-coded mark on this page. Premium terminal
+  // polish (subtle area fill under the line, an emphasized endpoint dot)
+  // over the exact same data points - no fabricated values, no chart
+  // library.
+  // 2026-08-20 consolidated pass: color is no longer a caller-supplied
+  // parameter tied to the (now-removed) Current Direction card - it is
+  // derived strictly from this sparkline's OWN plotted series (first vs.
+  // last validated value), fully decoupling Card 1's visual from the
+  // removed feature. Still the mandated --dr-up/--dr-down/--dr-stable
+  // tokens, still zero fabricated data points.
+  function renderDailySparkline(elId, values){
+    var el = document.getElementById(elId);
+    if (!el) return;
+    el.innerHTML = '';
+    if (!values || values.length < 2) return;
+    var w = 190, h = 42, pad = 3;
+    var min = Math.min.apply(null, values), max = Math.max.apply(null, values);
+    var range = (max - min) || 1;
+    var step = (w - pad * 2) / (values.length - 1);
+    var pts = values.map(function(v, i){
+      var x = pad + i * step;
+      var y = pad + (h - pad * 2) * (1 - (v - min) / range);
+      return [x, y];
+    });
+    var lineD = 'M' + pts.map(function(p){ return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' L');
+    var last = pts[pts.length - 1];
+    var fillD = lineD + ' L' + last[0].toFixed(1) + ',' + (h - pad).toFixed(1) +
+      ' L' + pts[0][0].toFixed(1) + ',' + (h - pad).toFixed(1) + ' Z';
+    var seriesDirection = values[values.length - 1] > values[0] ? 'up' : (values[values.length - 1] < values[0] ? 'down' : 'stable');
+    var colorVar = seriesDirection === 'up' ? '--dr-up' : seriesDirection === 'down' ? '--dr-down' : '--dr-stable';
+    var ns = 'http://www.w3.org/2000/svg';
+    var fill = document.createElementNS(ns, 'path');
+    fill.setAttribute('class', 'dr-spark-fill');
+    fill.setAttribute('d', fillD);
+    fill.setAttribute('style', 'fill:var(' + colorVar + ')');
+    var line = document.createElementNS(ns, 'path');
+    line.setAttribute('class', 'dr-spark-line');
+    line.setAttribute('d', lineD);
+    line.setAttribute('style', 'stroke:var(' + colorVar + ')');
+    var dot = document.createElementNS(ns, 'circle');
+    dot.setAttribute('cx', last[0]); dot.setAttribute('cy', last[1]); dot.setAttribute('r', 2.75);
+    dot.setAttribute('style', 'fill:var(' + colorVar + ')');
+    el.appendChild(fill); el.appendChild(line); el.appendChild(dot);
+  }
+  // Data quality: worst confidence among the critical pricing inputs -
+  // reuses the same High/Medium/Low classification already used by
+  // DATA_PROVENANCE/ASSUMPTION_META, not a new scale. Shared by Executive
+  // Summary's Card 2 warning/status-strip chip AND the Daily Report's
+  // forecast confidence score below - one ranking, multiple readers.
+  function computeCriticalFieldsWorstConfidence(){
     var criticalFields = ['cpoMYR','usdMyr','egpUsd','freight'];
     var rank = { Low:0, Medium:1, High:2 };
     var worst = null;
@@ -7192,6 +7887,580 @@
       var c = DATA_PROVENANCE[f] && DATA_PROVENANCE[f].confidence;
       if (c && (worst === null || rank[c] < rank[worst])) worst = c;
     });
+    return worst;
+  }
+
+  // Forecast confidence score - defensible, NOT a backtested accuracy or
+  // probability claim. FORECAST_SNAPSHOTS has zero Evaluated points as of
+  // this writing (see PROJECT_ROADMAP.md's "Forecast trust metrics"
+  // backlog item), so no statistically meaningful accuracy figure exists
+  // to report. Instead this combines two already-real, already-displayed
+  // inputs via one fixed, documented rule - the minimum of the two, so a
+  // single weak input can never be masked by a tight scenario band:
+  //   1. Input data-quality component - the same worst-of Low/Medium/High
+  //      ranking used across the page (computeCriticalFieldsWorstConfidence()
+  //      above), banded to a fixed numeric score.
+  //   2. Scenario-band tightness - (high-low)/base on the SAME forecast
+  //      point already shown in Card 4, narrower band -> higher score.
+  // Constants are fixed here and never tuned per-day to flatter a
+  // particular output - see scripts/test-forecast-confidence.js.
+  var FORECAST_CONFIDENCE_DATA_QUALITY_SCORE = { High:90, Medium:65, Low:35 };
+  var FORECAST_CONFIDENCE_DEFAULT_SCORE = 35;
+  var FORECAST_CONFIDENCE_BAND_FULL_PENALTY_PCT = 20;
+  function computeForecastConfidence(dataQualityWorst, point){
+    var dataQualityScore = FORECAST_CONFIDENCE_DATA_QUALITY_SCORE[dataQualityWorst];
+    if (dataQualityScore === undefined) dataQualityScore = FORECAST_CONFIDENCE_DEFAULT_SCORE;
+    if (!point || !point.baseLandedEgp){
+      return { score: dataQualityScore, dataQualityScore: dataQualityScore, bandScore: null };
+    }
+    var bandWidthPct = Math.abs((point.highLandedEgp - point.lowLandedEgp) / point.baseLandedEgp) * 100;
+    var bandScore = Math.max(0, Math.min(100, 100 - (bandWidthPct / FORECAST_CONFIDENCE_BAND_FULL_PENALTY_PCT) * 100));
+    var score = Math.round(Math.min(dataQualityScore, bandScore));
+    return { score: score, dataQualityScore: dataQualityScore, bandScore: Math.round(bandScore) };
+  }
+
+  // Card 4 mini-chart: today's modeled landed cost -> the 7-day target,
+  // with the SAME low/high scenario band already shown as text, drawn as
+  // plain SVG. Direction-colored via the caller-supplied direction only -
+  // no charting-library default color ever appears here.
+  function renderDailyForecastMiniChart(elId, todayValue, point, direction){
+    var el = document.getElementById(elId);
+    if (!el) return;
+    el.innerHTML = '';
+    if (!point || typeof todayValue !== 'number' || !isFinite(todayValue)) return;
+    var w = 190, h = 42, pad = 7;
+    var values = [todayValue, point.lowLandedEgp, point.highLandedEgp, point.baseLandedEgp];
+    var min = Math.min.apply(null, values), max = Math.max.apply(null, values);
+    var range = (max - min) || 1;
+    function xy(v, x){ return [x, pad + (h - pad * 2) * (1 - (v - min) / range)]; }
+    var p0 = xy(todayValue, pad);
+    var p1 = xy(point.baseLandedEgp, w - pad);
+    var pLow = xy(point.lowLandedEgp, w - pad);
+    var pHigh = xy(point.highLandedEgp, w - pad);
+    var colorVar = direction === 'up' ? '--dr-up' : direction === 'down' ? '--dr-down' : '--dr-stable';
+    var ns = 'http://www.w3.org/2000/svg';
+    // Subtle area fill under the start->target line - same two data
+    // points as the line itself, no third value introduced.
+    var fill = document.createElementNS(ns, 'path');
+    fill.setAttribute('class', 'dr-spark-fill');
+    fill.setAttribute('d', 'M' + p0[0] + ',' + p0[1] + ' L' + p1[0] + ',' + p1[1] +
+      ' L' + p1[0] + ',' + (h - pad) + ' L' + p0[0] + ',' + (h - pad) + ' Z');
+    fill.setAttribute('style', 'fill:var(' + colorVar + ')');
+    var band = document.createElementNS(ns, 'line');
+    band.setAttribute('x1', pLow[0]); band.setAttribute('y1', pLow[1]);
+    band.setAttribute('x2', pHigh[0]); band.setAttribute('y2', pHigh[1]);
+    band.setAttribute('style', 'stroke:var(' + colorVar + ');stroke-width:5;stroke-linecap:round;opacity:.28');
+    var line = document.createElementNS(ns, 'path');
+    line.setAttribute('class', 'dr-spark-line');
+    line.setAttribute('d', 'M' + p0[0] + ',' + p0[1] + ' L' + p1[0] + ',' + p1[1]);
+    line.setAttribute('style', 'stroke:var(' + colorVar + ')');
+    var startDot = document.createElementNS(ns, 'circle');
+    startDot.setAttribute('cx', p0[0]); startDot.setAttribute('cy', p0[1]); startDot.setAttribute('r', 2);
+    startDot.setAttribute('style', 'fill:var(--ink-500)');
+    var dot = document.createElementNS(ns, 'circle');
+    dot.setAttribute('cx', p1[0]); dot.setAttribute('cy', p1[1]); dot.setAttribute('r', 3);
+    dot.setAttribute('style', 'fill:var(' + colorVar + ')');
+    el.appendChild(fill); el.appendChild(band); el.appendChild(line); el.appendChild(startDot); el.appendChild(dot);
+  }
+
+  // Card 4 is a forecast, not an observed fact, so it gets its own
+  // "likely/probable" wording (صعود محتمل) - deliberately distinct from
+  // trendWordKey()'s factual صعود/هبوط/استقرار, which Card 3, the hero
+  // chip, and WhatsApp all keep completely untouched.
+  function forecastTrendWordKey(direction){
+    if (direction === 'up') return 'drForecastWordUp';
+    if (direction === 'down') return 'drForecastWordDown';
+    return 'drForecastWordStable';
+  }
+  // Builds "<arrow> <word>" as DOM nodes (arrow gets its own span for the
+  // CSS's slightly-smaller-than-word sizing) - shared by Card 3 and
+  // Card 4 so the two direction words are visually identical in
+  // construction, only their container's font-size and word vocabulary
+  // (wordText, resolved by the caller) differ. Color still comes from the
+  // caller-supplied `direction` alone via the .up/.down/.stable CSS rule -
+  // unaffected by which vocabulary produced wordText.
+  function renderDirectionWordInto(el, direction, wordText){
+    el.innerHTML = '';
+    var arrow = document.createElement('span');
+    arrow.className = 'dr-dir-arrow';
+    arrow.textContent = drDirectionArrow(direction);
+    el.appendChild(arrow);
+    el.appendChild(document.createTextNode(wordText));
+  }
+  // Bidi-safe numeric+unit line: each line (e.g. "+4.36 USD/MT") is its
+  // own dir="ltr" block so the sign/decimal/unit can never be reordered
+  // by the surrounding RTL card - the fix for the 2026-08-20 UAT "mixed
+  // RTL/LTR" finding. Purely a rendering technique; the numbers passed in
+  // are never altered.
+  function renderDeltaLines(elId, lines){
+    var el = document.getElementById(elId);
+    if (!el) return;
+    el.innerHTML = '';
+    lines.forEach(function(text){
+      var line = document.createElement('div');
+      line.className = 'dr-delta-line';
+      line.dir = 'ltr';
+      line.textContent = text;
+      el.appendChild(line);
+    });
+  }
+
+  // Builds a real ISO UTC instant (MARKET_SNAPSHOTS' own `capturedAt` -
+  // never the wall clock) as bidi-safe DOM nodes, in Egypt/Cairo local
+  // time via the browser's own IANA timezone database (Intl), which
+  // already handles Egypt's DST transitions correctly without porting
+  // scripts/lib/egypt-schedule-gate.ps1's Windows-TimeZoneInfo-based rule
+  // (a different platform solving a different problem - when to RUN
+  // automation, not what time to DISPLAY - nothing duplicated).
+  // "-u-nu-latn" forces Western digits even in the Arabic locale, matching
+  // this file's existing "numerals are never Arabic-Indic" convention
+  // (see formatLongDate() and appendDatePhrase()'s own comments).
+  //
+  // Returns a DocumentFragment, or null if isoInstant is missing/
+  // unparseable - callers must show an honest "—", never a fabricated
+  // fallback date.
+  //
+  // Building this as ONE plain string (the pre-2026-08-20 approach) is
+  // NOT sufficient for correct Arabic rendering, even wrapped as a whole
+  // in dir="ltr"/unicode-bidi:isolate (2026-08-20 UAT correction, verified
+  // empirically via bounding-rect measurement in headless Chrome, not just
+  // eyeballed): per UAX#9 rule W2, a Latin digit run that follows an
+  // Arabic-letter run still gets swept into that run's RTL reordering as
+  // a block, even inside an outer LTR isolate - e.g. "20 أغسطس 2026 •
+  // 02:29 ص" would render with everything after the day number reversed
+  // end-to-end. The only combination proven to keep every piece both
+  // legible AND in logical left-to-right order is isolating EVERY
+  // semantically distinct piece individually - day/year/hour/minute as
+  // their own dir="ltr" <bdi>, month name/day-period as their own
+  // dir="rtl" <bdi> - never the compound string as one unit.
+  function buildCairoDateTimeFragment(isoInstant){
+    if (!isoInstant) return null;
+    var d = new Date(isoInstant);
+    if (isNaN(d.getTime())) return null;
+    var locale = (state.lang === 'ar' ? 'ar-EG' : 'en-GB') + '-u-nu-latn';
+    var dateParts, timeParts;
+    try {
+      dateParts = new Intl.DateTimeFormat(locale, { timeZone: 'Africa/Cairo', day: 'numeric', month: 'long', year: 'numeric' }).formatToParts(d);
+      timeParts = new Intl.DateTimeFormat(locale, { timeZone: 'Africa/Cairo', hour: '2-digit', minute: '2-digit', hour12: true }).formatToParts(d);
+    } catch (e) {
+      return null;
+    }
+    var frag = document.createDocumentFragment();
+    var NUMERIC_TYPES = { day: 1, year: 1, hour: 1, minute: 1, second: 1 };
+    var buffer = '';
+    function flushNumericBuffer(){
+      if (!buffer) return;
+      var b = document.createElement('bdi');
+      b.dir = 'ltr';
+      b.textContent = buffer;
+      frag.appendChild(b);
+      buffer = '';
+    }
+    function appendParts(parts){
+      parts.forEach(function(p){
+        if (p.type === 'literal'){
+          // A colon between two numeric parts (hour ':' minute) stays
+          // inside the same numeric cluster/bdi; any other literal
+          // (spaces, commas) is plain neutral text between isolates.
+          if (buffer && /^[:.]$/.test(p.value)) { buffer += p.value; return; }
+          flushNumericBuffer();
+          frag.appendChild(document.createTextNode(p.value));
+          return;
+        }
+        if (NUMERIC_TYPES[p.type]){
+          buffer += p.value;
+          return;
+        }
+        // Non-numeric strong-text piece (month name, AM/PM marker) - own
+        // isolate too, so it can never be swept into a neighboring
+        // numeric cluster's reordering.
+        flushNumericBuffer();
+        var val = p.value;
+        // Cosmetic only: some ICU data lowercases the EN am/pm marker -
+        // uppercase it for a cleaner look. No effect on the AR ص/م marker.
+        if (p.type === 'dayPeriod' && state.lang !== 'ar') val = val.toUpperCase();
+        var bd = document.createElement('bdi');
+        bd.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
+        bd.textContent = val;
+        frag.appendChild(bd);
+      });
+      flushNumericBuffer();
+    }
+    appendParts(dateParts);
+    frag.appendChild(document.createTextNode(' • '));
+    appendParts(timeParts);
+    return frag;
+  }
+
+  function canonicalSnapshotIsValid(snapshot){
+    return !!snapshot && snapshot.productId === 'RBD_PALM_OLEIN' && snapshot.productCanonicalName === 'RBD Palm Olein' &&
+      typeof snapshot.canonicalPriceUSDPerMT === 'number' && isFinite(snapshot.canonicalPriceUSDPerMT) && snapshot.canonicalPriceUSDPerMT > 0 &&
+      snapshot.validationState === 'VALIDATED' && snapshot.freshnessState === 'CURRENT' && snapshot.conflictState !== 'MATERIAL_CONFLICT' &&
+      typeof snapshot.observationDate === 'string' && typeof snapshot.capturedAt === 'string';
+  }
+  function canonicalQuality(snapshot){
+    if (!snapshot) return { labelKey:'drQualityUnavailable', cls:'unavailable' };
+    if (snapshot.conflictState === 'MATERIAL_CONFLICT') return { labelKey:'drQualityConflict', cls:'conflict' };
+    if (snapshot.freshnessState !== 'CURRENT') return { labelKey:'drQualityStale', cls:'stale' };
+    if (snapshot.validationState !== 'VALIDATED') return { labelKey:'drQualityReview', cls:'review' };
+    return { labelKey:'drQualityTrusted', cls:'trusted' };
+  }
+  function renderCanonicalQualityBadge(elId, snapshot){
+    var el = document.getElementById(elId); if (!el) return;
+    var q = canonicalQuality(snapshot); el.className = 'dr-board-badge ' + q.cls; el.textContent = t(q.labelKey);
+  }
+  function renderBoardDate(target, dateText, capturedAt){
+    target.innerHTML = '';
+    if (dateText) appendDatePhrase(target, t('drBoardObserved') + ': ', dateText);
+    if (capturedAt){
+      if (dateText) target.appendChild(document.createTextNode(' · '));
+      target.appendChild(document.createTextNode(t('drBoardCaptured') + ': '));
+      var frag = buildCairoDateTimeFragment(capturedAt); if (frag) target.appendChild(frag); else target.appendChild(document.createTextNode('—'));
+    }
+  }
+  function renderMarketBoard(){
+    var body = document.getElementById('drMarketBoardBody'); if (!body) return;
+    var s = RBD_OLEIN_CANONICAL_SNAPSHOT, q = canonicalQuality(s), boardByProduct = {};
+    (MARKET_BOARD_OBSERVATIONS || []).forEach(function (r) {
+      var current = boardByProduct[r.productId];
+      if (!current) { boardByProduct[r.productId] = r; return; }
+      // FCPO can retain multiple same-session contract records as audit
+      // evidence. The board must render the source-designated active/current
+      // benchmark, not whichever contract happened to be stored first.
+      if (r.productId === 'FCPO_FUTURES') {
+        var rActive = r.fallbackUsed !== true && r.contractSelectionReason === 'SOURCE_DESIGNATED_ACTIVE_CURRENT_CONTRACT';
+        var currentActive = current.fallbackUsed !== true && current.contractSelectionReason === 'SOURCE_DESIGNATED_ACTIVE_CURRENT_CONTRACT';
+        if (rActive !== currentActive) { if (rActive) boardByProduct[r.productId] = r; return; }
+        if (String(r.acquiredAt || '') > String(current.acquiredAt || '')) boardByProduct[r.productId] = r;
+        return;
+      }
+      if (String(r.observationTimestamp) > String(current.observationTimestamp) || (String(r.observationTimestamp) === String(current.observationTimestamp) && String(r.acquiredAt || '') > String(current.acquiredAt || ''))) boardByProduct[r.productId] = r;
+    });
+    function fcpoContractLabel(contract){
+      var months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'], m = /^(\d{4})-(\d{2})$/.exec(String(contract || ''));
+      return m && months[Number(m[2]) - 1] ? months[Number(m[2]) - 1] + '-' + m[1] : (contract || '—');
+    }
+    var rows = [
+      { ar:'عقود زيت النخيل الخام الآجلة', en:'FCPO Futures — Bursa Malaysia exchange benchmark', fcpo:true },
+      { ar:'أولين النخيل المكرر', en:'RBD Palm Olein', primary:true },
+      { ar:'زيت النخيل الخام', en:'Crude Palm Oil (CPO)' },
+      { ar:'زيت النخيل المكرر', en:'RBD Palm Oil' },
+      { ar:'ستيارين النخيل المكرر', en:'RBD Palm Stearin' },
+      { ar:'زيت نواة النخيل', en:'Palm Kernel Oil (PKO)' }
+    ];
+    body.innerHTML = '';
+    rows.forEach(function(row){
+      var tr = document.createElement('tr'); if (row.primary) tr.className = 'dr-board-primary';
+      var product = document.createElement('td'); product.innerHTML = '<span class="dr-board-product-ar"></span><span class="dr-board-product-en"></span>'; product.querySelector('.dr-board-product-ar').textContent = row.ar; product.querySelector('.dr-board-product-en').textContent = row.en;
+      var price = document.createElement('td'), egp = document.createElement('td'), status = document.createElement('td'), timing = document.createElement('td');
+      var fcpoRecord = row.fcpo ? boardByProduct.FCPO_FUTURES : null;
+      if (row.fcpo && fcpoRecord && fcpoRecord.validationState === 'VALIDATED' && fcpoRecord.canonicalEligibility){
+        price.innerHTML = '<span class="dr-board-price"></span> <small>MYR/MT</small>'; price.querySelector('.dr-board-price').textContent = fmt(fcpoRecord.rawValue, 0);
+        egp.textContent = '—'; var fcpoBadge = document.createElement('span'); fcpoBadge.className = 'dr-board-badge trusted'; fcpoBadge.textContent = (fcpoRecord.priceType === 'SESSION_LAST' ? 'SESSION LAST' : fcpoRecord.priceType) + ' · ' + (fcpoRecord.delayedOrLive || 'DELAYED'); status.appendChild(fcpoBadge); timing.className = 'dr-board-meta'; renderBoardDate(timing, fcpoRecord.observationTimestamp, fcpoRecord.acquiredAt);
+        var fcpoContract = document.createElement('div'); fcpoContract.textContent = fcpoContractLabel(fcpoRecord.selectedContract || fcpoRecord.contractMonth) + ' · ' + (fcpoRecord.fallbackUsed ? 'FALLBACK SELECTED' : 'ACTIVE/CURRENT CONTRACT'); timing.insertBefore(fcpoContract, timing.firstChild);
+      } else if (row.fcpo){
+        price.textContent = '—'; egp.textContent = '—'; var fcpoUnavailable = document.createElement('span'); fcpoUnavailable.className = 'dr-board-badge unavailable'; fcpoUnavailable.textContent = 'بيانات غير محدثة'; status.appendChild(fcpoUnavailable); timing.className = 'dr-board-meta'; timing.textContent = fcpoRecord && fcpoRecord.observationTimestamp ? fcpoRecord.observationTimestamp : t('drBoardUnavailable');
+      } else if (row.primary && canonicalSnapshotIsValid(s)){
+        price.innerHTML = '<span class="dr-board-price"></span> <small>USD/MT</small>'; price.querySelector('.dr-board-price').textContent = fmt(s.canonicalPriceUSDPerMT, 2);
+        egp.innerHTML = '<span class="dr-board-secondary"></span> EGP/MT'; egp.querySelector('.dr-board-secondary').textContent = fmt(s.canonicalPriceUSDPerMT * state.egpUsd, 2);
+        var badge = document.createElement('span'); badge.className = 'dr-board-badge ' + q.cls; badge.textContent = t(q.labelKey); status.appendChild(badge);
+        timing.className = 'dr-board-meta'; renderBoardDate(timing, s.observationDate, s.capturedAt);
+      } else if (row.primary){
+        price.textContent = '—'; egp.textContent = '—'; var missing = document.createElement('span'); missing.className = 'dr-board-badge ' + q.cls; missing.textContent = t(q.labelKey); status.appendChild(missing); timing.className = 'dr-board-meta'; timing.textContent = t('drBoardTimingUnavailable');
+      } else {
+        var boardRecord = boardByProduct[row.en === 'Crude Palm Oil (CPO)' ? 'CPO_PHYSICAL' : row.en === 'RBD Palm Oil' ? 'RBD_PALM_OIL' : row.en === 'RBD Palm Stearin' ? 'RBD_PALM_STEARIN' : 'RBD_PALM_KERNEL_OIL'];
+        if (boardRecord && boardRecord.validationState === 'VALIDATED' && boardRecord.canonicalEligibility) {
+          price.innerHTML = '<span class="dr-board-price"></span> <small>USD/MT</small>'; price.querySelector('.dr-board-price').textContent = fmt(boardRecord.normalizedPrice, 2);
+          egp.innerHTML = '<span class="dr-board-secondary"></span> EGP/MT'; egp.querySelector('.dr-board-secondary').textContent = fmt(boardRecord.normalizedPrice * state.egpUsd, 2);
+          var boardBadge = document.createElement('span'); boardBadge.className = 'dr-board-badge trusted'; boardBadge.textContent = t('drQualityTrusted'); status.appendChild(boardBadge); timing.className = 'dr-board-meta'; renderBoardDate(timing, boardRecord.observationDate, boardRecord.acquiredAt);
+        } else {
+          price.textContent = '—'; egp.textContent = '—'; var unavailable = document.createElement('span'); unavailable.className = 'dr-board-badge unavailable'; unavailable.textContent = t('drQualityReview'); status.appendChild(unavailable); timing.className = 'dr-board-meta'; timing.textContent = t('drBoardUnavailable');
+        }
+      }
+      tr.appendChild(product); tr.appendChild(price); tr.appendChild(egp); tr.appendChild(status); tr.appendChild(timing); body.appendChild(tr);
+    });
+    var mobileBoard = document.getElementById('drMarketBoardMobile');
+    if (mobileBoard) {
+      mobileBoard.innerHTML = '';
+      Array.prototype.forEach.call(body.querySelectorAll('tr'), function (tr) {
+        var cells = tr.children, card = document.createElement('article');
+        card.className = 'dr-board-mobile-card' + (tr.classList.contains('dr-board-primary') ? ' primary' : '');
+        var productCell = document.createElement('div'); productCell.className = 'dr-board-mobile-product'; productCell.innerHTML = cells[0].innerHTML;
+        var priceCell = document.createElement('div'); priceCell.className = 'dr-board-mobile-price'; priceCell.innerHTML = cells[1].innerHTML;
+        var secondaryCell = document.createElement('div'); secondaryCell.className = 'dr-board-mobile-secondary'; secondaryCell.innerHTML = cells[2].innerHTML;
+        var statusCell = document.createElement('div'); statusCell.className = 'dr-board-mobile-status'; statusCell.innerHTML = cells[3].innerHTML;
+        var timingCell = document.createElement('div'); timingCell.className = 'dr-board-mobile-timing'; timingCell.innerHTML = cells[4].innerHTML;
+        card.appendChild(productCell); card.appendChild(priceCell); card.appendChild(secondaryCell); card.appendChild(statusCell); card.appendChild(timingCell); mobileBoard.appendChild(card);
+      });
+    }
+    var boardStatus = document.getElementById('drMarketBoardStatus'); if (boardStatus) boardStatus.textContent = s && s.selectedSourceName ? t('drBoardSource') + ': ' + s.selectedSourceName : t('drBoardTimingUnavailable');
+  }
+  function renderRefreshSuccessHint(capturedAt){
+    var hint = document.getElementById('drRefreshHint'); if (!hint) return;
+    hint.innerHTML = ''; hint.appendChild(document.createTextNode(t('drRefreshSuccess') + ': '));
+    var frag = buildCairoDateTimeFragment(capturedAt); if (frag) hint.appendChild(frag); else hint.appendChild(document.createTextNode('—'));
+  }
+  function loadCanonicalMarketState(){
+    if (!window.fetch || window.location.protocol === 'file:') { canonicalHydrationAttempted = true; RBD_OLEIN_CANONICAL_STATUS = { status:'UNAVAILABLE', detail:'Refresh service requires the local integration server' }; renderAll(); return; }
+    Promise.all([window.fetch('/api/rbd-olein/canonical?feature003=' + Date.now(), { cache:'no-store' }).then(function(response){ if (!response.ok) throw new Error('canonical snapshot unavailable'); return response.json(); }), window.fetch('/api/market-board/observations?feature003=' + Date.now(), { cache:'no-store' }).then(function(response){ return response.ok ? response.json() : { records: [] }; })]).then(function(payload){
+      var dataset = payload[0], boardDataset = payload[1]; MARKET_BOARD_OBSERVATIONS = boardDataset && Array.isArray(boardDataset.records) ? boardDataset.records : [];
+      var records = dataset && Array.isArray(dataset.records) ? dataset.records : [], latest = null, i;
+      records.forEach(function (candidate) {
+        if (!canonicalSnapshotIsValid(candidate)) return;
+        if (!latest || String(candidate.observationDateTime || candidate.capturedAt).localeCompare(String(latest.observationDateTime || latest.capturedAt)) > 0 || (String(candidate.observationDateTime || candidate.capturedAt) === String(latest.observationDateTime || latest.capturedAt) && String(candidate.capturedAt).localeCompare(String(latest.capturedAt)) > 0)) latest = candidate;
+      });
+      RBD_OLEIN_CANONICAL_SNAPSHOT = latest || (records.length ? records[records.length - 1] : null);
+      RBD_OLEIN_CANONICAL_STATUS = { status: canonicalSnapshotIsValid(latest) ? 'READY' : 'STALE_OR_INVALID', detail: canonicalSnapshotIsValid(latest) ? null : 'snapshot failed the consumer gate' };
+      if (canonicalSnapshotIsValid(latest)) state.rbdOleinFobMarketUSD = latest.canonicalPriceUSDPerMT;
+      canonicalHydrationAttempted = true; renderAll();
+    }).catch(function(error){ canonicalHydrationAttempted = true; RBD_OLEIN_CANONICAL_STATUS = { status:'UNAVAILABLE', detail:error.message }; renderAll(); });
+  }
+  function runRealMarketRefresh(){
+    var button = document.getElementById('drRefreshBtn'), hint = document.getElementById('drRefreshHint');
+    if (!window.fetch || window.location.protocol === 'file:'){ hint.textContent = t('drRefreshUnavailable'); return; }
+    button.disabled = true; hint.textContent = t('drRefreshLoading');
+    window.fetch('/api/rbd-olein/refresh', { method:'POST', headers:{ 'Content-Type':'application/json' }, cache:'no-store' }).then(function(response){ return response.json().then(function(body){ return { ok:response.ok, body:body }; }); }).then(function(result){
+      if (!result.ok || !canonicalSnapshotIsValid(result.body.canonicalSnapshot)) throw new Error(result.body && result.body.status ? result.body.status : 'refresh validation failed');
+      RBD_OLEIN_CANONICAL_SNAPSHOT = result.body.canonicalSnapshot; RBD_OLEIN_CANONICAL_STATUS = { status:'READY', detail:null }; state.rbdOleinFobMarketUSD = RBD_OLEIN_CANONICAL_SNAPSHOT.canonicalPriceUSDPerMT; renderRefreshSuccessHint(RBD_OLEIN_CANONICAL_SNAPSHOT.capturedAt); renderAll();
+    }).catch(function(error){ RBD_OLEIN_CANONICAL_STATUS = { status:'REFRESH_FAILURE', detail:error.message }; hint.textContent = t('drRefreshFailure'); renderAll(); }).finally(function(){ button.disabled = false; });
+  }
+  function renderDailyReport(base){
+    var panel = document.getElementById('tabPanelDaily');
+    if (!panel) return;
+
+    // ---- Card 1: Today's Market Price ----
+    var canonical = canonicalSnapshotIsValid(RBD_OLEIN_CANONICAL_SNAPSHOT) ? RBD_OLEIN_CANONICAL_SNAPSHOT : null;
+    var marketUSD = canonical ? canonical.canonicalPriceUSDPerMT : null;
+    document.getElementById('drCard1ValueUSD').textContent = marketUSD === null ? '—' : fmt(marketUSD, 2);
+    document.getElementById('drCard1ValueEGP').textContent = marketUSD === null ? '—' : fmt(marketUSD * state.egpUsd, 2);
+    renderCanonicalQualityBadge('drCard1Evidence', canonical || RBD_OLEIN_CANONICAL_SNAPSHOT);
+    var marketProv = canonical ? { source:canonical.selectedSourceName, observationDate:canonical.observationDate } : null;
+    var marketMetaEl = document.getElementById('drCard1Meta');
+    var marketIsStale = !canonical;
+    marketMetaEl.innerHTML = '';
+    var sourceText = (marketProv && marketProv.source) ? (marketProv.source + ' · ') : '';
+    if (marketProv && marketProv.observationDate){
+      marketMetaEl.appendChild(document.createTextNode(sourceText));
+      appendDatePhrase(marketMetaEl, (marketIsStale ? t('execCard1StaleLabel') : t('execCard1AsOf')) + ' ', marketProv.observationDate);
+    } else {
+      marketMetaEl.textContent = sourceText + (marketIsStale ? t('execCard1StaleLabel') : t('execCard1AsOf')) + ' —';
+    }
+    marketMetaEl.classList.toggle('dr-meta-warn', marketIsStale);
+
+    // ---- Compact header: the real last-successful-refresh instant
+    // (MARKET_SNAPSHOTS' own capturedAt - never Date.now()/new Date(),
+    // which would fabricate "today" merely because the page happened to
+    // be opened today), formatted once in Egypt/Cairo local time. This is
+    // deliberately a THIRD, distinct concept from snapshotDate (business
+    // date) and DATA_PROVENANCE.*.observationDate (market source's own
+    // dated) - see PROJECT_DECISIONS.md's 2026-08-20 consolidated-pass
+    // entry. The freshness chip's green/amber state still reuses Card 1's
+    // own already-computed evidence tier (no second freshness calc). ----
+    var snaps = (typeof MARKET_SNAPSHOTS !== 'undefined' && MARKET_SNAPSHOTS) || [];
+    var latestSnap = canonical;
+    var drHeadDateEl = document.getElementById('drHeadDate');
+    drHeadDateEl.innerHTML = '';
+    var capturedAtFrag = (latestSnap && latestSnap.capturedAt) ? buildCairoDateTimeFragment(latestSnap.capturedAt) : null;
+    if (capturedAtFrag) drHeadDateEl.appendChild(capturedAtFrag);
+    else drHeadDateEl.textContent = '—';
+    var mastheadDateEl = document.getElementById('mastheadSnapshotDate');
+    if (mastheadDateEl){ mastheadDateEl.innerHTML = ''; if (canonical) appendDatePhrase(mastheadDateEl, '', canonical.observationDate); else mastheadDateEl.textContent = '—'; }
+    var freshEl = document.getElementById('drHeadFresh');
+    var freshLabelEl = freshEl.querySelector('span:last-child');
+    if (freshLabelEl) freshLabelEl.textContent = t('drDataUpdateLabel');
+    freshEl.classList.toggle('dr-fresh-stale', marketIsStale);
+
+    // Sparkline: last ~14 daily MARKET_SNAPSHOTS modeled-FOB values - reads
+    // the same embedded mirror everything else on the page already reads,
+    // computes nothing new. Color now comes strictly from this series'
+    // own first/last plotted value (see renderDailySparkline()'s own
+    // comment) - fully decoupled from the removed Current Direction card.
+    var sparkValues = canonical ? [marketUSD] : [];
+    renderDailySparkline('drCard1Sparkline', sparkValues);
+
+    // ---- Card 2: Expected Egypt Port Price ----
+    // Reuses computeExpectedPortArrivalCost() verbatim - the same pure
+    // function/business rule Executive Summary's own Card 2 addendum
+    // calls - but anchored to THIS page's own Card 1 headline figure
+    // (state.rbdOleinFobMarketUSD) rather than Executive Summary's
+    // base.fobOlein (the modeled FOB), so the Market Price + $130 =
+    // Expected Port Price arithmetic the user sees on THIS card is
+    // exactly, visibly verifiable against Card 1 above it. This is a
+    // deliberate, documented divergence in WHICH figure feeds the shared
+    // formula, not a second formula.
+    var portArrival = marketUSD === null ? null : computeExpectedPortArrivalCost(marketUSD, state.portArrivalCostUSD);
+    var portArrivalEGP = portArrival ? portArrival.expectedPortArrivalUSD * state.egpUsd : null;
+    var adjustmentEGP = state.portArrivalCostUSD * state.egpUsd;
+    document.getElementById('drCard2ValueUSD').textContent = portArrival ? fmt(portArrival.expectedPortArrivalUSD, 2) : '—';
+    document.getElementById('drCard2ValueEGP').textContent = portArrival ? fmt(portArrivalEGP, 2) : '—';
+    // Visual equation (price -> +$130 -> total), USD-only for compactness -
+    // the EGP figures for every one of these three amounts are already
+    // shown (hero above, and the collapsible detail below), so the
+    // equation itself doesn't repeat them a third time.
+    var equationEl = document.getElementById('drCard2Equation');
+    equationEl.innerHTML = '';
+    if (!portArrival){ document.getElementById('drCard2Meta').textContent = t('drCanonicalUnavailable'); }
+    else {
+    // Value-over-label stacked item (matches Card 1/2's own hero
+    // treatment - same --font-display numeral style everywhere on this
+    // page, no monospace) - the value is its own dir="ltr" block so
+    // "+$130" can never be bidi-reordered inside the RTL card.
+    function eqRow(labelText, valueText, isTotal){
+      var row = document.createElement('div');
+      row.className = 'dr-eq-item' + (isTotal ? ' dr-eq-total' : '');
+      var v = document.createElement('div'); v.className = 'dr-eq-value'; v.dir = 'ltr'; v.textContent = valueText;
+      var l = document.createElement('div'); l.className = 'dr-eq-label'; l.textContent = labelText;
+      row.appendChild(v); row.appendChild(l);
+      equationEl.appendChild(row);
+    }
+    function eqOp(symbol){
+      var op = document.createElement('div'); op.className = 'dr-equation-op'; op.textContent = symbol;
+      equationEl.appendChild(op);
+    }
+    function eqDivider(){
+      var hr = document.createElement('div'); hr.className = 'dr-eq-divider';
+      equationEl.appendChild(hr);
+    }
+    // Value+unit format (e.g. "1,185 USD/MT"), not a "$" prefix - matches
+    // the mandated equation mock (2026-08-20 UAT correction). The "+"/"="
+    // relationship is already conveyed by eqOp()/eqDivider() between rows,
+    // so the row values themselves stay plain (no redundant leading sign).
+    eqRow(t('drCard2MarketRow'), fmt(marketUSD) + ' ' + t('drUnitUsd'), false);
+    eqOp('+');
+    eqRow(t('drPortAdjustmentLabel'), fmt(state.portArrivalCostUSD) + ' ' + t('drUnitUsd'), false);
+    eqDivider();
+    eqRow(t('drCard2TotalRow'), fmt(portArrival.expectedPortArrivalUSD) + ' ' + t('drUnitUsd'), true);
+    document.getElementById('drCard2Meta').textContent = t('portArrivalSourcePrefix') + ' ' + t('portArrivalWarn') +
+      ' · $' + fmt(marketUSD) + ' / ' + fmt(marketUSD * state.egpUsd) + ' EGP + $' + fmt(state.portArrivalCostUSD) + ' / ' + fmt(adjustmentEGP) + ' EGP = $' + fmt(portArrival.expectedPortArrivalUSD) + ' / ' + fmt(portArrivalEGP) + ' EGP';
+    }
+
+    // ---- Card 4: 7-Day Outlook ----
+    // Reads the SAME canonical forecast point Executive Summary's own
+    // 7-day card reads (latestForecastSnapshot() + findForecastPointByHorizon,
+    // explicit horizonWeeks lookup, never an array-position assumption) -
+    // no forecast is recomputed here, only re-presented with a USD
+    // equivalent, a confidence score, and the mandated color rule added.
+    var latestForecast = latestForecastSnapshot();
+    var forecastPointsList = latestForecast && latestForecast.forecastPoints ? latestForecast.forecastPoints : [];
+    var point7Day = findForecastPointByHorizon(forecastPointsList, 1);
+    var worstConfidenceForConfidenceScore = computeCriticalFieldsWorstConfidence();
+    var outlookCard = document.getElementById('drCardOutlook');
+    var outlookWordEl = document.getElementById('drCard4Word');
+    var outlookChangeEl = document.getElementById('drCard4Change');
+    var outlookMetaEl = document.getElementById('drCard4Meta');
+    var confValueEl = document.getElementById('drCard4ConfidenceValue');
+    var confQualEl = document.getElementById('drCard4ConfidenceQual');
+    var confFillEl = document.getElementById('drCard4ConfidenceFill');
+    var confFootEl = document.getElementById('drCard4ConfidenceFootnote');
+    outlookCard.classList.remove('up', 'down', 'stable');
+    if (!point7Day){
+      document.getElementById('drCard4TargetUSD').textContent = '—';
+      document.getElementById('drCard4TargetEGP').textContent = '—';
+      document.getElementById('drCard4BaselineUSD').textContent = '—';
+      document.getElementById('drCard4TargetExactUSD').textContent = '—';
+      outlookWordEl.textContent = '—';
+      renderDeltaLines('drCard4Change', ['—']);
+      outlookMetaEl.textContent = t('execForecastInsufficient');
+      confValueEl.textContent = '—';
+      confQualEl.textContent = '';
+      confFillEl.style.width = '0%';
+      confFillEl.classList.remove('dr-conf-high', 'dr-conf-mid');
+      confFootEl.textContent = '';
+      outlookCard.classList.add('stable');
+      renderDailyForecastMiniChart('drCard4MiniChart', null, null, 'flat');
+    } else {
+      var targetEGP = point7Day.baseLandedEgp;
+      var targetUSD = targetEGP / state.egpUsd;
+      var baselineUSD = base.landedEGP / state.egpUsd;
+      var changeEGP = targetEGP - base.landedEGP;
+      var changeUSD = changeEGP / state.egpUsd;
+      var changePct = base.landedEGP ? (changeEGP / base.landedEGP * 100) : 0;
+      var outlookDirection = Math.round(changeEGP) === 0 ? 'flat' : (changeEGP > 0 ? 'up' : 'down');
+      var oCls = directionCssClass(outlookDirection);
+      outlookCard.classList.add(oCls);
+      document.getElementById('drCard4TargetUSD').textContent = fmt(targetUSD);
+      document.getElementById('drCard4TargetEGP').textContent = fmt(targetEGP);
+      document.getElementById('drCard4BaselineUSD').textContent = fmt(baselineUSD, 2) + ' USD/MT';
+      document.getElementById('drCard4TargetExactUSD').textContent = fmt(targetUSD, 2) + ' USD/MT';
+      // Forecast-specific wording (صعود محتمل) - color still comes from
+      // outlookDirection alone via the .up/.down/.stable CSS rule, exactly
+      // as before; only the displayed word text changes.
+      renderDirectionWordInto(outlookWordEl, outlookDirection, t(forecastTrendWordKey(outlookDirection)));
+      var oSign = changeEGP >= 0 ? '+' : '';
+      // Each line is its own LTR block (renderDeltaLines), same bidi fix
+      // as Card 3 - the numbers (changeUSD/changeEGP/changePct) are
+      // unchanged, only split across three isolated lines.
+      renderDeltaLines('drCard4Change', [
+        oSign + fmt(changeUSD, 2) + ' USD/MT',
+        oSign + fmt(changeEGP, 0) + ' EGP/MT',
+        oSign + fmt(changePct, 1) + '%'
+      ]);
+      outlookMetaEl.innerHTML = '';
+      outlookMetaEl.appendChild(document.createTextNode(t('drForecastBasis') + ' • '));
+      appendDatePhrase(outlookMetaEl, t('execScenarioDerivedPrefix') + ' • ', point7Day.targetDate);
+
+      var confidence = computeForecastConfidence(worstConfidenceForConfidenceScore, point7Day);
+      confValueEl.textContent = confidence.score + '%';
+      confFillEl.style.width = Math.max(4, Math.min(100, confidence.score)) + '%';
+      confFillEl.classList.remove('dr-conf-high', 'dr-conf-mid');
+      // Qualitative word reuses the EXACT same score thresholds as the bar
+      // color below it (70/40) - one banding, two presentations, so the
+      // word and the bar fill can never disagree with each other.
+      if (confidence.score >= 70) { confFillEl.classList.add('dr-conf-high'); confQualEl.textContent = t('drConfHigh'); }
+      else if (confidence.score >= 40) { confFillEl.classList.add('dr-conf-mid'); confQualEl.textContent = t('drConfMedium'); }
+      else { confQualEl.textContent = t('drConfLow'); }
+      confFootEl.textContent = t('drConfidenceFootnote');
+
+      renderDailyForecastMiniChart('drCard4MiniChart', base.landedEGP, point7Day, outlookDirection);
+    }
+
+    renderMarketBoard();
+    renderTraderNotes();
+  }
+
+  // Trader Notes: pure display of the embedded TRADER_NOTES mirror (see
+  // that var's own header comment for the sync/write-path boundary) - most
+  // recent first, raw text rendered verbatim via textContent (never
+  // innerHTML) so nothing a trader typed can ever be interpreted as markup.
+  function renderTraderNotes(){
+    var listEl = document.getElementById('drNotesList');
+    var emptyEl = document.getElementById('drNotesEmpty');
+    if (!listEl || !emptyEl) return;
+    var notes = (typeof TRADER_NOTES !== 'undefined' && TRADER_NOTES) || [];
+    if (!notes.length){
+      emptyEl.hidden = false;
+      listEl.hidden = true;
+      listEl.innerHTML = '';
+      return;
+    }
+    emptyEl.hidden = true;
+    listEl.hidden = false;
+    listEl.innerHTML = '';
+    notes.slice().reverse().forEach(function(note){
+      var item = document.createElement('div');
+      item.className = 'dr-note';
+      var textEl = document.createElement('div');
+      textEl.className = 'dr-note-text';
+      textEl.textContent = note.rawText;
+      var timeEl = document.createElement('time');
+      timeEl.dir = 'ltr';
+      timeEl.textContent = note.createdAt;
+      item.appendChild(textEl);
+      item.appendChild(timeEl);
+      listEl.appendChild(item);
+    });
+  }
+
+  function renderExecutiveSummary(base){
+    renderCard1MarketToday(base);
+
+    // Data quality: worst confidence among the critical pricing inputs -
+    // reuses the same High/Medium/Low classification already used by
+    // DATA_PROVENANCE/ASSUMPTION_META, not a new scale. Computed once,
+    // shared by Card 2's data-quality warning, the status-strip chip, AND
+    // (via computeCriticalFieldsWorstConfidence() itself) the Daily
+    // Report's forecast confidence score - one ranking, multiple readers.
+    var worst = computeCriticalFieldsWorstConfidence();
 
     // ---- Card 2: Egypt — If Landed Today ----
     document.getElementById('execCard2EGP').textContent = fmt(base.landedEGP);
@@ -7481,6 +8750,13 @@
     document.querySelectorAll('[data-i18n]').forEach(function(el){
       el.textContent = t(el.getAttribute('data-i18n'));
     });
+    // Daily Report Trader Notes textarea placeholder - the only
+    // placeholder-attribute translation on the page, so a dedicated
+    // attribute rather than extending [data-i18n]'s textContent-only
+    // contract for every other element.
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el){
+      el.setAttribute('placeholder', t(el.getAttribute('data-i18n-placeholder')));
+    });
   }
 
   // ---------- Language switching ----------
@@ -7508,28 +8784,38 @@
   });
 
   // ---------- Tabs ----------
+  // Four explicit, mutually-exclusive booleans (not a "everything else falls
+  // back to summary" default) - a silent fallback here would mis-activate
+  // the wrong panel now that there are two tabs (Daily/Summary) a bad/unknown
+  // tab id could otherwise both fall through to.
   function setTab(tab){
+    var isDaily = tab === 'daily';
     var isFull = tab === 'full';
+    var isSummary = tab === 'summary';
     var isCargo = tab === 'cargo';
-    var isSummary = !isFull && !isCargo;
+    document.getElementById('tabPanelDaily').hidden = !isDaily;
     document.getElementById('tabPanelFull').hidden = !isFull;
     document.getElementById('tabPanelSummary').hidden = !isSummary;
     document.getElementById('tabPanelCargo').hidden = !isCargo;
+    document.getElementById('tabBtnDaily').classList.toggle('active', isDaily);
     document.getElementById('tabBtnFull').classList.toggle('active', isFull);
     document.getElementById('tabBtnSummary').classList.toggle('active', isSummary);
     document.getElementById('tabBtnCargo').classList.toggle('active', isCargo);
+    document.getElementById('tabBtnDaily').setAttribute('aria-selected', String(isDaily));
     document.getElementById('tabBtnFull').setAttribute('aria-selected', String(isFull));
     document.getElementById('tabBtnSummary').setAttribute('aria-selected', String(isSummary));
     document.getElementById('tabBtnCargo').setAttribute('aria-selected', String(isCargo));
     // The long methodology paragraph only belongs to the Detailed Analysis
-    // view - Executive Summary/Cargo Intelligence stay compact so the
-    // commercial numbers sit higher on the screen.
+    // view - every other tab stays compact so the commercial numbers sit
+    // higher on the screen.
     document.getElementById('pageSubtitle').hidden = !isFull;
     if (isCargo) renderCargoIntelligence();
   }
+  document.getElementById('tabBtnDaily').addEventListener('click', function(){ setTab('daily'); });
   document.getElementById('tabBtnFull').addEventListener('click', function(){ setTab('full'); });
   document.getElementById('tabBtnSummary').addEventListener('click', function(){ setTab('summary'); });
   document.getElementById('tabBtnCargo').addEventListener('click', function(){ setTab('cargo'); });
+  document.getElementById('drRefreshBtn').addEventListener('click', runRealMarketRefresh);
 
   // ---------- Detailed Analysis: expand/collapse all groups ----------
   function setAllGroups(open){
@@ -7540,5 +8826,6 @@
 
   applyIndonesiaVisibility();
   setLanguage(state.lang);
+  loadCanonicalMarketState();
 })();
 </script>
