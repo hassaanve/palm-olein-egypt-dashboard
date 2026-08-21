@@ -974,14 +974,8 @@
   .dr-head-fresh.dr-fresh-stale{background:var(--ev-amber-tint);color:var(--ev-amber);}
   .dr-head-fresh-value{font-family:var(--font-body);font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--hdr-ink);direction:ltr;unicode-bidi:isolate;}
 
-  /* Primary action - moved to the top of the page (2026-08-20 UAT), a
-     premium pill rather than a weak full-width bar. Still ships disabled
-     until the GitHub connector prerequisite exists (see
-     PROJECT_DECISIONS.md) - a sequencing gate, not fake refresh
-     behavior. The disabled-hint now lives directly under the button
-     (.dr-refresh-wrap), not beside the data-update timestamp - 2026-08-20
-     UAT correction: sharing a row with the timestamp made the hint
-     compete with it; the hint is now visibly secondary to its own button. */
+  /* Smart snapshot refresh is a read-only check of the latest published
+     trusted artifact. It never starts privileged cloud acquisition. */
   .dr-refresh-wrap{display:flex;flex-direction:column;align-items:center;gap:5px;}
   .dr-refresh-btn{
     display:inline-flex;align-items:center;gap:9px;flex:none;
@@ -2251,7 +2245,7 @@
     marginPct: 6,
     egpUsd: 50.88,
     cpoIDR: 15925,
-    usdIdr: 17705,
+    usdIdr: 17690,
     // Stage 3A — direct market-reported RBD Palm Olein FOB Malaysian Port
     // price, USD/MT (see DATA_PROVENANCE.rbdOleinFobMarketUSD below).
     // DISPLAY / MARKET-INTELLIGENCE ONLY: never read by computeLandedCore(),
@@ -2312,7 +2306,7 @@
   }
 
   function applyProductionSnapshot(snapshot){
-    if (!snapshot || snapshot.schemaVersion !== 1 || !canonicalSnapshotIsValid(snapshot.rbd) || !snapshot.snapshotId || !snapshot.forecast || !snapshot.forecast.snapshot) return false;
+    if (!productionSnapshotIsValid(snapshot)) return false;
     RBD_OLEIN_CANONICAL_SNAPSHOT = snapshot.rbd;
     PRODUCTION_SNAPSHOT = snapshot;
     PRODUCTION_FORECAST_SNAPSHOT = snapshot.forecast.snapshot;
@@ -2320,6 +2314,10 @@
     RBD_OLEIN_CANONICAL_STATUS = { status:'READY', detail:null, snapshotId:snapshot.snapshotId };
     state.rbdOleinFobMarketUSD = snapshot.rbd.canonicalPriceUSDPerMT;
     return true;
+  }
+
+  function productionSnapshotIsValid(snapshot){
+    return !!(snapshot && snapshot.schemaVersion === 1 && typeof snapshot.snapshotId === 'string' && snapshot.snapshotId.length > 0 && snapshot.status && snapshot.status.state === 'READY' && snapshot.status.validationState === 'VALIDATED' && canonicalSnapshotIsValid(snapshot.rbd) && snapshot.forecast && snapshot.forecast.snapshot && Array.isArray(snapshot.forecast.snapshot.forecastPoints));
   }
 
   // Product → Origin → Evidence Chain. Only RBD Palm Olein is active; no
@@ -2588,7 +2586,7 @@
       drCard1Eyebrow:'RBD Palm Olein Market Price Today', drCard2Eyebrow:'Expected Egypt Port Price', drCard3Eyebrow:'Current Direction', drCard4Eyebrow:'7-Day Outlook',
       drUnitUsd:'USD/MT', drUnitEgp:'EGP/MT',
       drSourceDetails:'Source & details', drCard2Details:'Details & disclaimer',
-      drRefreshLabel:'Refresh Data Now', drRefreshDisabledHint:'Manual refresh isn\'t available right now.', drRefreshReadyHint:'Fetch and validate approved market sources', drRefreshLoading:'Refreshing validated market data…', drRefreshSuccess:'Last successful refresh', drRefreshFailure:'Refresh failed — last validated data preserved', drRefreshUnavailable:'Refresh service unavailable',
+      drRefreshLabel:'Refresh Data Now', drRefreshDisabledHint:'Check the latest published trusted snapshot', drRefreshReadyHint:'Check the latest published trusted snapshot', drRefreshLoading:'Checking the latest published data…', drRefreshSuccess:'Latest market data loaded', drRefreshNoChange:'You already have the latest available data', drRefreshFailure:'Could not check for a new update — showing the last trusted data', drRefreshUnavailable:'Published snapshot unavailable',
       drMarketBoardTitle:'Palm Oil Market Data Board', drMarketBoardSubtitle:'Market visibility and the approved price evidence', drBoardProduct:'Product', drBoardPrice:'Price', drBoardEgp:'EGP equivalent', drBoardStatus:'Status', drBoardTiming:'Observation / update', drBoardDailyPrice:'Daily Report price', drBoardUnavailable:'Needs review — no approved direct value', drBoardSource:'Source', drQualityTrusted:'Trusted', drQualityReview:'Needs Verification', drQualityConflict:'Source Conflict', drQualityStale:'Stale Data', drQualityUnavailable:'Needs Verification', drBoardObserved:'Observed', drBoardCaptured:'Updated', drBoardTimingUnavailable:'No validated update metadata', drCanonicalUnavailable:'No current validated RBD Palm Olein snapshot is available.',
       drNotesTitle:'Trader Notes', drNotesEmptyState:'No notes yet.',
       drNotesHint:'Add what you\'re hearing today from the market, suppliers, freight, or other traders…',
@@ -2812,10 +2810,10 @@
       h3derivation:'Derivation chain',
       derivationText:'FOB olein (Bursa CPO ÷ USD/MYR, + refining/processing, olein/fractionation and physical-market-basis adjustments — see §10 for the breakdown) → origin export levy if ex-Indonesia → freight & insurance to Alexandria/Damietta → Egypt customs duty (CIF basis) → VAT if applicable → local margin & distribution → landed price in USD → converted at EGP/USD.',
       caveatBold:'Where this is soft:',
-      caveatText:'RBD palm olein has no single public spot price for Egypt — it is a broker-quoted, opaque market. The model’s refining spread (olein price over CPO) was corrected on 29 Jul 2026 from an earlier $183/MT assumption to ~$35/MT, based on a directly-dated FOB Malaysia price sheet (MBLion Oleo) showing Aug ’26 CPO at $1,116/MT against RBD Olein at $1,150/MT — the earlier $183 figure came from a less reliable secondary source and had been overstating every implied FOB olein price on this page by roughly $150/MT. A fresher dated comparison on 12 Aug 2026 (agropost FOB Malaysia closing prices, Aug ’26 contract: CPO $1,107/MT vs RBD Olein $1,142.50/MT) puts the spread at ~$35.5/MT, the figure currently in use. EGP/USD forecasts for 2026 also diverge sharply by source (mid-40s to mid-50s) — the scenario band reflects that spread, not certainty. Treat every output as a starting estimate for negotiation, not a quote.',
+      caveatText:'RBD palm olein has no single public spot price for Egypt — it is a broker-quoted, opaque market. The model’s refining spread (olein price over CPO) was corrected on 29 Jul 2026 from an earlier $183/MT assumption to ~$35/MT, based on a directly-dated FOB Malaysia price sheet (MBLion Oleo) showing Aug ’26 CPO at $1,116/MT against RBD Olein at $1,150/MT — the earlier $183 figure came from a less reliable secondary source and had been overstating every implied FOB olein price on this page by roughly $150/MT. A fresher dated comparison on 21 Aug 2026 (agropost FOB Malaysia closing prices, Sep ’26 contract: CPO $1,182.00/MT vs RBD Olein $1,227.50/MT) puts the spread at ~$45.5/MT, the figure currently in use. EGP/USD forecasts for 2026 also diverge sharply by source (mid-40s to mid-50s) — the scenario band reflects that spread, not certainty. Treat every output as a starting estimate for negotiation, not a quote.',
       h3sources:'Sources',
       disclaimer:'Built 24 Jul 2026 from public web sources; commodity and currency data move daily. Re-run with current figures before using for a purchasing decision.',
-      ptSpot:'Spot', ptSpotSub:'19 Aug', ptAug:"Oct ’26", ptSep:"Nov ’26", ptOct:"Dec ’26", ptContract:'contract',
+      ptSpot:'Spot', ptSpotSub:'21 Aug', ptAug:"Oct ’26", ptSep:"Nov ’26", ptOct:"Dec ’26", ptContract:'contract',
       ttCpo:'CPO', ttImpliedFob:'Implied FOB olein', unitMyrMt:'MYR/MT',
       ttLow:'Low', ttBase:'Base', ttHigh:'High',
       h2s10:'Pricing Assumptions &amp; Data Quality',
@@ -2878,7 +2876,7 @@
       drCard1Eyebrow:'سعر أولين النخيل المكرر اليوم', drCard2Eyebrow:'السعر المتوقع في ميناء مصر', drCard3Eyebrow:'الاتجاه الحالي', drCard4Eyebrow:'توقع 7 أيام',
       drUnitUsd:'USD/MT', drUnitEgp:'EGP/MT',
       drSourceDetails:'المصدر والتفاصيل', drCard2Details:'التفاصيل والتنبيه',
-      drRefreshLabel:'تحديث البيانات الآن', drRefreshDisabledHint:'التحديث اليدوي غير متاح حالياً.', drRefreshReadyHint:'جلب مصادر السوق المعتمدة والتحقق منها', drRefreshLoading:'جارٍ تحديث بيانات السوق المعتمدة…', drRefreshSuccess:'آخر تحديث ناجح', drRefreshFailure:'فشل التحديث — تم الحفاظ على آخر بيانات معتمدة', drRefreshUnavailable:'خدمة التحديث غير متاحة',
+      drRefreshLabel:'تحديث البيانات الآن', drRefreshDisabledHint:'التحقق من أحدث لقطة موثوقة منشورة', drRefreshReadyHint:'التحقق من أحدث لقطة موثوقة منشورة', drRefreshLoading:'جاري التحقق من أحدث البيانات...', drRefreshSuccess:'تم تحميل أحدث بيانات السوق', drRefreshNoChange:'أنت بالفعل على أحدث بيانات متاحة', drRefreshFailure:'تعذر التحقق من تحديث جديد — يتم عرض آخر بيانات موثوقة', drRefreshUnavailable:'لا تتوفر اللقطة المنشورة',
       drMarketBoardTitle:'لوحة بيانات سوق زيت النخيل', drMarketBoardSubtitle:'رؤية السوق وأدلة السعر المعتمد', drBoardProduct:'المنتج', drBoardPrice:'السعر', drBoardEgp:'المعادل بالجنيه', drBoardStatus:'الحالة', drBoardTiming:'الرصد / التحديث', drBoardDailyPrice:'سعر التقرير اليومي', drBoardUnavailable:'يحتاج مراجعة — لا توجد قيمة مباشرة معتمدة', drBoardSource:'المصدر', drQualityTrusted:'موثوق', drQualityReview:'يحتاج مراجعة', drQualityConflict:'اختلاف بين المصادر', drQualityStale:'بيانات غير محدثة', drQualityUnavailable:'يحتاج مراجعة', drBoardObserved:'وقت تسجيل السعر', drBoardCaptured:'آخر تحديث ناجح', drBoardTimingUnavailable:'لا توجد بيانات تحديث معتمدة', drCanonicalUnavailable:'لا تتوفر حالياً لقطة معتمدة وحديثة لسعر أولين النخيل المكرر.',
       drNotesTitle:'ملاحظات التاجر', drNotesEmptyState:'لا توجد ملاحظات بعد.',
       drNotesHint:'أضف ما تسمعه اليوم من السوق، الموردين، الشحن أو التجار...',
@@ -3093,10 +3091,10 @@
       h3derivation:'سلسلة الاشتقاق',
       derivationText:'سعر الأولين تسليم السفينة (زيت النخيل الخام من بورصة ماليزيا ÷ الدولار/الرينغيت + تعديلات التكرير/المعالجة وعلاوة الأولين والأساس السوقي الفعلي — انظر تفصيلها في القسم ٠٩) ← رسم التصدير من بلد المنشأ إن كان التوريد من إندونيسيا ← الشحن والتأمين إلى الإسكندرية/دمياط ← الرسوم الجمركية المصرية (على أساس التكلفة والتأمين والشحن) ← ضريبة القيمة المضافة إن وُجدت ← هامش التوزيع المحلي ← السعر الواصل بالدولار ← تحويله بسعر صرف الجنيه/الدولار.',
       caveatBold:'مواضع الضعف في هذا النموذج:',
-      caveatText:'لا يوجد سعر فوري علني موحّد لزيت النخيل الأولين المكرر في مصر — فهو سوق يعتمد على تسعير الوسطاء وغير شفاف. تم تصحيح هامش التكرير في النموذج (فارق سعر الأولين عن الزيت الخام) في 29 يوليو 2026 من افتراض سابق قدره 183 دولارًا للطن إلى نحو 35 دولارًا للطن، استنادًا إلى نشرة أسعار مؤرخة لتسليم السفينة من ماليزيا (MBLion Oleo) أظهرت أن سعر الزيت الخام لعقد أغسطس ’26 بلغ 1,116 دولارًا للطن مقابل 1,150 دولارًا للطن لأولين RBD — وكان الرقم السابق (183 دولارًا) مستمدًا من مصدر ثانوي أقل موثوقية، وكان يُبالغ في تقدير كل سعر ضمني لتسليم السفينة من الأولين في هذه الصفحة بنحو 150 دولارًا للطن. وتُظهر مقارنة أحدث ومؤرخة بتاريخ 12 أغسطس 2026 (أسعار إغلاق agropost لتسليم السفينة من ماليزيا، عقد أغسطس ’26: 1,107 دولارًا للزيت الخام مقابل 1,142.50 دولارًا لأولين RBD) أن الهامش بات نحو 35.5 دولارًا للطن، وهو الرقم المستخدم حاليًا. كذلك تتباين توقعات سعر صرف الجنيه/الدولار لعام 2026 بشكل كبير بين المصادر (من منتصف الأربعينيات إلى منتصف الخمسينيات) — ونطاق السيناريو أعلاه يعكس هذا التباين، لا اليقين. تعامل مع كل رقم في هذا النموذج كنقطة بداية للتفاوض، لا كعرض سعر نهائي.',
+      caveatText:'لا يوجد سعر فوري علني موحّد لزيت النخيل الأولين المكرر في مصر — فهو سوق يعتمد على تسعير الوسطاء وغير شفاف. تم تصحيح هامش التكرير في النموذج (فارق سعر الأولين عن الزيت الخام) في 29 يوليو 2026 من افتراض سابق قدره 183 دولارًا للطن إلى نحو 35 دولارًا للطن، استنادًا إلى نشرة أسعار مؤرخة لتسليم السفينة من ماليزيا (MBLion Oleo) أظهرت أن سعر الزيت الخام لعقد أغسطس ’26 بلغ 1,116 دولارًا للطن مقابل 1,150 دولارًا للطن لأولين RBD — وكان الرقم السابق (183 دولارًا) مستمدًا من مصدر ثانوي أقل موثوقية، وكان يُبالغ في تقدير كل سعر ضمني لتسليم السفينة من الأولين في هذه الصفحة بنحو 150 دولارًا للطن. وتُظهر مقارنة أحدث ومؤرخة بتاريخ 21 أغسطس 2026 (أسعار إغلاق agropost لتسليم السفينة من ماليزيا، عقد سبتمبر ’26: 1,182.00 دولارًا للزيت الخام مقابل 1,227.50 دولارًا لأولين RBD) أن الهامش بات نحو 45.5 دولارًا للطن، وهو الرقم المستخدم حاليًا. كذلك تتباين توقعات سعر صرف الجنيه/الدولار لعام 2026 بشكل كبير بين المصادر (من منتصف الأربعينيات إلى منتصف الخمسينيات) — ونطاق السيناريو أعلاه يعكس هذا التباين، لا اليقين. تعامل مع كل رقم في هذا النموذج كنقطة بداية للتفاوض، لا كعرض سعر نهائي.',
       h3sources:'المصادر',
       disclaimer:'تم إعداد هذا النموذج في 24 يوليو 2026 اعتمادًا على مصادر ويب عامة؛ وتتغير بيانات السلع والعملات يوميًا. يُرجى تحديث الأرقام قبل استخدام النموذج في أي قرار شراء.',
-      ptSpot:'فوري', ptSpotSub:'19 أغسطس', ptAug:"أكتوبر '26", ptSep:"نوفمبر '26", ptOct:"ديسمبر '26", ptContract:'عقد',
+      ptSpot:'فوري', ptSpotSub:'21 أغسطس', ptAug:"أكتوبر '26", ptSep:"نوفمبر '26", ptOct:"ديسمبر '26", ptContract:'عقد',
       ttCpo:'زيت النخيل الخام', ttImpliedFob:'سعر الأولين الضمني', unitMyrMt:'رينغيت/طن',
       ttLow:'الأدنى', ttBase:'الأساسي', ttHigh:'الأعلى',
       h2s10:'افتراضات التسعير وجودة البيانات',
@@ -4132,6 +4130,84 @@
           status: 'Pending'
         }
       ]
+    },
+    {
+      issuedDate: '2026-08-21',
+      modelVersion: 'v1-linear-curve-fx-scenario',
+      sourceSnapshotDate: '2026-08-21',
+      currentFcpoMYR: 4792,
+      currentUsdMyr: 4.0449,
+      currentEgpUsd: 50.88,
+      forecastPoints: [
+        {
+          targetDate: '2026-08-28',
+          horizonWeeks: 1,
+          fcpoMYR: 4810,
+          estimatedFobUsd: 1234.71,
+          baseLandedUsd: 1377.41,
+          baseLandedEgp: 70051,
+          lowLandedEgp: 69970,
+          highLandedEgp: 70303,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-09-04',
+          horizonWeeks: 2,
+          fcpoMYR: 4829,
+          estimatedFobUsd: 1239.23,
+          baseLandedUsd: 1382.31,
+          baseLandedEgp: 70267,
+          lowLandedEgp: 70106,
+          highLandedEgp: 70774,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-09-11',
+          horizonWeeks: 3,
+          fcpoMYR: 4847,
+          estimatedFobUsd: 1243.74,
+          baseLandedUsd: 1387.2,
+          baseLandedEgp: 70483,
+          lowLandedEgp: 70241,
+          highLandedEgp: 71246,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-09-18',
+          horizonWeeks: 4,
+          fcpoMYR: 4865,
+          estimatedFobUsd: 1248.25,
+          baseLandedUsd: 1392.09,
+          baseLandedEgp: 70699,
+          lowLandedEgp: 70375,
+          highLandedEgp: 71720,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-10-16',
+          horizonWeeks: 8,
+          fcpoMYR: 4938,
+          estimatedFobUsd: 1266.3,
+          baseLandedUsd: 1411.65,
+          baseLandedEgp: 71561,
+          lowLandedEgp: 70902,
+          highLandedEgp: 73632,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-11-13',
+          horizonWeeks: 12,
+          fcpoMYR: 5020,
+          estimatedFobUsd: 1286.57,
+          baseLandedUsd: 1433.62,
+          baseLandedEgp: 72541,
+          lowLandedEgp: 71538,
+          highLandedEgp: 75695,
+          status: 'Pending'
+        }
+      ],
+      sourceInputIdentity: 'FORECAST_INPUT|6cc18ab0ef06163bba2e',
+      sourceMarketSnapshotId: 'MARKET_SNAPSHOT|2c83132daf281f55c03f'
     },
     {
       issuedDate: '2026-08-21',
@@ -5862,6 +5938,160 @@
         }
       },
       snapshotId: 'MARKET_SNAPSHOT|0f30c122f2d909b6166c'
+    },
+    {
+      schemaVersion: 1,
+      snapshotDate: '2026-08-21',
+      capturedAt: '2026-08-21T23:01:00.564Z',
+      landedFormulaVersion: 'v1-fob-freight-insurance-cif-duty-vat-margin',
+      malaysia: {
+        cpoMYR: 4792,
+        usdMyr: 4.0449,
+        refiningProcessingAdjustment: 15,
+        oleinFractionationPremium: 15,
+        physicalMarketBasisAdjustment: 15.5,
+        totalRbdAdjustment: 45.5,
+        estimatedFobOleinUsd: 1230.2017,
+        rbdOleinFobMarketUSD: 1227.5
+      },
+      fx: {
+        usdMyr: 4.0449,
+        egpUsd: 50.88,
+        usdIdr: 17690
+      },
+      freight: {
+        freight: 36,
+        origin: 'my',
+        transitDays: 35,
+        clearanceDays: 7
+      },
+      importCosts: {
+        insurancePct: 0.75,
+        egyptDutyPct: 1.5,
+        vatOn: false,
+        vatPct: 14,
+        marginPct: 6
+      },
+      outputs: {
+        fobOleinUsd: 1230.2017,
+        originCostUsd: 0,
+        cifUsd: 1275.6982,
+        dutyUsd: 19.1355,
+        vatUsd: 0,
+        marginUsd: 77.69,
+        landedUSD: 1372.5237,
+        landedEGP: 69834.01
+      },
+      provenance: {
+        cpoMYR: {
+          source: 'agropost.wordpress.com dated "21 Aug 2026 – Palm Oil Prices at Closing" table (CPO FUTURES PRICES AT MDEX), Sep’26 contract',
+          sourceType: 'Market Report',
+          lastUpdated: '2026-08-21',
+          confidence: 'Medium',
+          status: 'Manual',
+          unit: 'MYR/MT',
+          refreshMethod: 'Daily AI refresh',
+          contractCode: 'Not confirmed by source (referred to only as "Sep’26")',
+          contractMonth: 'September 2026',
+          priceType: 'Last Traded (agropost "Last" column, closing session; not confirmed as official BMD settlement)',
+          observationDate: '21 Aug 2026',
+          contractSelectionRule: 'Nearest liquid FCPO contract (currently Sep’26, unchanged from previous run)'
+        },
+        usdMyr: {
+          source: 'Bank Negara Malaysia — KL USD/MYR Reference Rate (FMIP, financialmarkets.bnm.gov.my), 4.0449 for 21 Aug 2026',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-08-21',
+          confidence: 'High',
+          status: 'Manual',
+          unit: 'MYR/USD',
+          refreshMethod: 'Daily AI refresh',
+          observationDate: '21 Aug 2026'
+        },
+        egpUsd: {
+          source: 'BankLive-reported Central Bank of Egypt official USD/EGP buy/sell rates (50.814 / 50.9534), 21 Aug 2026',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-08-21',
+          confidence: 'High',
+          status: 'Manual',
+          unit: 'EGP/USD',
+          refreshMethod: 'Daily AI refresh'
+        },
+        freight: {
+          source: 'No Egypt-route source documented; nearest §09 citation (MPOB West Malaysia–Sumatra rates) is a different route',
+          sourceType: 'Not documented (route mismatch)',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily automation, only on Egypt-route-specific evidence, else left unchanged — scripts/daily-refresh-prompt.txt'
+        },
+        refiningSpread: {
+          source: 'agropost.wordpress.com dated "21 Aug 2026 – Palm Oil Prices at Closing" table (PHYSICAL MARKET PRICES FOB Malaysia), Sep’26 contract (RBD Palm Olein $1,227.50/MT selling vs CPO $1,182.00/MT selling); mblionoleo.com still shows its earlier dated table (13 Aug 2026, RBD Palm Olein $1,147.50/MT vs CPO $1,109.00/MT, spread $38.50) with no fresher print available this run',
+          sourceType: 'Market Report',
+          lastUpdated: '2026-08-21',
+          confidence: 'Medium',
+          status: 'Derived',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily AI refresh'
+        },
+        insurancePct: {
+          source: 'Not documented',
+          sourceType: 'Not documented',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Hardcoded',
+          unit: '%',
+          refreshMethod: 'Not refreshed by automation (static assumption)'
+        },
+        egyptDutyPct: {
+          source: 'WTO Tariff & Trade Data — Egypt member profile (§09 sources)',
+          sourceType: 'Regulatory / trade data',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: '%',
+          refreshMethod: 'Re-checked only on evidence of change — scripts/daily-refresh-prompt.txt'
+        },
+        rbdOleinFobMarketUSD: {
+          product: 'RBD Palm Olein',
+          priceBasis: 'FOB Malaysia (physical, dated price sheet)',
+          source: 'Agropost dated "PHYSICAL MARKET PRICES FOB Malaysia" table (agropost.wordpress.com), 21 Aug 2026 "Palm Oil Prices at Closing" post — Sep’26 contract, RBD Palm Olein $1,227.50/MT selling vs CPO $1,182.00/MT selling (spread $45.50/MT)',
+          sourceType: 'Market Report (dated physical price sheet)',
+          observationDate: '21 Aug 2026',
+          contractOrDeliveryMonth: 'September 2026 (Sep’26, as labeled on the source table)',
+          confidence: 'Medium',
+          status: 'Manual',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily automation — freshest of the MBLion/Agropost dated tables selected by observation date, scripts/daily-refresh-prompt.txt (commit 00edf0d)',
+          crossCheckSource: 'MBLion Oleo dated homepage table (mblionoleo.com) — the dated "FOB Malaysian Port" table, still showing its 13 Aug 2026 print unchanged as of this run',
+          crossCheckValue: 1147.5,
+          crossCheckObservationDate: '13 Aug 2026',
+          crossCheckDeltaUSD: 80
+        }
+      },
+      evidence: {
+        cpoMYR: {
+          tier: 'Estimated',
+          reason: 'Provenance is insufficient for a stronger tier'
+        },
+        usdMyr: {
+          tier: 'Verified',
+          reason: 'High-confidence, directly sourced figure'
+        },
+        egpUsd: {
+          tier: 'Verified',
+          reason: 'High-confidence, directly sourced figure'
+        },
+        freight: {
+          tier: 'Low Confidence',
+          reason: 'Source confidence is recorded as Low'
+        },
+        rbdOleinFobMarketUSD: {
+          tier: 'Low Confidence',
+          reason: 'Disagrees with MBLion Oleo dated homepage table (mblionoleo.com) — the dated "FOB Malaysian Port" table, still showing its 13 Aug 2026 print unchanged as of this run by 80 USD/MT, beyond the 20 USD/MT tolerance - not silently treated as cross-checked'
+        }
+      },
+      snapshotId: 'MARKET_SNAPSHOT|2c83132daf281f55c03f'
     }
   ];
 
@@ -8481,12 +8711,15 @@
   }
   function runRealMarketRefresh(){
     var button = document.getElementById('drRefreshBtn'), hint = document.getElementById('drRefreshHint');
-    if (!window.fetch || window.location.protocol === 'file:' || /github\.io$/i.test(window.location.hostname)){ hint.textContent = t('drRefreshUnavailable'); return; }
+    if (!window.fetch || window.location.protocol === 'file:'){ hint.textContent = t('drRefreshUnavailable'); return; }
+    var currentSnapshotId = PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.snapshotId ? PRODUCTION_SNAPSHOT.snapshotId : null;
     button.disabled = true; hint.textContent = t('drRefreshLoading');
-    window.fetch('/api/rbd-olein/refresh', { method:'POST', headers:{ 'Content-Type':'application/json' }, cache:'no-store' }).then(function(response){ return response.json().then(function(body){ return { ok:response.ok, body:body }; }); }).then(function(result){
-      if (!result.ok || !canonicalSnapshotIsValid(result.body.canonicalSnapshot)) throw new Error(result.body && result.body.status ? result.body.status : 'refresh validation failed');
-      RBD_OLEIN_CANONICAL_SNAPSHOT = result.body.canonicalSnapshot; RBD_OLEIN_CANONICAL_STATUS = { status:'READY', detail:null }; state.rbdOleinFobMarketUSD = RBD_OLEIN_CANONICAL_SNAPSHOT.canonicalPriceUSDPerMT; renderRefreshSuccessHint(RBD_OLEIN_CANONICAL_SNAPSHOT.capturedAt); renderAll();
-    }).catch(function(error){ RBD_OLEIN_CANONICAL_STATUS = { status:'REFRESH_FAILURE', detail:error.message }; hint.textContent = t('drRefreshFailure'); renderAll(); }).finally(function(){ button.disabled = false; });
+    window.fetch('feature003-production-snapshot.json?feature003=' + Date.now(), { cache:'no-store' }).then(function(response){ if (!response.ok) throw new Error('published snapshot unavailable'); return response.json(); }).then(function(snapshot){
+      if (!productionSnapshotIsValid(snapshot)) throw new Error('published snapshot failed the consumer gate');
+      if (snapshot.snapshotId === currentSnapshotId) { hint.textContent = t('drRefreshNoChange'); return; }
+      if (!applyProductionSnapshot(snapshot)) throw new Error('published snapshot failed the consumer gate');
+      canonicalHydrationAttempted = true; hint.textContent = t('drRefreshSuccess'); renderAll();
+    }).catch(function(error){ hint.textContent = t('drRefreshFailure'); renderAll(); }).finally(function(){ button.disabled = false; });
   }
   function renderDailyReport(base){
     var panel = document.getElementById('tabPanelDaily');
