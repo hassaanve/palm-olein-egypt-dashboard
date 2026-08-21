@@ -1,25 +1,27 @@
 {
   "schemaVersion": 1,
-  "snapshotId": "FEATURE003|944ba63a9ce53606f34f",
-  "canonicalVersion": "FEATURE003|944ba63a9ce53606f34f",
-  "generatedAt": "2026-08-21T11:36:28.081Z",
+  "snapshotId": "FEATURE003|2c2d8a63dd7250793714",
+  "canonicalVersion": "FEATURE003|2c2d8a63dd7250793714",
+  "generatedAt": "2026-08-21T22:01:57.209Z",
   "sourceIdentity": {
-    "canonicalSnapshotId": "RBD_PALM_OLEIN|RBD_PALM_OLEIN|MBLION_RBD_OLEIN_FOB|2026-08-21T11:32:44.453Z|USD|USD/MT",
-    "fcpoObservationId": "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-08-21|2026-11",
+    "canonicalSnapshotId": "RBD_PALM_OLEIN|RBD_PALM_OLEIN|MBLION_RBD_OLEIN_FOB|2026-08-21T10:30:25.841Z|USD|USD/MT",
+    "fcpoObservationId": "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-08-20|2026-11",
     "boardObservationIds": [
-      "CPO_PHYSICAL|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT",
-      "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-08-21|2026-11",
-      "RBD_PALM_KERNEL_OIL|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT",
-      "RBD_PALM_OIL|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT",
-      "RBD_PALM_OLEIN|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT",
-      "RBD_PALM_STEARIN|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT"
+      "CPO_PHYSICAL|MBLION_CURRENT_TICKER|2026-08-21T10:30:25.841Z|USD|USD/MT",
+      "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-08-20|2026-11",
+      "RBD_PALM_KERNEL_OIL|MBLION_CURRENT_TICKER|2026-08-21T10:30:25.841Z|USD|USD/MT",
+      "RBD_PALM_OIL|MBLION_CURRENT_TICKER|2026-08-21T10:30:25.841Z|USD|USD/MT",
+      "RBD_PALM_OLEIN|MBLION_CURRENT_TICKER|2026-08-21T10:30:25.841Z|USD|USD/MT",
+      "RBD_PALM_STEARIN|MBLION_CURRENT_TICKER|2026-08-21T10:30:25.841Z|USD|USD/MT"
     ],
     "forecastIssuedDate": "2026-08-21",
-    "forecastModelVersion": "v1-linear-curve-fx-scenario"
+    "forecastModelVersion": "v1-linear-curve-fx-scenario",
+    "forecastInputIdentity": null,
+    "marketSnapshotId": "MARKET_SNAPSHOT|0f30c122f2d909b6166c"
   },
   "rbd": {
     "schemaVersion": 1,
-    "snapshotId": "RBD_PALM_OLEIN|RBD_PALM_OLEIN|MBLION_RBD_OLEIN_FOB|2026-08-21T11:32:44.453Z|USD|USD/MT",
+    "snapshotId": "RBD_PALM_OLEIN|RBD_PALM_OLEIN|MBLION_RBD_OLEIN_FOB|2026-08-21T10:30:25.841Z|USD|USD/MT",
     "productId": "RBD_PALM_OLEIN",
     "productCanonicalName": "RBD Palm Olein",
     "canonicalPriceUSDPerMT": 1227.5,
@@ -27,7 +29,7 @@
     "rawSelectedCurrency": "USD",
     "rawSelectedUnit": "USD/MT",
     "observationDate": "2026-08-21",
-    "observationDateTime": "2026-08-21T11:32:44.453Z",
+    "observationDateTime": "2026-08-21T10:30:25.841Z",
     "selectedSourceId": "MBLION_RBD_OLEIN_FOB",
     "selectedSourceName": "MBLion Oleochemicals",
     "selectedSourceReference": "https://www.mblionoleo.com/",
@@ -38,17 +40,17 @@
     "temporalComparisonState": "TEMPORALLY_DIFFERENT",
     "corroborationCount": 1,
     "comparedObservationIds": [
-      "RBD_PALM_OLEIN|MBLION_RBD_OLEIN_FOB|2026-08-21T11:32:44.453Z|USD|USD/MT"
+      "RBD_PALM_OLEIN|MBLION_RBD_OLEIN_FOB|2026-08-21T10:30:25.841Z|USD|USD/MT"
     ],
     "sourceObservationIds": [
-      "RBD_PALM_OLEIN|MBLION_RBD_OLEIN_FOB|2026-08-21T11:32:44.453Z|USD|USD/MT",
+      "RBD_PALM_OLEIN|MBLION_RBD_OLEIN_FOB|2026-08-21T10:30:25.841Z|USD|USD/MT",
       "RBD_PALM_OLEIN|MPOB_EID_RBD_OLEIN_EXPORT|2026-08-20T00:00:00.000Z|USD|USD/MT"
     ],
     "sourceEvidenceReferences": [
       "https://price.mpob.gov.my/excel/daily/mas_ppo/20260821",
       "https://www.mblionoleo.com/"
     ],
-    "latestTrustedObservationAt": "2026-08-21T11:32:44.453Z",
+    "latestTrustedObservationAt": "2026-08-21T10:30:25.841Z",
     "latestTrustedSource": "MBLION_RBD_OLEIN_FOB",
     "latestTrustedPrice": 1227.5,
     "latestOfficialObservationAt": "2026-08-20T00:00:00.000Z",
@@ -57,7 +59,7 @@
       "start": "2026-08-21",
       "end": "2026-08-21",
       "observationIds": [
-        "RBD_PALM_OLEIN|MBLION_RBD_OLEIN_FOB|2026-08-21T11:32:44.453Z|USD|USD/MT"
+        "RBD_PALM_OLEIN|MBLION_RBD_OLEIN_FOB|2026-08-21T10:30:25.841Z|USD|USD/MT"
       ]
     },
     "freshnessPolicy": {
@@ -66,7 +68,7 @@
       "sourceCurrentMaxAgeDays": 1
     },
     "warningState": "OFFICIAL_OR_OTHER_SOURCE_LAGGING",
-    "capturedAt": "2026-08-21T11:32:46.998Z",
+    "capturedAt": "2026-08-21T10:30:28.361Z",
     "selectionReason": "newest trusted eligible observation selected; source tier is the deterministic tie-break when observations are equally recent; older observations remain audit evidence; older eligible source observation is outside the latest market window"
   },
   "portArrival": {
@@ -78,7 +80,7 @@
   },
   "fcpo": {
     "schemaVersion": 2,
-    "observationId": "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-08-21|2026-11",
+    "observationId": "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-08-20|2026-11",
     "instrumentId": "BMD_FCPO",
     "instrumentName": "Crude Palm Oil Futures (FCPO)",
     "productId": "FCPO_FUTURES",
@@ -87,24 +89,24 @@
     "marketType": "FUTURES",
     "sourceId": "AGROPOST_FCPO_CLOSING",
     "sourceName": "Agropost Palm Oil Prices at Closing",
-    "sourceReference": "https://agropost.wordpress.com/2026/08/21/21-aug-2026-palm-oil-prices-at-closing/",
+    "sourceReference": "https://agropost.wordpress.com/2026/08/20/20-aug-2026-palm-oil-prices-at-closing/",
     "sourceTier": "SECONDARY_MARKET_DATA",
     "sourceAccessMethod": "public WordPress REST API",
     "contractMonth": "2026-11",
     "contractExpiry": "2026-11-13",
-    "rawValue": 5020,
-    "rawPrice": 5020,
+    "rawValue": 4959,
+    "rawPrice": 4959,
     "rawCurrency": "MYR",
     "rawUnit": "MYR/MT",
     "priceType": "SESSION_LAST",
-    "observationTimestamp": "2026-08-21",
-    "acquiredAt": "2026-08-21T11:34:35.027Z",
+    "observationTimestamp": "2026-08-20",
+    "acquiredAt": "2026-08-21T10:30:27.441Z",
     "delayedBy": null,
-    "freshnessAge": 11.576396388888888,
+    "freshnessAge": 34.5076225,
     "freshnessState": "CURRENT",
     "freshness": {
       "state": "CURRENT",
-      "ageHours": 11.576396388888888,
+      "ageHours": 34.5076225,
       "reason": "within FCPO session-close window"
     },
     "selectedContract": "2026-11",
@@ -122,22 +124,22 @@
       "sourceReference": "https://drarifcpo.my/calendar/",
       "contractMonth": "2026-11",
       "designation": "ACTIVE_CURRENT",
-      "observedAt": "2026-08-21T11:34:35.595Z",
+      "observedAt": "2026-08-21T10:30:28.264Z",
       "evidenceText": "Current FCPO Active Contract Kontrak FCPO NOVEMBER 2026"
     },
     "validationState": "VALIDATED",
     "canonicalEligibility": true,
-    "responseHash": "sha256:233a26b40e2da0d1a748bdba96acfb43de36c353e9af0281df127fdcf8a01065",
+    "responseHash": "sha256:85971fde109cc659b5131ca266070119f188747553f2feb2e11d66ccc7253575",
     "rejectionReason": null,
     "delayedOrLive": "DELAYED",
     "nativeQuote": {
-      "value": 5020,
+      "value": 4959,
       "currency": "MYR",
       "unit": "MYR/MT"
     },
     "canonicalRbdEligible": false,
     "productCanonicalName": "Crude Palm Oil Futures (FCPO)",
-    "normalizedPrice": 5020,
+    "normalizedPrice": 4959,
     "normalizedCurrency": "MYR",
     "normalizedUnit": "MYR/MT",
     "instrumentType": "EXCHANGE_FUTURES",
@@ -146,7 +148,7 @@
   "marketBoard": {
     "FCPO_FUTURES": {
       "schemaVersion": 2,
-      "observationId": "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-08-21|2026-11",
+      "observationId": "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-08-20|2026-11",
       "instrumentId": "BMD_FCPO",
       "instrumentName": "Crude Palm Oil Futures (FCPO)",
       "productId": "FCPO_FUTURES",
@@ -155,24 +157,24 @@
       "marketType": "FUTURES",
       "sourceId": "AGROPOST_FCPO_CLOSING",
       "sourceName": "Agropost Palm Oil Prices at Closing",
-      "sourceReference": "https://agropost.wordpress.com/2026/08/21/21-aug-2026-palm-oil-prices-at-closing/",
+      "sourceReference": "https://agropost.wordpress.com/2026/08/20/20-aug-2026-palm-oil-prices-at-closing/",
       "sourceTier": "SECONDARY_MARKET_DATA",
       "sourceAccessMethod": "public WordPress REST API",
       "contractMonth": "2026-11",
       "contractExpiry": "2026-11-13",
-      "rawValue": 5020,
-      "rawPrice": 5020,
+      "rawValue": 4959,
+      "rawPrice": 4959,
       "rawCurrency": "MYR",
       "rawUnit": "MYR/MT",
       "priceType": "SESSION_LAST",
-      "observationTimestamp": "2026-08-21",
-      "acquiredAt": "2026-08-21T11:34:35.027Z",
+      "observationTimestamp": "2026-08-20",
+      "acquiredAt": "2026-08-21T10:30:27.441Z",
       "delayedBy": null,
-      "freshnessAge": 11.576396388888888,
+      "freshnessAge": 34.5076225,
       "freshnessState": "CURRENT",
       "freshness": {
         "state": "CURRENT",
-        "ageHours": 11.576396388888888,
+        "ageHours": 34.5076225,
         "reason": "within FCPO session-close window"
       },
       "selectedContract": "2026-11",
@@ -190,22 +192,22 @@
         "sourceReference": "https://drarifcpo.my/calendar/",
         "contractMonth": "2026-11",
         "designation": "ACTIVE_CURRENT",
-        "observedAt": "2026-08-21T11:34:35.595Z",
+        "observedAt": "2026-08-21T10:30:28.264Z",
         "evidenceText": "Current FCPO Active Contract Kontrak FCPO NOVEMBER 2026"
       },
       "validationState": "VALIDATED",
       "canonicalEligibility": true,
-      "responseHash": "sha256:233a26b40e2da0d1a748bdba96acfb43de36c353e9af0281df127fdcf8a01065",
+      "responseHash": "sha256:85971fde109cc659b5131ca266070119f188747553f2feb2e11d66ccc7253575",
       "rejectionReason": null,
       "delayedOrLive": "DELAYED",
       "nativeQuote": {
-        "value": 5020,
+        "value": 4959,
         "currency": "MYR",
         "unit": "MYR/MT"
       },
       "canonicalRbdEligible": false,
       "productCanonicalName": "Crude Palm Oil Futures (FCPO)",
-      "normalizedPrice": 5020,
+      "normalizedPrice": 4959,
       "normalizedCurrency": "MYR",
       "normalizedUnit": "MYR/MT",
       "instrumentType": "EXCHANGE_FUTURES",
@@ -213,7 +215,7 @@
     },
     "RBD_PALM_OLEIN": {
       "schemaVersion": 1,
-      "observationId": "RBD_PALM_OLEIN|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT",
+      "observationId": "RBD_PALM_OLEIN|MBLION_CURRENT_TICKER|2026-08-21T10:30:25.841Z|USD|USD/MT",
       "productId": "RBD_PALM_OLEIN",
       "productCanonicalName": "RBD Palm Olein",
       "rawProductLabel": "RBD Palm Olein",
@@ -233,13 +235,13 @@
       "marketLocationBasis": "Malaysia FOB market indication",
       "priceType": "CURRENT_MARKET_INDICATION",
       "observationDate": "2026-08-21",
-      "observationTimestamp": "2026-08-21T11:32:44.453Z",
-      "acquiredAt": "2026-08-21T11:32:44.453Z",
+      "observationTimestamp": "2026-08-21T10:30:25.841Z",
+      "acquiredAt": "2026-08-21T10:30:25.841Z",
       "freshnessState": "CURRENT",
       "validationState": "VALIDATED",
       "conflictState": "NOT_ASSESSED",
       "canonicalEligibility": true,
-      "responseHash": "sha256:88339a231893130f3dc5e1e37e5a1802297efe6fc36491128c0eb6f5859e88e9",
+      "responseHash": "sha256:8cb3b655b06ddcb87d9be97654e522e6cc097ff709024e62a0275cd619990522",
       "sourceEvidence": {
         "sourceCurrentUndated": true,
         "pageDescriptionBasis": "Malaysia FOB market prices"
@@ -247,7 +249,7 @@
     },
     "CPO_PHYSICAL": {
       "schemaVersion": 1,
-      "observationId": "CPO_PHYSICAL|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT",
+      "observationId": "CPO_PHYSICAL|MBLION_CURRENT_TICKER|2026-08-21T10:30:25.841Z|USD|USD/MT",
       "productId": "CPO_PHYSICAL",
       "productCanonicalName": "Crude Palm Oil (CPO)",
       "rawProductLabel": "Crude Palm Oil - CPO",
@@ -267,13 +269,13 @@
       "marketLocationBasis": "Malaysia FOB market indication",
       "priceType": "CURRENT_MARKET_INDICATION",
       "observationDate": "2026-08-21",
-      "observationTimestamp": "2026-08-21T11:32:44.453Z",
-      "acquiredAt": "2026-08-21T11:32:44.453Z",
+      "observationTimestamp": "2026-08-21T10:30:25.841Z",
+      "acquiredAt": "2026-08-21T10:30:25.841Z",
       "freshnessState": "CURRENT",
       "validationState": "VALIDATED",
       "conflictState": "NOT_ASSESSED",
       "canonicalEligibility": true,
-      "responseHash": "sha256:88339a231893130f3dc5e1e37e5a1802297efe6fc36491128c0eb6f5859e88e9",
+      "responseHash": "sha256:8cb3b655b06ddcb87d9be97654e522e6cc097ff709024e62a0275cd619990522",
       "sourceEvidence": {
         "sourceCurrentUndated": true,
         "pageDescriptionBasis": "Malaysia FOB market prices"
@@ -281,7 +283,7 @@
     },
     "RBD_PALM_OIL": {
       "schemaVersion": 1,
-      "observationId": "RBD_PALM_OIL|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT",
+      "observationId": "RBD_PALM_OIL|MBLION_CURRENT_TICKER|2026-08-21T10:30:25.841Z|USD|USD/MT",
       "productId": "RBD_PALM_OIL",
       "productCanonicalName": "RBD Palm Oil",
       "rawProductLabel": "RBD Palm Oil",
@@ -301,13 +303,13 @@
       "marketLocationBasis": "Malaysia FOB market indication",
       "priceType": "CURRENT_MARKET_INDICATION",
       "observationDate": "2026-08-21",
-      "observationTimestamp": "2026-08-21T11:32:44.453Z",
-      "acquiredAt": "2026-08-21T11:32:44.453Z",
+      "observationTimestamp": "2026-08-21T10:30:25.841Z",
+      "acquiredAt": "2026-08-21T10:30:25.841Z",
       "freshnessState": "CURRENT",
       "validationState": "VALIDATED",
       "conflictState": "NOT_ASSESSED",
       "canonicalEligibility": true,
-      "responseHash": "sha256:88339a231893130f3dc5e1e37e5a1802297efe6fc36491128c0eb6f5859e88e9",
+      "responseHash": "sha256:8cb3b655b06ddcb87d9be97654e522e6cc097ff709024e62a0275cd619990522",
       "sourceEvidence": {
         "sourceCurrentUndated": true,
         "pageDescriptionBasis": "Malaysia FOB market prices"
@@ -315,7 +317,7 @@
     },
     "RBD_PALM_STEARIN": {
       "schemaVersion": 1,
-      "observationId": "RBD_PALM_STEARIN|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT",
+      "observationId": "RBD_PALM_STEARIN|MBLION_CURRENT_TICKER|2026-08-21T10:30:25.841Z|USD|USD/MT",
       "productId": "RBD_PALM_STEARIN",
       "productCanonicalName": "RBD Palm Stearin",
       "rawProductLabel": "RBD Palm Stearin",
@@ -335,13 +337,13 @@
       "marketLocationBasis": "Malaysia FOB market indication",
       "priceType": "CURRENT_MARKET_INDICATION",
       "observationDate": "2026-08-21",
-      "observationTimestamp": "2026-08-21T11:32:44.453Z",
-      "acquiredAt": "2026-08-21T11:32:44.453Z",
+      "observationTimestamp": "2026-08-21T10:30:25.841Z",
+      "acquiredAt": "2026-08-21T10:30:25.841Z",
       "freshnessState": "CURRENT",
       "validationState": "VALIDATED",
       "conflictState": "NOT_ASSESSED",
       "canonicalEligibility": true,
-      "responseHash": "sha256:88339a231893130f3dc5e1e37e5a1802297efe6fc36491128c0eb6f5859e88e9",
+      "responseHash": "sha256:8cb3b655b06ddcb87d9be97654e522e6cc097ff709024e62a0275cd619990522",
       "sourceEvidence": {
         "sourceCurrentUndated": true,
         "pageDescriptionBasis": "Malaysia FOB market prices"
@@ -349,7 +351,7 @@
     },
     "RBD_PALM_KERNEL_OIL": {
       "schemaVersion": 1,
-      "observationId": "RBD_PALM_KERNEL_OIL|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT",
+      "observationId": "RBD_PALM_KERNEL_OIL|MBLION_CURRENT_TICKER|2026-08-21T10:30:25.841Z|USD|USD/MT",
       "productId": "RBD_PALM_KERNEL_OIL",
       "productCanonicalName": "Palm Kernel Oil (PKO)",
       "rawProductLabel": "RBD Palm Kernel Oil",
@@ -369,13 +371,13 @@
       "marketLocationBasis": "Malaysia FOB market indication",
       "priceType": "CURRENT_MARKET_INDICATION",
       "observationDate": "2026-08-21",
-      "observationTimestamp": "2026-08-21T11:32:44.453Z",
-      "acquiredAt": "2026-08-21T11:32:44.453Z",
+      "observationTimestamp": "2026-08-21T10:30:25.841Z",
+      "acquiredAt": "2026-08-21T10:30:25.841Z",
       "freshnessState": "CURRENT",
       "validationState": "VALIDATED",
       "conflictState": "NOT_ASSESSED",
       "canonicalEligibility": true,
-      "responseHash": "sha256:88339a231893130f3dc5e1e37e5a1802297efe6fc36491128c0eb6f5859e88e9",
+      "responseHash": "sha256:8cb3b655b06ddcb87d9be97654e522e6cc097ff709024e62a0275cd619990522",
       "sourceEvidence": {
         "sourceCurrentUndated": true,
         "pageDescriptionBasis": "Malaysia FOB market prices"
@@ -461,14 +463,15 @@
     },
     "snapshotIssuedDate": "2026-08-21",
     "modelVersion": "v1-linear-curve-fx-scenario",
-    "baselineUSDPerMT": 1357.4039342930776,
+    "baselineUSDPerMT": 1372.523732199804,
     "targetUSDPerMT": 1361.3404088050313,
     "targetEGPPerMT": 69265,
-    "deltaUSDPerMT": 3.9364745119537474,
-    "deltaPercent": 0.2900002285615758,
+    "deltaUSDPerMT": -11.183323394772742,
+    "deltaPercent": -0.8148000018075271,
     "confidencePercent": 35,
     "targetDate": "2026-08-28",
-    "sourceMarketSnapshotDate": "2026-08-21"
+    "sourceMarketSnapshotDate": "2026-08-21",
+    "sourceMarketSnapshotId": "MARKET_SNAPSHOT|0f30c122f2d909b6166c"
   },
   "status": {
     "state": "READY",
