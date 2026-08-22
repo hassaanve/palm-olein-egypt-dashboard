@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "snapshotId": "FEATURE003|41233da61b55e6b90114",
-  "canonicalVersion": "FEATURE003|41233da61b55e6b90114",
-  "generatedAt": "2026-08-22T13:59:02.343Z",
+  "snapshotId": "FEATURE003|f47fb5e2e00229ed2a18",
+  "canonicalVersion": "FEATURE003|f47fb5e2e00229ed2a18",
+  "generatedAt": "2026-08-22T14:25:00.282Z",
   "sourceIdentity": {
     "canonicalSnapshotId": "RBD_PALM_OLEIN|RBD_PALM_OLEIN|MBLION_RBD_OLEIN_FOB|2026-08-21T10:30:25.841Z|USD|USD/MT",
     "fcpoObservationId": "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-08-20|2026-11",
@@ -16,7 +16,7 @@
     ],
     "forecastIssuedDate": "2026-08-22",
     "forecastModelVersion": "v1-linear-curve-fx-scenario",
-    "forecastInputIdentity": "FORECAST_INPUT|6cc18ab0ef06163bba2e",
+    "forecastInputIdentity": "FORECAST_INPUT|d330aa8986736c7a58d4",
     "marketSnapshotId": "MARKET_SNAPSHOT|ee2f8495fcd260308902"
   },
   "rbd": {
@@ -460,7 +460,7 @@
           "status": "Pending"
         }
       ],
-      "sourceInputIdentity": "FORECAST_INPUT|6cc18ab0ef06163bba2e",
+      "sourceInputIdentity": "FORECAST_INPUT|d330aa8986736c7a58d4",
       "sourceMarketSnapshotId": "MARKET_SNAPSHOT|ee2f8495fcd260308902"
     },
     "snapshotIssuedDate": "2026-08-22",
