@@ -1022,6 +1022,7 @@
   .dr-fx-card{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;min-height:0;padding-block:14px;}
   .dr-fx-kicker,.dr-hero-kicker{font-size:11px;color:var(--ink-500);font-weight:800;letter-spacing:.08em;text-transform:uppercase;}
   .dr-fx-value{font-family:var(--font-mono);font-size:32px;font-weight:800;color:var(--ink-900);margin-top:5px;}
+  .dr-fx-midpoint{font-size:12px;color:var(--ink-700);margin-top:4px;font-weight:700;}
   .dr-fx-meta{font-size:12px;color:var(--ink-500);margin-top:5px;}
   .dr-fx-status{padding:7px 10px;border-radius:999px;background:var(--ev-green-tint);color:var(--ev-green);font-size:11px;font-weight:800;}
   .dr-hero-chart-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px;}
@@ -1029,6 +1030,10 @@
   .dr-hero-chart-subtitle{font-size:12px;color:var(--ink-500);margin-top:4px;}
   .dr-hero-chart{display:block;width:100%;height:250px;overflow:visible;}
   .dr-hero-axis{font-size:10px;fill:var(--ink-500);}
+  .dr-hero-grid{stroke:var(--line-soft);stroke-width:1;}
+  .dr-hero-label{font-size:10px;fill:var(--ink-700);font-weight:800;}
+  .dr-hero-date{font-size:10px;fill:var(--ink-500);}
+  .dr-hero-endpoint{font-size:10px;fill:var(--ink-900);font-weight:800;}
   .dr-hero-actual{fill:none;stroke:var(--accent);stroke-width:3;}
   .dr-hero-forecast{fill:none;stroke:var(--ev-amber);stroke-width:3;stroke-dasharray:7 5;}
   .dr-hero-today{fill:var(--surface);stroke:var(--ev-green);stroke-width:3;}
@@ -1513,11 +1518,11 @@
         </div>
       </div>
       <section class="dr-fx-card" id="drFxCard" aria-labelledby="drFxCardTitle">
-        <div><div class="dr-fx-kicker">USD / EGP</div><h2 id="drFxCardTitle" class="dr-hero-chart-title" data-i18n="drFxTitle">سعر الدولار مقابل الجنيه</h2><div class="dr-fx-value" id="drFxValue" dir="ltr">—</div><div class="dr-fx-meta" id="drFxMeta"></div></div>
+        <div><div class="dr-fx-kicker">USD / EGP</div><h2 id="drFxCardTitle" class="dr-hero-chart-title" data-i18n="drFxTitle">سعر الدولار مقابل الجنيه</h2><div class="dr-fx-value" id="drFxValue" dir="ltr">—</div><div class="dr-fx-midpoint" id="drFxMidpoint"></div><div class="dr-fx-meta" id="drFxMeta"></div></div>
         <div class="dr-fx-status" id="drFxStatus">—</div>
       </section>
       <section class="dr-hero-chart-card" id="drRbdHeroChart" aria-labelledby="drRbdHeroChartTitle">
-        <div class="dr-hero-chart-head"><div><div class="dr-hero-kicker">RBD MARKET</div><h2 id="drRbdHeroChartTitle" class="dr-hero-chart-title" data-i18n="drHeroChartTitle">مسار سعر أولين النخيل المكرر</h2><div class="dr-hero-chart-subtitle">RBD Palm Olein · USD/MT · <span data-i18n="drHeroChartConcept">السجل الفعلي · اليوم · توقع 7 أيام</span></div></div></div>
+        <div class="dr-hero-chart-head"><div><div class="dr-hero-kicker" data-i18n="drHeroKicker">سوق الأولين المكرر</div><h2 id="drRbdHeroChartTitle" class="dr-hero-chart-title" data-i18n="drHeroChartTitle">مسار سعر أولين النخيل المكرر</h2><div class="dr-hero-chart-subtitle">RBD Palm Olein · USD/MT · <span data-i18n="drHeroChartConcept">السجل الفعلي · اليوم · توقع 7 أيام</span></div></div></div>
         <svg class="dr-hero-chart" id="drRbdHeroChartSvg" viewBox="0 0 760 250" role="img" aria-label="RBD Palm Olein market price history and forecast"></svg>
         <div class="dr-hero-legend"><span><i></i><span data-i18n="drHeroActual">السجل الفعلي</span></span><span><i class="forecast"></i><span data-i18n="drHeroForecast">توقع 7 أيام</span></span></div>
       </section>
@@ -1541,9 +1546,9 @@
         <div class="dr-notes-col dr-notes-col--input">
           <h2 class="dr-notes-title"><span class="dr-notes-title-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg></span><span data-i18n="drNotesTitle">ملاحظات التاجر</span></h2>
           <p class="dr-notes-hint" data-i18n="drNotesHint"></p>
-          <textarea class="dr-notes-textarea" id="drNotesTextarea" disabled maxlength="1000" data-i18n-placeholder="drNotesPlaceholder"></textarea>
+          <textarea class="dr-notes-textarea" id="drNotesTextarea" maxlength="1000" data-i18n-placeholder="drNotesPlaceholder" aria-describedby="drNotesSaveHint"></textarea>
           <div class="dr-notes-save-row">
-            <button type="button" class="dr-notes-save-btn" id="drNotesSaveBtn" disabled data-i18n="drNotesSaveLabel">حفظ الملاحظة</button>
+            <button type="button" class="dr-notes-save-btn" id="drNotesSaveBtn" data-i18n="drNotesSaveLabel">حفظ الملاحظة</button>
             <span class="dr-notes-count" id="drNotesCount">0 / 1000</span>
           </div>
           <span class="dr-notes-save-hint" id="drNotesSaveHint" data-i18n="drNotesSaveHint"></span>
@@ -2344,6 +2349,12 @@
   var MARKET_BOARD_OBSERVATIONS = [];
   var PRODUCTION_SNAPSHOT = null;
   var PRODUCTION_FORECAST_SNAPSHOT = null;
+  // One configuration point for the isolated Trader Notes boundary. The
+  // production hostname is supplied only after the Worker is activated;
+  // blank/unknown configuration fails closed. Local UAT uses the same-origin
+  // test adapter and never changes Feature 003 runtime state.
+  var TRADER_NOTES_API_BASE = window.TRADER_NOTES_API_BASE || (location.hostname === 'hassaanve.github.io' ? 'https://palm-olein-trader-notes.trader-notes-worker.workers.dev' : '');
+  var traderNotesState = { records: [], loading: false, unavailable: false };
   var RBD_OLEIN_CANONICAL_STATUS = { status:'UNAVAILABLE', detail:'No validated canonical market snapshot loaded' };
   var canonicalHydrationAttempted = false;
   var feature003ApplicationReady = false;
@@ -2643,7 +2654,7 @@
       // ---- Daily Report (التقرير اليومي) - V1 scaffold ----
       drTitle:'Daily Report', drSubtitle:'Today\'s market price, expected Egypt port price, current direction, and the 7-day outlook — one page, one validated rate.',
       drHeadSub:'Purchase Decision Summary',
-      drCard1Eyebrow:'RBD Palm Olein Market Price Today', drCard2Eyebrow:'Expected Egypt Port Price', drCard3Eyebrow:'Current Direction', drCard4Eyebrow:'7-Day Outlook', drFxTitle:'USD/EGP Market Rate', drHeroChartTitle:'RBD Palm Olein Price Path', drHeroChartConcept:'Actual history · Today · 7-day forecast', drHeroActual:'Actual history', drHeroForecast:'7-day forecast',
+      drCard1Eyebrow:'RBD Palm Olein Market Price Today', drCard2Eyebrow:'Expected Egypt Port Price', drCard3Eyebrow:'Current Direction', drCard4Eyebrow:'7-Day Outlook', drFxTitle:'US Dollar vs Egyptian Pound', drFxMidpoint:'Calculated midpoint of buy/sell rates', drFxBuy:'Buy', drFxSell:'Sell', drFxCurrency:'EGP/USD', drFxSourceLabel:'Source', drFxSource:'BankLive reporting Central Bank of Egypt rates', drFxRateDate:'Rate date', drFxRetrieved:'Retrieved', drFxStatusVerified:'Verified', drHeroKicker:'RBD Palm Olein market', drHeroChartTitle:'RBD Palm Olein Price Path', drHeroChartConcept:'Actual history · Today · 7-day forecast', drHeroActual:'Actual history', drHeroToday:'Today', drHeroForecast:'7-day forecast', drHeroLow:'Low', drHeroHigh:'High', drHeroDateActual:'Actual', drHeroDateToday:'Today', drHeroDateForecast:'Forecast',
       drUnitUsd:'USD/MT', drUnitEgp:'EGP/MT',
       drSourceDetails:'Source & details', drCard2Details:'Details & disclaimer',
       drRefreshLabel:'Refresh Data Now', drRefreshDisabledHint:'Check the latest published trusted snapshot', drRefreshReadyHint:'Check the latest published trusted snapshot', drRefreshLoading:'Checking the latest published data…', drRefreshSuccess:'Latest market data loaded', drRefreshNoChange:'You already have the latest available data', drRefreshFailure:'Could not check for a new update — showing the last trusted data', drRefreshUnavailable:'Published snapshot unavailable',
@@ -2651,7 +2662,7 @@
       drNotesTitle:'Trader Notes', drNotesEmptyState:'No notes yet.',
       drNotesHint:'Add what you\'re hearing today from the market, suppliers, freight, or other traders…',
       drNotesPlaceholder:'Type a note…', drNotesSaveLabel:'Save Note',
-      drNotesSaveHint:'Available from the local Trader Notes tool.', drNotesListTitle:'Recent Notes',
+      drNotesSaveSuccess:'Note saved', drNotesSaveFailure:'Could not save the note — your text was not lost', drNotesLoadFailure:'Could not load notes right now', drNotesLoading:'Loading notes…', drNotesPersistenceUnavailable:'Trader Notes service is not configured yet.', drNotesSaveHint:'Notes are stored by the secure Trader Notes service.', drNotesListTitle:'Recent Notes',
       drPortAdjustmentLabel:'Trader Port Adjustment', drCard2MarketRow:'RBD Palm Olein Market Price', drCard2TotalRow:'Expected Egypt Port Price',
       drTargetLabel:'Target', drChangeLabel:'Change vs. today',
       drConfidenceLabel:'Model Confidence', drConfidenceFootnote:'Based on input data quality and forecast scenario-band width — not a backtested accuracy measure.',
@@ -2933,7 +2944,7 @@
       // ---- التقرير اليومي (Daily Report) - V1 scaffold ----
       drTitle:'التقرير اليومي', drSubtitle:'سعر السوق اليوم، والسعر المتوقع بميناء مصر، والاتجاه الحالي، وتوقعات 7 أيام — في صفحة واحدة وبسعر صرف واحد معتمد.',
       drHeadSub:'ملخص قرار الشراء',
-      drCard1Eyebrow:'سعر أولين النخيل المكرر اليوم', drCard2Eyebrow:'السعر المتوقع في ميناء مصر', drCard3Eyebrow:'الاتجاه الحالي', drCard4Eyebrow:'توقع 7 أيام', drFxTitle:'سعر الدولار مقابل الجنيه', drHeroChartTitle:'مسار سعر أولين النخيل المكرر', drHeroChartConcept:'السجل الفعلي · اليوم · توقع 7 أيام', drHeroActual:'السجل الفعلي', drHeroForecast:'توقع 7 أيام',
+      drCard1Eyebrow:'سعر أولين النخيل المكرر اليوم', drCard2Eyebrow:'السعر المتوقع في ميناء مصر', drCard3Eyebrow:'الاتجاه الحالي', drCard4Eyebrow:'توقع 7 أيام', drFxTitle:'سعر الدولار مقابل الجنيه', drFxMidpoint:'متوسط محسوب بين سعر الشراء والبيع', drFxBuy:'الشراء', drFxSell:'البيع', drFxCurrency:'جنيه/دولار', drFxSourceLabel:'المصدر', drFxSource:'BankLive نقلاً عن أسعار البنك المركزي المصري', drFxRateDate:'تاريخ السعر', drFxRetrieved:'آخر جلب للبيانات', drFxStatusVerified:'تم التحقق', drHeroKicker:'سوق الأولين المكرر', drHeroChartTitle:'مسار سعر أولين النخيل المكرر', drHeroChartConcept:'السجل الفعلي · اليوم · توقع 7 أيام', drHeroActual:'السجل الفعلي', drHeroToday:'اليوم', drHeroForecast:'توقع 7 أيام', drHeroLow:'الأدنى', drHeroHigh:'الأعلى', drHeroDateActual:'فعلي', drHeroDateToday:'اليوم', drHeroDateForecast:'توقع',
       drUnitUsd:'USD/MT', drUnitEgp:'EGP/MT',
       drSourceDetails:'المصدر والتفاصيل', drCard2Details:'التفاصيل والتنبيه',
       drRefreshLabel:'تحديث البيانات الآن', drRefreshDisabledHint:'التحقق من أحدث لقطة موثوقة منشورة', drRefreshReadyHint:'التحقق من أحدث لقطة موثوقة منشورة', drRefreshLoading:'جاري التحقق من أحدث البيانات...', drRefreshSuccess:'تم تحميل أحدث بيانات السوق', drRefreshNoChange:'أنت بالفعل على أحدث بيانات متاحة', drRefreshFailure:'تعذر التحقق من تحديث جديد — يتم عرض آخر بيانات موثوقة', drRefreshUnavailable:'لا تتوفر اللقطة المنشورة',
@@ -2941,7 +2952,7 @@
       drNotesTitle:'ملاحظات التاجر', drNotesEmptyState:'لا توجد ملاحظات بعد.',
       drNotesHint:'أضف ما تسمعه اليوم من السوق، الموردين، الشحن أو التجار...',
       drNotesPlaceholder:'اكتب ملاحظة...', drNotesSaveLabel:'حفظ الملاحظة',
-      drNotesSaveHint:'متاح عبر أداة ملاحظات التاجر المحلية.', drNotesListTitle:'آخر الملاحظات',
+      drNotesSaveSuccess:'تم حفظ الملاحظة', drNotesSaveFailure:'تعذر حفظ الملاحظة — لم يتم فقد النص', drNotesLoadFailure:'تعذر تحميل الملاحظات حاليًا', drNotesLoading:'جاري تحميل الملاحظات...', drNotesPersistenceUnavailable:'خدمة ملاحظات التاجر غير مهيأة بعد.', drNotesSaveHint:'تُحفظ الملاحظات عبر خدمة ملاحظات التاجر الآمنة.', drNotesListTitle:'آخر الملاحظات',
       drPortAdjustmentLabel:'تقدير الوصول للميناء', drCard2MarketRow:'سعر أولين النخيل المكرر', drCard2TotalRow:'السعر المتوقع بميناء مصر',
       drTargetLabel:'الهدف', drChangeLabel:'التغير مقارنة باليوم',
       drConfidenceLabel:'درجة ثقة النموذج', drConfidenceFootnote:'مبنية على جودة البيانات المُدخلة واتساع نطاق سيناريو التوقع — وليست مقياس دقة تاريخي مُختبر.',
@@ -9110,20 +9121,33 @@
     svg.innerHTML = '';
     var series = PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.rbdMarketChart && PRODUCTION_SNAPSHOT.rbdMarketChart.series;
     if (!Array.isArray(series) || !series.length) return;
-    var values = series.map(function(p){ return Number(p.valueUSDPerMT); }), min = Math.min.apply(null, values), max = Math.max.apply(null, values), rawRange = (max-min)||1, padding = Math.max(rawRange * .25, max * .025), domainMin = min - padding, domainMax = max + padding, range = domainMax-domainMin, left=34, right=744, top=18, bottom=210;
+    // Presentation only: this exact production series remains pure RBD
+    // Palm Olein USD/MT. No EGP, port add-on, or landed value enters here.
+    var values = series.map(function(p){ return Number(p.valueUSDPerMT); }), min = Math.min.apply(null, values), max = Math.max.apply(null, values), rawRange = (max-min)||1, padding = Math.max(rawRange * .25, max * .025), domainMin = min - padding, domainMax = max + padding, range = domainMax-domainMin, left=52, right=742, top=22, bottom=196;
     function x(i){ return left + (right-left) * (i / Math.max(1, series.length-1)); }
     function y(v){ return bottom - (bottom-top) * ((v-domainMin)/range); }
     var ns='http://www.w3.org/2000/svg';
-    var grid=document.createElementNS(ns,'line'); grid.setAttribute('x1',left);grid.setAttribute('x2',right);grid.setAttribute('y1',bottom);grid.setAttribute('y2',bottom);grid.setAttribute('stroke','var(--line)');svg.appendChild(grid);
+    [0,.5,1].forEach(function(frac){ var gy=top+(bottom-top)*frac, gv=domainMax-(domainMax-domainMin)*frac; var grid=document.createElementNS(ns,'line'); grid.setAttribute('x1',left);grid.setAttribute('x2',right);grid.setAttribute('y1',gy);grid.setAttribute('y2',gy);grid.setAttribute('class','dr-hero-grid');svg.appendChild(grid); var tick=document.createElementNS(ns,'text'); tick.setAttribute('x',left-8);tick.setAttribute('y',gy+4);tick.setAttribute('class','dr-hero-axis');tick.setAttribute('text-anchor','end');tick.textContent=fmt(gv,2);svg.appendChild(tick); });
     var actual=series.map(function(p,i){return p.kind==='forecast'?null:x(i).toFixed(1)+','+y(p.valueUSDPerMT).toFixed(1);}).filter(Boolean), forecast=series.filter(function(p){return p.kind==='today'||p.kind==='forecast';}).map(function(p){var i=series.indexOf(p);return x(i).toFixed(1)+','+y(p.valueUSDPerMT).toFixed(1);});
     function path(cls,pts){if(pts.length<2)return;var el=document.createElementNS(ns,'path');el.setAttribute('class',cls);el.setAttribute('d','M'+pts.join(' L'));svg.appendChild(el);}
     path('dr-hero-actual',actual); path('dr-hero-forecast',forecast);
-    series.forEach(function(p,i){var c=document.createElementNS(ns,'circle');c.setAttribute('cx',x(i));c.setAttribute('cy',y(p.valueUSDPerMT));c.setAttribute('r',p.kind==='today'?6:3);c.setAttribute('class',p.kind==='today'?'dr-hero-today':'dr-hero-point');var title=document.createElementNS(ns,'title');title.textContent=(p.kind==='forecast'?'Forecast':'Actual')+' · '+(p.date||'')+' · '+fmt(p.valueUSDPerMT,2)+' USD/MT'+(p.confidencePercent!==null&&p.confidencePercent!==undefined?' · '+p.confidencePercent+'% confidence':'');c.appendChild(title);svg.appendChild(c);});
-    var label=document.createElementNS(ns,'text');label.setAttribute('x',left);label.setAttribute('y',238);label.setAttribute('class','dr-hero-axis');label.textContent=fmt(domainMin,2)+'–'+fmt(domainMax,2)+' USD/MT';svg.appendChild(label);
+    function dateLabel(date){ if(!date)return '—'; var d=new Date(date+'T00:00:00Z'); return isNaN(d.getTime())?date:d.toLocaleDateString(state.lang==='ar'?'ar-EG':'en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}); }
+    function pointKind(p){ return p.kind==='today'?t('drHeroDateToday'):(p.kind==='forecast'?t('drHeroDateForecast'):t('drHeroDateActual')); }
+    series.forEach(function(p,i){var c=document.createElementNS(ns,'circle');c.setAttribute('cx',x(i));c.setAttribute('cy',y(p.valueUSDPerMT));c.setAttribute('r',p.kind==='today'?7:(p.kind==='forecast'?5:4));c.setAttribute('class',p.kind==='today'?'dr-hero-today':'dr-hero-point');c.setAttribute('tabindex','0');var title=document.createElementNS(ns,'title');title.textContent=pointKind(p)+' · '+dateLabel(p.date)+' · '+fmt(p.valueUSDPerMT,2)+' USD/MT'+(p.confidencePercent!==null&&p.confidencePercent!==undefined?' · '+p.confidencePercent+'%':'');c.appendChild(title);svg.appendChild(c); if(p.kind!=='actual'){var lab=document.createElementNS(ns,'text');lab.setAttribute('x',x(i));lab.setAttribute('y',y(p.valueUSDPerMT)-12);lab.setAttribute('class','dr-hero-endpoint');lab.setAttribute('text-anchor',i===series.length-1?'end':'middle');lab.textContent=pointKind(p)+' '+fmt(p.valueUSDPerMT,2);svg.appendChild(lab);} var dt=document.createElementNS(ns,'text');dt.setAttribute('x',x(i));dt.setAttribute('y',220);dt.setAttribute('class','dr-hero-date');dt.setAttribute('text-anchor',i===0?'start':(i===series.length-1?'end':'middle'));dt.textContent=dateLabel(p.date);svg.appendChild(dt);});
+    var rangeLabel=document.createElementNS(ns,'text');rangeLabel.setAttribute('x',left);rangeLabel.setAttribute('y',246);rangeLabel.setAttribute('class','dr-hero-axis');rangeLabel.textContent=t('drHeroLow')+' '+fmt(domainMin,2)+' · '+t('drHeroHigh')+' '+fmt(domainMax,2)+' USD/MT';svg.appendChild(rangeLabel);
   }
   function renderUsdEgpCard(){
     var fx=PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.fx && PRODUCTION_SNAPSHOT.fx.egpUsd, value=document.getElementById('drFxValue'), meta=document.getElementById('drFxMeta'), status=document.getElementById('drFxStatus');
-    if(!value||!fx){return;} value.textContent=fx&&isFinite(fx.value)?fmt(fx.value,2)+' EGP/USD':'—'; meta.textContent=fx?(fx.source+' · '+(fx.observationDate||fx.capturedAt||'—')):'—'; status.textContent=fx?(fx.freshnessState||fx.status||'—'):'—';
+    if(!value||!fx){return;}
+    var source=String(fx.source||''), match=source.match(/buy\/sell rates \(([^/]+) \/ ([^)]+)\),\s*(\d{1,2} [A-Za-z]+ \d{4})/i), buy=match?Number(match[1]):null, sell=match?Number(match[2]):null, rateDate=match?match[3]:(fx.observationDate||'—');
+    var midpoint=(buy!==null&&sell!==null)?(buy+sell)/2:null;
+    value.textContent=midpoint===null?'—':fmt(midpoint,2)+' EGP/USD';
+    document.getElementById('drFxMidpoint').textContent=t('drFxMidpoint');
+    meta.innerHTML='';
+    function line(label, text){var row=document.createElement('div'); row.textContent=label+': '+text; meta.appendChild(row);}
+    function fxDate(value){var raw=String(value||''); var human=raw.match(/^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/), d; if(human){var months={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11}; d=new Date(Date.UTC(Number(human[3]),months[human[2].slice(0,3)],Number(human[1])));} else d=new Date(raw); if(isNaN(d.getTime())) return value||'—'; return d.toLocaleDateString(state.lang==='ar'?'ar-EG':'en-GB',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'});}
+    line(t('drFxBuy'),buy===null?'—':fmt(buy,3)); line(t('drFxSell'),sell===null?'—':fmt(sell,4)+' '+t('drFxCurrency')); line(t('drFxSourceLabel'),t('drFxSource')); line(t('drFxRateDate'),fxDate(rateDate)); line(t('drFxRetrieved'),fxDate(fx.capturedAt));
+    status.textContent=t('drFxStatusVerified');
   }
   function renderDailyReport(base){
     var panel = document.getElementById('tabPanelDaily');
@@ -9324,25 +9348,25 @@
     renderTraderNotes();
   }
 
-  // Trader Notes: pure display of the embedded TRADER_NOTES mirror (see
-  // that var's own header comment for the sync/write-path boundary) - most
-  // recent first, raw text rendered verbatim via textContent (never
-  // innerHTML) so nothing a trader typed can ever be interpreted as markup.
+  // Trader Notes are hydrated from the isolated API. Raw text is always
+  // rendered through textContent; the public static snapshot is not used as
+  // a Production note store.
   function renderTraderNotes(){
     var listEl = document.getElementById('drNotesList');
     var emptyEl = document.getElementById('drNotesEmpty');
     if (!listEl || !emptyEl) return;
-    var notes = (typeof TRADER_NOTES !== 'undefined' && TRADER_NOTES) || [];
+    var notes = traderNotesState.records || [];
     if (!notes.length){
       emptyEl.hidden = false;
       listEl.hidden = true;
       listEl.innerHTML = '';
+      emptyEl.textContent = traderNotesState.loading ? t('drNotesLoading') : (traderNotesState.unavailable ? t('drNotesLoadFailure') : t('drNotesEmptyState'));
       return;
     }
     emptyEl.hidden = true;
     listEl.hidden = false;
     listEl.innerHTML = '';
-    notes.slice().reverse().forEach(function(note){
+    notes.slice(0,10).forEach(function(note){
       var item = document.createElement('div');
       item.className = 'dr-note';
       var textEl = document.createElement('div');
@@ -9350,11 +9374,55 @@
       textEl.textContent = note.rawText;
       var timeEl = document.createElement('time');
       timeEl.dir = 'ltr';
-      timeEl.textContent = note.createdAt;
+      timeEl.textContent = formatTraderNoteDate(note.createdAt);
       item.appendChild(textEl);
       item.appendChild(timeEl);
       listEl.appendChild(item);
     });
+  }
+  function formatTraderNoteDate(value){
+    var d=new Date(value); if(isNaN(d.getTime())) return String(value||'—');
+    return d.toLocaleString(state.lang==='ar'?'ar-EG':'en-GB',{dateStyle:'medium',timeStyle:'short',timeZone:'Africa/Cairo'});
+  }
+  function traderNotesApiUrl(path){ return TRADER_NOTES_API_BASE ? TRADER_NOTES_API_BASE.replace(/\/$/,'') + path : ''; }
+  function validReturnedTraderNote(note){ return !!(note && typeof note.id==='string' && /^NOTE\|[0-9a-f-]{20,}$/i.test(note.id) && typeof note.rawText==='string' && typeof note.createdAt==='string' && (note.language==='ar'||note.language==='en')); }
+  function loadTraderNotes(){
+    if(!traderNotesApiUrl('/v1/notes')){ traderNotesState={records:[],loading:false,unavailable:true}; renderTraderNotes(); return Promise.resolve(); }
+    traderNotesState.loading=true; renderTraderNotes();
+    return fetch(traderNotesApiUrl('/v1/notes?limit=10'),{headers:{Accept:'application/json'},cache:'no-store'}).then(function(response){if(!response.ok) throw new Error('notes read failed');return response.json();}).then(function(payload){
+      if(!payload||!Array.isArray(payload.records)||payload.records.some(function(note){return !validReturnedTraderNote(note);})) throw new Error('invalid notes response');
+      traderNotesState={records:payload.records.slice(0,10),loading:false,unavailable:false}; renderTraderNotes();
+    }).catch(function(){ traderNotesState={records:[],loading:false,unavailable:true}; renderTraderNotes(); });
+  }
+  function traderNoteInputState(rawText){
+    var text=String(rawText==null?'':rawText), trimmed=text.trim();
+    if(!trimmed) return {ok:false, reason:'empty'};
+    if(text.length>1000) return {ok:false, reason:'length'};
+    return {ok:true, rawText:text};
+  }
+  function attemptTraderNoteSave(){
+    var input=document.getElementById('drNotesTextarea'), hint=document.getElementById('drNotesSaveHint'), button=document.getElementById('drNotesSaveBtn');
+    if(!input||!hint)return Promise.resolve(false);
+    var inputState=traderNoteInputState(input.value);
+    if(!inputState.ok){ hint.textContent=t('drNotesSaveFailure'); return Promise.resolve(false); }
+    if(!traderNotesApiUrl('/v1/notes')){ hint.textContent=t('drNotesSaveFailure'); return Promise.resolve(false); }
+    var context={};
+    if(PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.snapshotId) context.snapshotId=PRODUCTION_SNAPSHOT.snapshotId;
+    if(PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.rbd && isFinite(PRODUCTION_SNAPSHOT.rbd.canonicalPriceUSDPerMT)) context.marketRbdUsd=PRODUCTION_SNAPSHOT.rbd.canonicalPriceUSDPerMT;
+    if(PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.portArrival && isFinite(PRODUCTION_SNAPSHOT.portArrival.usdPerMT)) context.portTodayUsd=PRODUCTION_SNAPSHOT.portArrival.usdPerMT;
+    if(PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.fcpo && isFinite(PRODUCTION_SNAPSHOT.fcpo.rawValue)) context.fcpoMyr=PRODUCTION_SNAPSHOT.fcpo.rawValue;
+    if(isFinite(state.egpUsd)) context.fxEgpUsd=state.egpUsd;
+    if(button) button.disabled=true;
+    return fetch(traderNotesApiUrl('/v1/notes'),{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({rawText:inputState.rawText,language:state.lang,context:context})}).then(function(response){
+      if(response.status!==201) throw new Error('note append failed'); return response.json();
+    }).then(function(payload){
+      if(!payload||payload.status!=='APPENDED'||!validReturnedTraderNote(payload.note)||payload.note.rawText!==inputState.rawText) throw new Error('invalid append response');
+      traderNotesState.records=[payload.note].concat(traderNotesState.records).slice(0,10); traderNotesState.unavailable=false; hint.textContent=t('drNotesSaveSuccess'); input.value=''; updateTraderNoteInput(); renderTraderNotes(); return true;
+    }).catch(function(){ hint.textContent=t('drNotesSaveFailure'); return false; }).finally(function(){if(button)button.disabled=false;});
+  }
+  function updateTraderNoteInput(){
+    var input=document.getElementById('drNotesTextarea'), count=document.getElementById('drNotesCount');
+    if(input&&count) count.textContent=String(input.value.length)+' / 1000';
   }
 
   function renderExecutiveSummary(base){
@@ -9722,6 +9790,8 @@
   document.getElementById('tabBtnSummary').addEventListener('click', function(){ setTab('summary'); });
   document.getElementById('tabBtnCargo').addEventListener('click', function(){ setTab('cargo'); });
   document.getElementById('drRefreshBtn').addEventListener('click', runRealMarketRefresh);
+  document.getElementById('drNotesTextarea').addEventListener('input', updateTraderNoteInput);
+  document.getElementById('drNotesSaveBtn').addEventListener('click', attemptTraderNoteSave);
 
   // ---------- Detailed Analysis: expand/collapse all groups ----------
   function setAllGroups(open){
@@ -9733,5 +9803,6 @@
   applyIndonesiaVisibility();
   setLanguage(state.lang);
   loadCanonicalMarketState();
+  loadTraderNotes();
 })();
 </script>
