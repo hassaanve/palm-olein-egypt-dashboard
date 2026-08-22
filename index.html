@@ -1018,6 +1018,24 @@
      own justify-content note below. */
   .dr-card-grid--3{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;grid-template-rows:minmax(470px,auto);}
   @media (max-width:900px){.dr-card-grid--3{grid-template-columns:1fr;}}
+  .dr-fx-card,.dr-hero-chart-card{margin:0 0 22px;padding:20px;border:1px solid var(--line-soft);border-radius:22px;background:linear-gradient(145deg,var(--surface),var(--surface-2));box-shadow:var(--shadow-card);}
+  .dr-fx-card{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;min-height:0;padding-block:14px;}
+  .dr-fx-kicker,.dr-hero-kicker{font-size:11px;color:var(--ink-500);font-weight:800;letter-spacing:.08em;text-transform:uppercase;}
+  .dr-fx-value{font-family:var(--font-mono);font-size:32px;font-weight:800;color:var(--ink-900);margin-top:5px;}
+  .dr-fx-meta{font-size:12px;color:var(--ink-500);margin-top:5px;}
+  .dr-fx-status{padding:7px 10px;border-radius:999px;background:var(--ev-green-tint);color:var(--ev-green);font-size:11px;font-weight:800;}
+  .dr-hero-chart-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px;}
+  .dr-hero-chart-title{font-size:22px;font-weight:800;color:var(--ink-900);margin:3px 0 0;}
+  .dr-hero-chart-subtitle{font-size:12px;color:var(--ink-500);margin-top:4px;}
+  .dr-hero-chart{display:block;width:100%;height:250px;overflow:visible;}
+  .dr-hero-axis{font-size:10px;fill:var(--ink-500);}
+  .dr-hero-actual{fill:none;stroke:var(--accent);stroke-width:3;}
+  .dr-hero-forecast{fill:none;stroke:var(--ev-amber);stroke-width:3;stroke-dasharray:7 5;}
+  .dr-hero-today{fill:var(--surface);stroke:var(--ev-green);stroke-width:3;}
+  .dr-hero-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:var(--ink-700);margin-top:6px;}
+  .dr-hero-legend i{display:inline-block;width:18px;border-top:3px solid var(--accent);vertical-align:middle;margin-inline-end:5px;}
+  .dr-hero-legend i.forecast{border-color:var(--ev-amber);border-top-style:dashed;}
+  @media (max-width:600px){.dr-fx-card,.dr-hero-chart-card{padding:16px}.dr-fx-value{font-size:27px}.dr-hero-chart{height:220px}.dr-hero-chart-title{font-size:19px;}}
 
   /* Centered composition for every KPI card - icon badge, hero figure,
      label, provenance/meta, each one hugging the next (justify-content:
@@ -1123,6 +1141,10 @@
    .dr-board-mobile-secondary{direction:ltr;text-align:end;}
    .dr-board-mobile-status{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
    .dr-board-mobile-timing{grid-column:1 / -1;padding-top:2px;line-height:1.5;overflow-wrap:anywhere;}
+   .dr-board-mobile-card.fcpo .dr-board-mobile-product .dr-board-product-en{font-size:10px;}
+   .dr-board-mobile-card.fcpo .dr-board-mobile-price,.dr-board-mobile-card.fcpo .dr-board-mobile-secondary{font-weight:800;}
+   .dr-board-mobile-card.fcpo .dr-board-mobile-price .dr-board-secondary,.dr-board-mobile-card.fcpo .dr-board-mobile-secondary .dr-board-secondary{font-size:13px;color:var(--ink-900);}
+   .dr-board-mobile-card.fcpo .dr-board-mobile-timing{font-size:10px;color:var(--ink-500);}
    @media (max-width:600px){
      .dr-market-board{padding:16px 12px;}
      .dr-market-board-head{align-items:flex-start;flex-direction:column;gap:4px;}
@@ -1130,6 +1152,9 @@
      .dr-market-board-table{display:none;}
      .dr-market-board-mobile{display:block;border:1px solid var(--line);border-radius:16px;overflow:hidden;}
      .dr-board-product-ar{font-size:13px;}
+     .dr-board-mobile-card.fcpo{grid-template-columns:minmax(0,1fr) minmax(130px,150px);}
+     .dr-board-mobile-card.fcpo .dr-board-mobile-price{white-space:normal;}
+     .dr-board-mobile-card.fcpo .dr-board-mobile-price small{font-size:9px;white-space:normal;}
    }
 
   /* Progressive disclosure: source/provenance detail collapsed by default. */
@@ -1182,6 +1207,15 @@
   .dr-card--outlook:has(.dr-conf-high) .dr-confidence-qual{color:var(--ev-green);}
   .dr-card--outlook:has(.dr-conf-mid) .dr-confidence-qual{color:var(--ev-amber);}
   .dr-confidence-footnote{display:block;font-size:9.5px;color:var(--exec-ink-dim);margin-top:5px;line-height:1.4;}
+  @media (max-width:600px){
+    .dr-card--outlook{gap:4px;padding-inline:14px;}
+    .dr-card--outlook .dr-forecast-basis{gap:4px;padding:6px 5px;}
+    .dr-card--outlook .dr-forecast-basis-item span{font-size:8.5px;}
+    .dr-card--outlook .dr-forecast-basis-item b{font-size:12px;}
+    .dr-card--outlook .dr-delta-block{width:100%;padding:5px 7px;border:1px solid var(--exec-line);border-radius:9px;background:rgba(0,0,0,.12);}
+    .dr-card--outlook .dr-confidence{margin-top:0;padding-top:2px;}
+    .dr-card--outlook .dr-confidence-track{height:8px;}
+  }
 
   /* Card 3 (7-Day Outlook) is now the ONLY directional signal on the
      Daily Report - the removed Current Direction card's up/down/stable
@@ -1398,9 +1432,23 @@
         <div class="dr-head-fresh-row">
           <span class="dr-head-fresh" id="drHeadFresh">
             <span class="dr-head-fresh-icon" aria-hidden="true">✓</span>
-            <span data-i18n="drDataUpdateLabel">تاريخ تحديث البيانات</span>
+            <span data-i18n="drMarketObservationLabel">بيانات السوق حتى</span>
           </span>
-          <span class="dr-head-fresh-value" id="drHeadDate"></span>
+          <span class="dr-head-fresh-value" id="drMarketObservationDate"></span>
+        </div>
+        <div class="dr-head-fresh-row">
+          <span class="dr-head-fresh" id="drCloudRefreshFresh">
+            <span class="dr-head-fresh-icon" aria-hidden="true">✓</span>
+            <span data-i18n="drCloudRefreshLabel">آخر تحديث سحابي ناجح</span>
+          </span>
+          <span class="dr-head-fresh-value" id="drCloudRefreshDate"></span>
+        </div>
+        <div class="dr-head-fresh-row">
+          <span class="dr-head-fresh" id="drForecastVintageFresh">
+            <span class="dr-head-fresh-icon" aria-hidden="true">◆</span>
+            <span data-i18n="drForecastVintageLabel">Forecast vintage</span>
+          </span>
+          <span class="dr-head-fresh-value" id="drForecastVintageDate"></span>
         </div>
       </div>
       <div class="dr-card-grid dr-card-grid--3">
@@ -1420,7 +1468,7 @@
         </div>
         <div class="dr-card dr-card--port" id="drCardPort">
           <div class="dr-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5.5" r="2"></circle><line x1="12" y1="7.5" x2="12" y2="21"></line><path d="M5.5 13a6.5 6.5 0 0 0 13 0"></path><line x1="5.5" y1="13" x2="7.7" y2="13"></line><line x1="18.5" y1="13" x2="16.3" y2="13"></line></svg></div>
-          <div class="dr-card-eyebrow" data-i18n="drCard2Eyebrow">السعر المتوقع في ميناء مصر</div>
+          <div class="dr-card-eyebrow" data-i18n="drCard2Eyebrow">السعر التقديري عند ميناء مصر اليوم</div>
           <div class="dr-card-hero"><span id="drCard2ValueUSD">—</span><small data-i18n="drUnitUsd">USD/MT</small></div>
           <div class="dr-card-secondary"><span id="drCard2ValueEGP">—</span><small data-i18n="drUnitEgp">EGP/MT</small></div>
           <div class="dr-equation" id="drCard2Equation"></div>
@@ -1434,14 +1482,14 @@
            <div class="dr-card-eyebrow" data-i18n="drCard4Eyebrow">توقع 7 أيام</div>
            <div class="dr-direction-word dr-direction-word--sm" id="drCard4Word">—</div>
            <div class="dr-forecast-basis" id="drCard4Baseline">
-             <div class="dr-forecast-basis-item"><span data-i18n="drForecastBaselineLabel">تكلفة مصر المحسوبة اليوم</span><b id="drCard4BaselineUSD" dir="ltr">—</b></div>
+             <div class="dr-forecast-basis-item"><span data-i18n="drForecastBaselineLabel">سعر السوق اليوم</span><b id="drCard4BaselineUSD" dir="ltr">—</b></div>
              <span class="dr-forecast-basis-arrow" aria-hidden="true">→</span>
-             <div class="dr-forecast-basis-item"><span data-i18n="drForecastTargetLabel">توقع 7 أيام</span><b id="drCard4TargetExactUSD" dir="ltr">—</b></div>
+             <div class="dr-forecast-basis-item"><span data-i18n="drForecastTargetLabel">سعر السوق المتوقع بعد 7 أيام</span><b id="drCard4TargetExactUSD" dir="ltr">—</b></div>
            </div>
            <div class="dr-card-hero"><span id="drCard4TargetUSD">—</span><small data-i18n="drUnitUsd">USD/MT</small></div>
           <div class="dr-card-secondary"><span id="drCard4TargetEGP">—</span><small data-i18n="drUnitEgp">EGP/MT</small></div>
           <div class="dr-delta-block">
-            <div class="dr-delta-label" data-i18n="drExpectedChangeLabel">التغير المتوقع مقارنةً بتكلفة مصر المحسوبة اليوم</div>
+            <div class="dr-delta-label" data-i18n="drExpectedChangeLabel">تغير السوق مقارنةً بسعر السوق اليوم</div>
             <div class="dr-delta-lines" id="drCard4Change"></div>
           </div>
           <svg class="dr-sparkline" id="drCard4MiniChart" viewBox="0 0 190 42" preserveAspectRatio="none" aria-hidden="true"></svg>
@@ -1464,6 +1512,15 @@
           </details>
         </div>
       </div>
+      <section class="dr-fx-card" id="drFxCard" aria-labelledby="drFxCardTitle">
+        <div><div class="dr-fx-kicker">USD / EGP</div><h2 id="drFxCardTitle" class="dr-hero-chart-title" data-i18n="drFxTitle">سعر الدولار مقابل الجنيه</h2><div class="dr-fx-value" id="drFxValue" dir="ltr">—</div><div class="dr-fx-meta" id="drFxMeta"></div></div>
+        <div class="dr-fx-status" id="drFxStatus">—</div>
+      </section>
+      <section class="dr-hero-chart-card" id="drRbdHeroChart" aria-labelledby="drRbdHeroChartTitle">
+        <div class="dr-hero-chart-head"><div><div class="dr-hero-kicker">RBD MARKET</div><h2 id="drRbdHeroChartTitle" class="dr-hero-chart-title" data-i18n="drHeroChartTitle">مسار سعر أولين النخيل المكرر</h2><div class="dr-hero-chart-subtitle">RBD Palm Olein · USD/MT · <span data-i18n="drHeroChartConcept">السجل الفعلي · اليوم · توقع 7 أيام</span></div></div></div>
+        <svg class="dr-hero-chart" id="drRbdHeroChartSvg" viewBox="0 0 760 250" role="img" aria-label="RBD Palm Olein market price history and forecast"></svg>
+        <div class="dr-hero-legend"><span><i></i><span data-i18n="drHeroActual">السجل الفعلي</span></span><span><i class="forecast"></i><span data-i18n="drHeroForecast">توقع 7 أيام</span></span></div>
+      </section>
       <section class="dr-market-board" id="drMarketBoard" aria-labelledby="drMarketBoardTitle">
         <div class="dr-market-board-head">
           <div>
@@ -2244,7 +2301,7 @@
     vatPct: 14,
     marginPct: 6,
     egpUsd: 50.88,
-    cpoIDR: 15888,
+    cpoIDR: 15925,
     usdIdr: 17690,
     // Stage 3A — direct market-reported RBD Palm Olein FOB Malaysian Port
     // price, USD/MT (see DATA_PROVENANCE.rbdOleinFobMarketUSD below).
@@ -2310,14 +2367,17 @@
     RBD_OLEIN_CANONICAL_SNAPSHOT = snapshot.rbd;
     PRODUCTION_SNAPSHOT = snapshot;
     PRODUCTION_FORECAST_SNAPSHOT = snapshot.forecast.snapshot;
+    if (snapshot.fx && snapshot.fx.egpUsd && isFinite(snapshot.fx.egpUsd.value)) state.egpUsd = snapshot.fx.egpUsd.value;
+    if (snapshot.fx && snapshot.fx.usdMyr && isFinite(snapshot.fx.usdMyr.value)) state.usdMyr = snapshot.fx.usdMyr.value;
     MARKET_BOARD_OBSERVATIONS = Object.keys(snapshot.marketBoard || {}).map(function(key){ return snapshot.marketBoard[key]; });
     RBD_OLEIN_CANONICAL_STATUS = { status:'READY', detail:null, snapshotId:snapshot.snapshotId };
     state.rbdOleinFobMarketUSD = snapshot.rbd.canonicalPriceUSDPerMT;
+    state.feature003MarketFirstForecast = snapshot.marketFirstForecast || null;
     return true;
   }
 
   function productionSnapshotIsValid(snapshot){
-    return !!(snapshot && snapshot.schemaVersion === 1 && typeof snapshot.snapshotId === 'string' && snapshot.snapshotId.length > 0 && snapshot.status && snapshot.status.state === 'READY' && snapshot.status.validationState === 'VALIDATED' && canonicalSnapshotIsValid(snapshot.rbd) && snapshot.forecast && snapshot.forecast.snapshot && Array.isArray(snapshot.forecast.snapshot.forecastPoints));
+    return !!(snapshot && snapshot.schemaVersion === 1 && typeof snapshot.snapshotId === 'string' && snapshot.snapshotId.length > 0 && snapshot.refresh && typeof snapshot.refresh.completedAt === 'string' && snapshot.status && snapshot.status.state === 'READY' && snapshot.status.validationState === 'VALIDATED' && canonicalSnapshotIsValid(snapshot.rbd) && snapshot.forecast && snapshot.forecast.snapshot && Array.isArray(snapshot.forecast.snapshot.forecastPoints) && snapshot.marketFirstForecast && isFinite(snapshot.marketFirstForecast.marketTodayUSD) && isFinite(snapshot.marketFirstForecast.marketForecast7dUSD) && isFinite(snapshot.marketFirstForecast.portArrivalAddOnUSD) && snapshot.marketFirstForecast.portTodayUSD === snapshot.marketFirstForecast.marketTodayUSD + snapshot.marketFirstForecast.portArrivalAddOnUSD && snapshot.marketFirstForecast.portForecast7dUSD === snapshot.marketFirstForecast.marketForecast7dUSD + snapshot.marketFirstForecast.portArrivalAddOnUSD && snapshot.fcpo && snapshot.fcpo.originalQuote && snapshot.fcpo.convertedEquivalents);
   }
 
   // Product → Origin → Evidence Chain. Only RBD Palm Olein is active; no
@@ -2583,11 +2643,11 @@
       // ---- Daily Report (التقرير اليومي) - V1 scaffold ----
       drTitle:'Daily Report', drSubtitle:'Today\'s market price, expected Egypt port price, current direction, and the 7-day outlook — one page, one validated rate.',
       drHeadSub:'Purchase Decision Summary',
-      drCard1Eyebrow:'RBD Palm Olein Market Price Today', drCard2Eyebrow:'Expected Egypt Port Price', drCard3Eyebrow:'Current Direction', drCard4Eyebrow:'7-Day Outlook',
+      drCard1Eyebrow:'RBD Palm Olein Market Price Today', drCard2Eyebrow:'Expected Egypt Port Price', drCard3Eyebrow:'Current Direction', drCard4Eyebrow:'7-Day Outlook', drFxTitle:'USD/EGP Market Rate', drHeroChartTitle:'RBD Palm Olein Price Path', drHeroChartConcept:'Actual history · Today · 7-day forecast', drHeroActual:'Actual history', drHeroForecast:'7-day forecast',
       drUnitUsd:'USD/MT', drUnitEgp:'EGP/MT',
       drSourceDetails:'Source & details', drCard2Details:'Details & disclaimer',
       drRefreshLabel:'Refresh Data Now', drRefreshDisabledHint:'Check the latest published trusted snapshot', drRefreshReadyHint:'Check the latest published trusted snapshot', drRefreshLoading:'Checking the latest published data…', drRefreshSuccess:'Latest market data loaded', drRefreshNoChange:'You already have the latest available data', drRefreshFailure:'Could not check for a new update — showing the last trusted data', drRefreshUnavailable:'Published snapshot unavailable',
-      drMarketBoardTitle:'Palm Oil Market Data Board', drMarketBoardSubtitle:'Market visibility and the approved price evidence', drBoardProduct:'Product', drBoardPrice:'Price', drBoardEgp:'EGP equivalent', drBoardStatus:'Status', drBoardTiming:'Observation / update', drBoardDailyPrice:'Daily Report price', drBoardUnavailable:'Needs review — no approved direct value', drBoardSource:'Source', drQualityTrusted:'Trusted', drQualityReview:'Needs Verification', drQualityConflict:'Source Conflict', drQualityStale:'Stale Data', drQualityUnavailable:'Needs Verification', drBoardObserved:'Observed', drBoardCaptured:'Updated', drBoardTimingUnavailable:'No validated update metadata', drCanonicalUnavailable:'No current validated RBD Palm Olein snapshot is available.',
+      drMarketBoardTitle:'Palm Oil Market Data Board', drMarketBoardSubtitle:'Market visibility and the approved price evidence', drBoardProduct:'Product', drBoardPrice:'Price', drBoardEgp:'EGP equivalent', drBoardStatus:'Status', drBoardTiming:'Observation / update', drBoardDailyPrice:'Daily Report price', drBoardUnavailable:'Needs review — no approved direct value', drBoardSource:'Source', drQualityTrusted:'Trusted', drQualityReview:'Needs Verification', drQualityConflict:'Source Conflict', drQualityStale:'Stale Data', drQualityUnavailable:'Needs Verification', drBoardObserved:'Observed', drBoardCaptured:'Updated', drBoardTimingUnavailable:'No validated update metadata', drBoardOriginalQuote:'original quote', drBoardConvertedEquivalent:'converted equivalent', drFcpoSessionLast:'SESSION LAST', drFcpoDelayed:'DELAYED', drFcpoActive:'ACTIVE/CURRENT CONTRACT', drFcpoFallback:'FALLBACK SELECTED', drCanonicalUnavailable:'No current validated RBD Palm Olein snapshot is available.',
       drNotesTitle:'Trader Notes', drNotesEmptyState:'No notes yet.',
       drNotesHint:'Add what you\'re hearing today from the market, suppliers, freight, or other traders…',
       drNotesPlaceholder:'Type a note…', drNotesSaveLabel:'Save Note',
@@ -2595,8 +2655,8 @@
       drPortAdjustmentLabel:'Trader Port Adjustment', drCard2MarketRow:'RBD Palm Olein Market Price', drCard2TotalRow:'Expected Egypt Port Price',
       drTargetLabel:'Target', drChangeLabel:'Change vs. today',
       drConfidenceLabel:'Model Confidence', drConfidenceFootnote:'Based on input data quality and forecast scenario-band width — not a backtested accuracy measure.',
-      drDataUpdateLabel:'Data update date',
-      drExpectedChangeLabel:'Expected Change vs. Modeled Egypt Landed Cost Today', drForecastBaselineLabel:'Modeled Egypt Landed Cost Today', drForecastTargetLabel:'7-Day Forecast', drForecastBasis:'Scenario target: modeled Egypt landed cost, not the RBD market quote or FCPO price',
+      drDataUpdateLabel:'Data update date', drMarketObservationLabel:'Market data through', drCloudRefreshLabel:'Last successful cloud refresh', drForecastVintageLabel:'Forecast vintage',
+      drExpectedChangeLabel:'Market change vs. RBD market today', drForecastBaselineLabel:'RBD market today', drForecastTargetLabel:'RBD market forecast after 7 days', drForecastBasis:'Market-first forecast; Egypt port values are derived afterward with the fixed port add-on',
       drConfidenceHeading:'Confidence in Forecast',
       drConfLow:'Low confidence', drConfMedium:'Medium confidence', drConfHigh:'High confidence',
       // Card 4 is a forecast, not an observed fact - deliberately distinct
@@ -2873,11 +2933,11 @@
       // ---- التقرير اليومي (Daily Report) - V1 scaffold ----
       drTitle:'التقرير اليومي', drSubtitle:'سعر السوق اليوم، والسعر المتوقع بميناء مصر، والاتجاه الحالي، وتوقعات 7 أيام — في صفحة واحدة وبسعر صرف واحد معتمد.',
       drHeadSub:'ملخص قرار الشراء',
-      drCard1Eyebrow:'سعر أولين النخيل المكرر اليوم', drCard2Eyebrow:'السعر المتوقع في ميناء مصر', drCard3Eyebrow:'الاتجاه الحالي', drCard4Eyebrow:'توقع 7 أيام',
+      drCard1Eyebrow:'سعر أولين النخيل المكرر اليوم', drCard2Eyebrow:'السعر المتوقع في ميناء مصر', drCard3Eyebrow:'الاتجاه الحالي', drCard4Eyebrow:'توقع 7 أيام', drFxTitle:'سعر الدولار مقابل الجنيه', drHeroChartTitle:'مسار سعر أولين النخيل المكرر', drHeroChartConcept:'السجل الفعلي · اليوم · توقع 7 أيام', drHeroActual:'السجل الفعلي', drHeroForecast:'توقع 7 أيام',
       drUnitUsd:'USD/MT', drUnitEgp:'EGP/MT',
       drSourceDetails:'المصدر والتفاصيل', drCard2Details:'التفاصيل والتنبيه',
       drRefreshLabel:'تحديث البيانات الآن', drRefreshDisabledHint:'التحقق من أحدث لقطة موثوقة منشورة', drRefreshReadyHint:'التحقق من أحدث لقطة موثوقة منشورة', drRefreshLoading:'جاري التحقق من أحدث البيانات...', drRefreshSuccess:'تم تحميل أحدث بيانات السوق', drRefreshNoChange:'أنت بالفعل على أحدث بيانات متاحة', drRefreshFailure:'تعذر التحقق من تحديث جديد — يتم عرض آخر بيانات موثوقة', drRefreshUnavailable:'لا تتوفر اللقطة المنشورة',
-      drMarketBoardTitle:'لوحة بيانات سوق زيت النخيل', drMarketBoardSubtitle:'رؤية السوق وأدلة السعر المعتمد', drBoardProduct:'المنتج', drBoardPrice:'السعر', drBoardEgp:'المعادل بالجنيه', drBoardStatus:'الحالة', drBoardTiming:'الرصد / التحديث', drBoardDailyPrice:'سعر التقرير اليومي', drBoardUnavailable:'يحتاج مراجعة — لا توجد قيمة مباشرة معتمدة', drBoardSource:'المصدر', drQualityTrusted:'موثوق', drQualityReview:'يحتاج مراجعة', drQualityConflict:'اختلاف بين المصادر', drQualityStale:'بيانات غير محدثة', drQualityUnavailable:'يحتاج مراجعة', drBoardObserved:'وقت تسجيل السعر', drBoardCaptured:'آخر تحديث ناجح', drBoardTimingUnavailable:'لا توجد بيانات تحديث معتمدة', drCanonicalUnavailable:'لا تتوفر حالياً لقطة معتمدة وحديثة لسعر أولين النخيل المكرر.',
+      drMarketBoardTitle:'لوحة بيانات سوق زيت النخيل', drMarketBoardSubtitle:'رؤية السوق وأدلة السعر المعتمد', drBoardProduct:'المنتج', drBoardPrice:'السعر', drBoardEgp:'المعادل بالجنيه', drBoardStatus:'الحالة', drBoardTiming:'الرصد / التحديث', drBoardDailyPrice:'سعر التقرير اليومي', drBoardUnavailable:'يحتاج مراجعة — لا توجد قيمة مباشرة معتمدة', drBoardSource:'المصدر', drQualityTrusted:'موثوق', drQualityReview:'يحتاج مراجعة', drQualityConflict:'اختلاف بين المصادر', drQualityStale:'بيانات غير محدثة', drQualityUnavailable:'يحتاج مراجعة', drBoardObserved:'وقت تسجيل السعر', drBoardCaptured:'آخر تحديث ناجح', drBoardTimingUnavailable:'لا توجد بيانات تحديث معتمدة', drBoardOriginalQuote:'السعر الأصلي', drBoardConvertedEquivalent:'معادل محوّل', drFcpoSessionLast:'إغلاق الجلسة', drFcpoDelayed:'متأخر', drFcpoActive:'العقد النشط/الحالي', drFcpoFallback:'العقد الاحتياطي المختار', drCanonicalUnavailable:'لا تتوفر حالياً لقطة معتمدة وحديثة لسعر أولين النخيل المكرر.',
       drNotesTitle:'ملاحظات التاجر', drNotesEmptyState:'لا توجد ملاحظات بعد.',
       drNotesHint:'أضف ما تسمعه اليوم من السوق، الموردين، الشحن أو التجار...',
       drNotesPlaceholder:'اكتب ملاحظة...', drNotesSaveLabel:'حفظ الملاحظة',
@@ -2885,8 +2945,8 @@
       drPortAdjustmentLabel:'تقدير الوصول للميناء', drCard2MarketRow:'سعر أولين النخيل المكرر', drCard2TotalRow:'السعر المتوقع بميناء مصر',
       drTargetLabel:'الهدف', drChangeLabel:'التغير مقارنة باليوم',
       drConfidenceLabel:'درجة ثقة النموذج', drConfidenceFootnote:'مبنية على جودة البيانات المُدخلة واتساع نطاق سيناريو التوقع — وليست مقياس دقة تاريخي مُختبر.',
-      drDataUpdateLabel:'تاريخ تحديث البيانات',
-      drExpectedChangeLabel:'التغير المتوقع مقارنةً بتكلفة مصر المحسوبة اليوم', drForecastBaselineLabel:'تكلفة مصر المحسوبة اليوم', drForecastTargetLabel:'توقع 7 أيام', drForecastBasis:'هدف السيناريو: تكلفة مصر المحسوبة، وليس سعر سوق الأولين أو سعر FCPO',
+      drDataUpdateLabel:'تاريخ تحديث البيانات', drMarketObservationLabel:'بيانات السوق حتى', drCloudRefreshLabel:'آخر تحديث سحابي ناجح', drForecastVintageLabel:'نسخة التوقع',
+      drExpectedChangeLabel:'تغير السوق مقارنةً بسعر السوق اليوم', drForecastBaselineLabel:'سعر السوق اليوم', drForecastTargetLabel:'سعر السوق المتوقع بعد 7 أيام', drForecastBasis:'توقع قائم على السوق؛ تُشتق قيم الميناء بعد ذلك باستخدام إضافة الميناء الثابتة',
       drConfidenceHeading:'الثقة في التوقع',
       drConfLow:'ثقة منخفضة', drConfMedium:'ثقة متوسطة', drConfHigh:'ثقة مرتفعة',
       // Card 4 هو توقع وليس واقعة مرصودة - عبارات مختلفة عمدًا عن
@@ -4448,84 +4508,6 @@
         }
       ],
       sourceInputIdentity: 'FORECAST_INPUT|6cc18ab0ef06163bba2e',
-      sourceMarketSnapshotId: 'MARKET_SNAPSHOT|ee2f8495fcd260308902'
-    },
-    {
-      issuedDate: '2026-08-22',
-      modelVersion: 'v1-linear-curve-fx-scenario',
-      sourceSnapshotDate: '2026-08-22',
-      currentFcpoMYR: 4792,
-      currentUsdMyr: 4.0449,
-      currentEgpUsd: 50.88,
-      forecastPoints: [
-        {
-          targetDate: '2026-08-29',
-          horizonWeeks: 1,
-          fcpoMYR: 4810,
-          estimatedFobUsd: 1234.71,
-          baseLandedUsd: 1377.41,
-          baseLandedEgp: 70051,
-          lowLandedEgp: 69970,
-          highLandedEgp: 70303,
-          status: 'Pending'
-        },
-        {
-          targetDate: '2026-09-05',
-          horizonWeeks: 2,
-          fcpoMYR: 4829,
-          estimatedFobUsd: 1239.23,
-          baseLandedUsd: 1382.31,
-          baseLandedEgp: 70267,
-          lowLandedEgp: 70106,
-          highLandedEgp: 70774,
-          status: 'Pending'
-        },
-        {
-          targetDate: '2026-09-12',
-          horizonWeeks: 3,
-          fcpoMYR: 4847,
-          estimatedFobUsd: 1243.74,
-          baseLandedUsd: 1387.2,
-          baseLandedEgp: 70483,
-          lowLandedEgp: 70241,
-          highLandedEgp: 71246,
-          status: 'Pending'
-        },
-        {
-          targetDate: '2026-09-19',
-          horizonWeeks: 4,
-          fcpoMYR: 4865,
-          estimatedFobUsd: 1248.25,
-          baseLandedUsd: 1392.09,
-          baseLandedEgp: 70699,
-          lowLandedEgp: 70375,
-          highLandedEgp: 71720,
-          status: 'Pending'
-        },
-        {
-          targetDate: '2026-10-17',
-          horizonWeeks: 8,
-          fcpoMYR: 4938,
-          estimatedFobUsd: 1266.3,
-          baseLandedUsd: 1411.65,
-          baseLandedEgp: 71561,
-          lowLandedEgp: 70902,
-          highLandedEgp: 73632,
-          status: 'Pending'
-        },
-        {
-          targetDate: '2026-11-14',
-          horizonWeeks: 12,
-          fcpoMYR: 5020,
-          estimatedFobUsd: 1286.57,
-          baseLandedUsd: 1433.62,
-          baseLandedEgp: 72541,
-          lowLandedEgp: 71538,
-          highLandedEgp: 75695,
-          status: 'Pending'
-        }
-      ],
-      sourceInputIdentity: 'FORECAST_INPUT|d330aa8986736c7a58d4',
       sourceMarketSnapshotId: 'MARKET_SNAPSHOT|ee2f8495fcd260308902'
     }
   ];
@@ -8834,6 +8816,7 @@
     if (!isoInstant) return null;
     var d = new Date(isoInstant);
     if (isNaN(d.getTime())) return null;
+    if (d.getTime() > Date.now()) return null;
     var locale = (state.lang === 'ar' ? 'ar-EG' : 'en-GB') + '-u-nu-latn';
     var dateParts, timeParts;
     try {
@@ -8938,7 +8921,7 @@
       return m && months[Number(m[2]) - 1] ? months[Number(m[2]) - 1] + '-' + m[1] : (contract || '—');
     }
     var rows = [
-      { ar:'عقود زيت النخيل الخام الآجلة', en:'FCPO Futures — Bursa Malaysia exchange benchmark', fcpo:true },
+      { ar:'عقود زيت النخيل الخام الآجلة', en:'FCPO Futures', fcpo:true },
       { ar:'أولين النخيل المكرر', en:'RBD Palm Olein', primary:true },
       { ar:'زيت النخيل الخام', en:'Crude Palm Oil (CPO)' },
       { ar:'زيت النخيل المكرر', en:'RBD Palm Oil' },
@@ -8952,9 +8935,12 @@
       var price = document.createElement('td'), egp = document.createElement('td'), status = document.createElement('td'), timing = document.createElement('td');
       var fcpoRecord = row.fcpo ? boardByProduct.FCPO_FUTURES : null;
       if (row.fcpo && fcpoRecord && fcpoRecord.validationState === 'VALIDATED' && fcpoRecord.canonicalEligibility){
-        price.innerHTML = '<span class="dr-board-price"></span> <small>MYR/MT</small>'; price.querySelector('.dr-board-price').textContent = fmt(fcpoRecord.rawValue, 0);
-        egp.textContent = '—'; var fcpoBadge = document.createElement('span'); fcpoBadge.className = 'dr-board-badge trusted'; fcpoBadge.textContent = (fcpoRecord.priceType === 'SESSION_LAST' ? 'SESSION LAST' : fcpoRecord.priceType) + ' · ' + (fcpoRecord.delayedOrLive || 'DELAYED'); status.appendChild(fcpoBadge); timing.className = 'dr-board-meta'; renderBoardDate(timing, fcpoRecord.observationTimestamp, fcpoRecord.acquiredAt);
-        var fcpoContract = document.createElement('div'); fcpoContract.textContent = fcpoContractLabel(fcpoRecord.selectedContract || fcpoRecord.contractMonth) + ' · ' + (fcpoRecord.fallbackUsed ? 'FALLBACK SELECTED' : 'ACTIVE/CURRENT CONTRACT'); timing.insertBefore(fcpoContract, timing.firstChild);
+        var fcpoUsd = PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.fcpo && PRODUCTION_SNAPSHOT.fcpo.convertedEquivalents ? PRODUCTION_SNAPSHOT.fcpo.convertedEquivalents.usdPerMT : null;
+        var fcpoEgp = PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.fcpo && PRODUCTION_SNAPSHOT.fcpo.convertedEquivalents ? PRODUCTION_SNAPSHOT.fcpo.convertedEquivalents.egpPerMT : null;
+        price.innerHTML = '<span class="dr-board-price"></span> <small>MYR/MT · ' + t('drBoardOriginalQuote') + '</small><br><span class="dr-board-secondary"></span> <small>USD/MT ' + t('drBoardConvertedEquivalent') + '</small>'; price.querySelector('.dr-board-price').textContent = fmt(fcpoRecord.rawValue, 0); price.querySelector('.dr-board-secondary').textContent = fcpoUsd === null ? '—' : fmt(fcpoUsd, 2);
+        egp.innerHTML = '<span class="dr-board-secondary"></span> EGP/MT ' + t('drBoardConvertedEquivalent'); egp.querySelector('.dr-board-secondary').textContent = fcpoEgp === null ? '—' : fmt(fcpoEgp, 2); var fcpoBadge = document.createElement('span'); fcpoBadge.className = 'dr-board-badge trusted'; fcpoBadge.textContent = (fcpoRecord.priceType === 'SESSION_LAST' ? t('drFcpoSessionLast') : fcpoRecord.priceType) + ' · ' + (fcpoRecord.delayedOrLive === 'DELAYED' ? t('drFcpoDelayed') : (fcpoRecord.delayedOrLive || '—')); status.appendChild(fcpoBadge); timing.className = 'dr-board-meta'; renderBoardDate(timing, fcpoRecord.observationTimestamp, fcpoRecord.acquiredAt);
+        var fcpoContract = document.createElement('div'); fcpoContract.textContent = fcpoContractLabel(fcpoRecord.selectedContract || fcpoRecord.contractMonth) + ' · ' + (fcpoRecord.fallbackUsed ? t('drFcpoFallback') : t('drFcpoActive')); timing.insertBefore(fcpoContract, timing.firstChild);
+        var fcpoSource = document.createElement('div'); fcpoSource.textContent = fcpoRecord.sourceName || ''; timing.appendChild(fcpoSource);
       } else if (row.fcpo){
         price.textContent = '—'; egp.textContent = '—'; var fcpoUnavailable = document.createElement('span'); fcpoUnavailable.className = 'dr-board-badge unavailable'; fcpoUnavailable.textContent = 'بيانات غير محدثة'; status.appendChild(fcpoUnavailable); timing.className = 'dr-board-meta'; timing.textContent = fcpoRecord && fcpoRecord.observationTimestamp ? fcpoRecord.observationTimestamp : t('drBoardUnavailable');
       } else if (row.primary && canonicalSnapshotIsValid(s)){
@@ -8981,7 +8967,7 @@
       mobileBoard.innerHTML = '';
       Array.prototype.forEach.call(body.querySelectorAll('tr'), function (tr) {
         var cells = tr.children, card = document.createElement('article');
-        card.className = 'dr-board-mobile-card' + (tr.classList.contains('dr-board-primary') ? ' primary' : '');
+        card.className = 'dr-board-mobile-card' + (tr.classList.contains('dr-board-primary') ? ' primary' : '') + (tr.children[0].querySelector('.dr-board-product-en') && tr.children[0].querySelector('.dr-board-product-en').textContent.indexOf('FCPO') === 0 ? ' fcpo' : '');
         var productCell = document.createElement('div'); productCell.className = 'dr-board-mobile-product'; productCell.innerHTML = cells[0].innerHTML;
         var priceCell = document.createElement('div'); priceCell.className = 'dr-board-mobile-price'; priceCell.innerHTML = cells[1].innerHTML;
         var secondaryCell = document.createElement('div'); secondaryCell.className = 'dr-board-mobile-secondary'; secondaryCell.innerHTML = cells[2].innerHTML;
@@ -9040,6 +9026,27 @@
       canonicalHydrationAttempted = true; hint.textContent = t('drRefreshSuccess'); renderAll();
     }).catch(function(error){ hint.textContent = t('drRefreshFailure'); renderAll(); }).finally(function(){ button.disabled = false; });
   }
+  function renderRbdHeroChart(){
+    var svg = document.getElementById('drRbdHeroChartSvg');
+    if (!svg) return;
+    svg.innerHTML = '';
+    var series = PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.rbdMarketChart && PRODUCTION_SNAPSHOT.rbdMarketChart.series;
+    if (!Array.isArray(series) || !series.length) return;
+    var values = series.map(function(p){ return Number(p.valueUSDPerMT); }), min = Math.min.apply(null, values), max = Math.max.apply(null, values), rawRange = (max-min)||1, padding = Math.max(rawRange * .25, max * .025), domainMin = min - padding, domainMax = max + padding, range = domainMax-domainMin, left=34, right=744, top=18, bottom=210;
+    function x(i){ return left + (right-left) * (i / Math.max(1, series.length-1)); }
+    function y(v){ return bottom - (bottom-top) * ((v-domainMin)/range); }
+    var ns='http://www.w3.org/2000/svg';
+    var grid=document.createElementNS(ns,'line'); grid.setAttribute('x1',left);grid.setAttribute('x2',right);grid.setAttribute('y1',bottom);grid.setAttribute('y2',bottom);grid.setAttribute('stroke','var(--line)');svg.appendChild(grid);
+    var actual=series.map(function(p,i){return p.kind==='forecast'?null:x(i).toFixed(1)+','+y(p.valueUSDPerMT).toFixed(1);}).filter(Boolean), forecast=series.filter(function(p){return p.kind==='today'||p.kind==='forecast';}).map(function(p){var i=series.indexOf(p);return x(i).toFixed(1)+','+y(p.valueUSDPerMT).toFixed(1);});
+    function path(cls,pts){if(pts.length<2)return;var el=document.createElementNS(ns,'path');el.setAttribute('class',cls);el.setAttribute('d','M'+pts.join(' L'));svg.appendChild(el);}
+    path('dr-hero-actual',actual); path('dr-hero-forecast',forecast);
+    series.forEach(function(p,i){var c=document.createElementNS(ns,'circle');c.setAttribute('cx',x(i));c.setAttribute('cy',y(p.valueUSDPerMT));c.setAttribute('r',p.kind==='today'?6:3);c.setAttribute('class',p.kind==='today'?'dr-hero-today':'dr-hero-point');var title=document.createElementNS(ns,'title');title.textContent=(p.kind==='forecast'?'Forecast':'Actual')+' · '+(p.date||'')+' · '+fmt(p.valueUSDPerMT,2)+' USD/MT'+(p.confidencePercent!==null&&p.confidencePercent!==undefined?' · '+p.confidencePercent+'% confidence':'');c.appendChild(title);svg.appendChild(c);});
+    var label=document.createElementNS(ns,'text');label.setAttribute('x',left);label.setAttribute('y',238);label.setAttribute('class','dr-hero-axis');label.textContent=fmt(domainMin,2)+'–'+fmt(domainMax,2)+' USD/MT';svg.appendChild(label);
+  }
+  function renderUsdEgpCard(){
+    var fx=PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.fx && PRODUCTION_SNAPSHOT.fx.egpUsd, value=document.getElementById('drFxValue'), meta=document.getElementById('drFxMeta'), status=document.getElementById('drFxStatus');
+    if(!value||!fx){return;} value.textContent=fx&&isFinite(fx.value)?fmt(fx.value,2)+' EGP/USD':'—'; meta.textContent=fx?(fx.source+' · '+(fx.observationDate||fx.capturedAt||'—')):'—'; status.textContent=fx?(fx.freshnessState||fx.status||'—'):'—';
+  }
   function renderDailyReport(base){
     var panel = document.getElementById('tabPanelDaily');
     if (!panel) return;
@@ -9074,16 +9081,24 @@
     // own already-computed evidence tier (no second freshness calc). ----
     var snaps = (typeof MARKET_SNAPSHOTS !== 'undefined' && MARKET_SNAPSHOTS) || [];
     var latestSnap = canonical;
-    var drHeadDateEl = document.getElementById('drHeadDate');
-    drHeadDateEl.innerHTML = '';
-    var capturedAtFrag = (latestSnap && latestSnap.capturedAt) ? buildCairoDateTimeFragment(latestSnap.capturedAt) : null;
-    if (capturedAtFrag) drHeadDateEl.appendChild(capturedAtFrag);
-    else drHeadDateEl.textContent = '—';
+    var marketObservationEl = document.getElementById('drMarketObservationDate');
+    var cloudRefreshEl = document.getElementById('drCloudRefreshDate');
+    marketObservationEl.innerHTML = '';
+    cloudRefreshEl.innerHTML = '';
+    var observationFrag = (canonical && canonical.observationDateTime) ? buildCairoDateTimeFragment(canonical.observationDateTime) : null;
+    var refreshInstant = PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.refresh && PRODUCTION_SNAPSHOT.refresh.completedAt;
+    var capturedAtFrag = refreshInstant ? buildCairoDateTimeFragment(refreshInstant) : null;
+    var vintageEl = document.getElementById('drForecastVintageDate');
+    var forecastGeneratedAt = PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.forecast && PRODUCTION_SNAPSHOT.forecast.forecastGeneratedAt;
+    var vintageFrag = forecastGeneratedAt ? buildCairoDateTimeFragment(forecastGeneratedAt) : null;
+    if (vintageEl) { vintageEl.innerHTML = ''; if (vintageFrag) vintageEl.appendChild(vintageFrag); else vintageEl.textContent = (PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.forecast && PRODUCTION_SNAPSHOT.forecast.snapshotIssuedDate) || '—'; }
+    if (observationFrag) marketObservationEl.appendChild(observationFrag); else marketObservationEl.textContent = '—';
+    if (capturedAtFrag) cloudRefreshEl.appendChild(capturedAtFrag); else cloudRefreshEl.textContent = '—';
     var mastheadDateEl = document.getElementById('mastheadSnapshotDate');
     if (mastheadDateEl){ mastheadDateEl.innerHTML = ''; if (canonical) appendDatePhrase(mastheadDateEl, '', canonical.observationDate); else mastheadDateEl.textContent = '—'; }
     var freshEl = document.getElementById('drHeadFresh');
     var freshLabelEl = freshEl.querySelector('span:last-child');
-    if (freshLabelEl) freshLabelEl.textContent = t('drDataUpdateLabel');
+    if (freshLabelEl) freshLabelEl.textContent = t('drMarketObservationLabel');
     freshEl.classList.toggle('dr-fresh-stale', marketIsStale);
 
     // Sparkline: last ~14 daily MARKET_SNAPSHOTS modeled-FOB values - reads
@@ -9133,21 +9148,15 @@
       var op = document.createElement('div'); op.className = 'dr-equation-op'; op.textContent = symbol;
       equationEl.appendChild(op);
     }
-    function eqDivider(){
-      var hr = document.createElement('div'); hr.className = 'dr-eq-divider';
-      equationEl.appendChild(hr);
-    }
     // Value+unit format (e.g. "1,185 USD/MT"), not a "$" prefix - matches
     // the mandated equation mock (2026-08-20 UAT correction). The "+"/"="
-    // relationship is already conveyed by eqOp()/eqDivider() between rows,
+    // relationship is already conveyed by eqOp() between rows,
     // so the row values themselves stay plain (no redundant leading sign).
-    eqRow(t('drCard2MarketRow'), fmt(marketUSD) + ' ' + t('drUnitUsd'), false);
+    eqRow(t('drCard2MarketRow'), fmt(marketUSD, 2) + ' ' + t('drUnitUsd'), false);
     eqOp('+');
-    eqRow(t('drPortAdjustmentLabel'), fmt(state.portArrivalCostUSD) + ' ' + t('drUnitUsd'), false);
-    eqDivider();
-    eqRow(t('drCard2TotalRow'), fmt(portArrival.expectedPortArrivalUSD) + ' ' + t('drUnitUsd'), true);
+    eqRow(t('drPortAdjustmentLabel'), fmt(state.portArrivalCostUSD, 2) + ' ' + t('drUnitUsd'), false);
     document.getElementById('drCard2Meta').textContent = t('portArrivalSourcePrefix') + ' ' + t('portArrivalWarn') +
-      ' · $' + fmt(marketUSD) + ' / ' + fmt(marketUSD * state.egpUsd) + ' EGP + $' + fmt(state.portArrivalCostUSD) + ' / ' + fmt(adjustmentEGP) + ' EGP = $' + fmt(portArrival.expectedPortArrivalUSD) + ' / ' + fmt(portArrivalEGP) + ' EGP';
+      ' · ' + fmt(marketUSD, 2) + ' USD/MT + ' + fmt(state.portArrivalCostUSD, 2) + ' USD/MT; EGP equivalents use the authoritative FX snapshot.';
     }
 
     // ---- Card 4: 7-Day Outlook ----
@@ -9185,17 +9194,18 @@
       outlookCard.classList.add('stable');
       renderDailyForecastMiniChart('drCard4MiniChart', null, null, 'flat');
     } else {
-      var targetEGP = point7Day.baseLandedEgp;
-      var targetUSD = targetEGP / state.egpUsd;
-      var baselineUSD = base.landedEGP / state.egpUsd;
-      var changeEGP = targetEGP - base.landedEGP;
-      var changeUSD = changeEGP / state.egpUsd;
-      var changePct = base.landedEGP ? (changeEGP / base.landedEGP * 100) : 0;
-      var outlookDirection = Math.round(changeEGP) === 0 ? 'flat' : (changeEGP > 0 ? 'up' : 'down');
+      var marketFirst = state.feature003MarketFirstForecast;
+      var targetUSD = marketFirst ? marketFirst.marketForecast7dUSD : point7Day.estimatedFobUsd;
+      var baselineUSD = marketFirst ? marketFirst.marketTodayUSD : marketUSD;
+      var changeUSD = marketFirst ? marketFirst.marketDeltaUSD : (targetUSD - baselineUSD);
+      var changePct = marketFirst ? marketFirst.marketDeltaPct : (baselineUSD ? changeUSD / baselineUSD * 100 : 0);
+      var targetEGP = targetUSD * state.egpUsd;
+      var changeEGP = changeUSD * state.egpUsd;
+      var outlookDirection = changeUSD === 0 ? 'flat' : (changeUSD > 0 ? 'up' : 'down');
       var oCls = directionCssClass(outlookDirection);
       outlookCard.classList.add(oCls);
-      document.getElementById('drCard4TargetUSD').textContent = fmt(targetUSD);
-      document.getElementById('drCard4TargetEGP').textContent = fmt(targetEGP);
+      document.getElementById('drCard4TargetUSD').textContent = fmt(targetUSD, 2);
+      document.getElementById('drCard4TargetEGP').textContent = fmt(targetEGP, 2);
       document.getElementById('drCard4BaselineUSD').textContent = fmt(baselineUSD, 2) + ' USD/MT';
       document.getElementById('drCard4TargetExactUSD').textContent = fmt(targetUSD, 2) + ' USD/MT';
       // Forecast-specific wording (صعود محتمل) - color still comes from
@@ -9227,9 +9237,11 @@
       else { confQualEl.textContent = t('drConfLow'); }
       confFootEl.textContent = t('drConfidenceFootnote');
 
-      renderDailyForecastMiniChart('drCard4MiniChart', base.landedEGP, point7Day, outlookDirection);
+      renderDailyForecastMiniChart('drCard4MiniChart', baselineUSD * state.egpUsd, { baseLandedEgp: targetEGP, lowLandedEgp: targetEGP, highLandedEgp: targetEGP }, outlookDirection);
     }
 
+    renderUsdEgpCard();
+    renderRbdHeroChart();
     renderMarketBoard();
     renderTraderNotes();
   }
