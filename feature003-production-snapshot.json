@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "snapshotId": "FEATURE003|c507920447f156043b4d",
   "canonicalVersion": "FEATURE003|c507920447f156043b4d",
-  "generatedAt": "2026-08-23T15:50:40.632Z",
+  "generatedAt": "2026-08-23T16:23:16.966Z",
   "refresh": {
-    "completedAt": "2026-08-23T15:50:40.632Z",
-    "artifactGeneratedAt": "2026-08-23T15:50:40.632Z",
+    "completedAt": "2026-08-23T16:23:16.966Z",
+    "artifactGeneratedAt": "2026-08-23T16:23:16.966Z",
     "source": "daily-refresh validated completion"
   },
   "sourceIdentity": {
