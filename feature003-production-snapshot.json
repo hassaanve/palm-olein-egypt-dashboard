@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "snapshotId": "FEATURE003|38905a38c74f396c6de5",
-  "canonicalVersion": "FEATURE003|38905a38c74f396c6de5",
-  "generatedAt": "2026-08-23T11:57:58.053Z",
+  "snapshotId": "FEATURE003|c507920447f156043b4d",
+  "canonicalVersion": "FEATURE003|c507920447f156043b4d",
+  "generatedAt": "2026-08-23T12:37:18.425Z",
   "refresh": {
-    "completedAt": "2026-08-23T11:57:58.053Z",
-    "artifactGeneratedAt": "2026-08-23T11:57:58.053Z",
+    "completedAt": "2026-08-23T12:37:18.425Z",
+    "artifactGeneratedAt": "2026-08-23T12:37:18.425Z",
     "source": "daily-refresh validated completion"
   },
   "sourceIdentity": {
@@ -21,8 +21,8 @@
     ],
     "forecastIssuedDate": "2026-08-23",
     "forecastModelVersion": "v1-linear-curve-fx-scenario",
-    "forecastInputIdentity": "FORECAST_INPUT|5432d47ae431dee9bff6",
-    "marketSnapshotId": "MARKET_SNAPSHOT|21f92c4d4b8a8eea214a"
+    "forecastInputIdentity": "FORECAST_INPUT|1e5e97d7a721d375b18c",
+    "marketSnapshotId": "MARKET_SNAPSHOT|afdc663d0962222c8530"
   },
   "rbd": {
     "schemaVersion": 1,
@@ -157,10 +157,10 @@
     },
     "convertedEquivalents": {
       "usdPerMT": 1241.0690004697274,
-      "egpPerMT": 63145.59074389973,
+      "egpPerMT": 63133.18005389503,
       "fxChain": "MYR → USD → EGP",
       "usdMyr": 4.0449,
-      "egpUsd": 50.88
+      "egpUsd": 50.87
     }
   },
   "marketBoard": {
@@ -404,9 +404,9 @@
   },
   "fx": {
     "egpUsd": {
-      "value": 50.88,
-      "source": "EgyptRates.com-reported Central Bank of Egypt official USD/EGP buy/sell rates (50.814 / 50.953), confirmed 23 Aug 2026 (rate unchanged since 21 Aug 2026 — Egypt banking days)",
-      "capturedAt": "2026-08-23T07:14:41.869Z",
+      "value": 50.87,
+      "source": "BankLive.net-reported Central Bank of Egypt official USD/EGP buy/sell rates (50.7976 / 50.936), observed Sunday 23 Aug 2026 ~3:34 PM (site last update 2:40 PM)",
+      "capturedAt": "2026-08-23T12:37:18.061Z",
       "observationDate": "2026-08-23",
       "freshnessState": "Verified",
       "status": "Manual",
@@ -415,7 +415,7 @@
     "usdMyr": {
       "value": 4.0449,
       "source": "Bank Negara Malaysia — KL USD/MYR Reference Rate (FMIP, financialmarkets.bnm.gov.my), 4.0449 for 21 Aug 2026",
-      "capturedAt": "2026-08-23T07:14:41.869Z",
+      "capturedAt": "2026-08-23T12:37:18.061Z",
       "observationDate": "2026-08-23",
       "freshnessState": "Stale",
       "status": "Manual",
@@ -455,20 +455,20 @@
     "snapshot": {
       "schemaVersion": 1,
       "issuedDate": "2026-08-23",
-      "capturedAt": "2026-08-23T07:14:41.097Z",
+      "capturedAt": "2026-08-23T12:37:17.364Z",
       "captureStatus": "CAPTURED",
       "forecastDefinitionVersion": "v1-linear-curve-fx-scenario",
       "landedFormulaVersion": "v1-fob-freight-insurance-cif-duty-vat-margin",
       "classification": "SCENARIO_DERIVED",
       "sourceSnapshotDate": "2026-08-23",
-      "sourceMarketSnapshotId": "MARKET_SNAPSHOT|21f92c4d4b8a8eea214a",
-      "sourceInputIdentity": "FORECAST_INPUT|5432d47ae431dee9bff6",
+      "sourceMarketSnapshotId": "MARKET_SNAPSHOT|afdc663d0962222c8530",
+      "sourceInputIdentity": "FORECAST_INPUT|1e5e97d7a721d375b18c",
       "sourceInputIdentityVersion": "v2-material-normalized",
-      "forecastId": "FORECAST_VINTAGE|ab03f13abc740a88fffa",
+      "forecastId": "FORECAST_VINTAGE|9ca30e1c9fb0e7ceadee",
       "inputs": {
         "currentFcpoMYR": 4791,
         "currentUsdMyr": 4.0449,
-        "currentEgpUsd": 50.88,
+        "currentEgpUsd": 50.87,
         "marketForecast": {
           "cpoMYR": 4791,
           "usdMyr": 4.0449,
@@ -550,7 +550,7 @@
             "observationDate": "21 Aug 2026"
           },
           "egpUsd": {
-            "source": "EgyptRates.com-reported Central Bank of Egypt official USD/EGP buy/sell rates (50.814 / 50.953), confirmed 23 Aug 2026 (rate unchanged since 21 Aug 2026 — Egypt banking days)",
+            "source": "BankLive.net-reported Central Bank of Egypt official USD/EGP buy/sell rates (50.7976 / 50.936), observed Sunday 23 Aug 2026 ~3:34 PM (site last update 2:40 PM)",
             "sourceType": "Official Publication",
             "lastUpdated": "2026-08-23",
             "confidence": "High",
@@ -632,9 +632,9 @@
           "fcpoMYR": 4809,
           "estimatedFobUsd": 1234.37,
           "baseLandedUsd": 1377.05,
-          "baseLandedEgp": 70032,
-          "lowLandedEgp": 69952,
-          "highLandedEgp": 70284,
+          "baseLandedEgp": 70019,
+          "lowLandedEgp": 69939,
+          "highLandedEgp": 70272,
           "status": "Pending",
           "evaluation": null,
           "horizonWeeks": 1
@@ -649,9 +649,9 @@
           "fcpoMYR": 4827,
           "estimatedFobUsd": 1238.79,
           "baseLandedUsd": 1381.84,
-          "baseLandedEgp": 70243,
-          "lowLandedEgp": 70082,
-          "highLandedEgp": 70750,
+          "baseLandedEgp": 70232,
+          "lowLandedEgp": 70071,
+          "highLandedEgp": 70738,
           "status": "Pending",
           "evaluation": null,
           "horizonWeeks": 2
@@ -666,9 +666,9 @@
           "fcpoMYR": 4845,
           "estimatedFobUsd": 1243.21,
           "baseLandedUsd": 1386.63,
-          "baseLandedEgp": 70454,
-          "lowLandedEgp": 70212,
-          "highLandedEgp": 71217,
+          "baseLandedEgp": 70444,
+          "lowLandedEgp": 70201,
+          "highLandedEgp": 71207,
           "status": "Pending",
           "evaluation": null,
           "horizonWeeks": 3
@@ -683,9 +683,9 @@
           "fcpoMYR": 4863,
           "estimatedFobUsd": 1247.63,
           "baseLandedUsd": 1391.42,
-          "baseLandedEgp": 70665,
-          "lowLandedEgp": 70341,
-          "highLandedEgp": 71686,
+          "baseLandedEgp": 70656,
+          "lowLandedEgp": 70331,
+          "highLandedEgp": 71677,
           "status": "Pending",
           "evaluation": null,
           "horizonWeeks": 4
@@ -700,9 +700,9 @@
           "fcpoMYR": 4934,
           "estimatedFobUsd": 1265.31,
           "baseLandedUsd": 1410.58,
-          "baseLandedEgp": 71507,
-          "lowLandedEgp": 70849,
-          "highLandedEgp": 73576,
+          "baseLandedEgp": 71502,
+          "lowLandedEgp": 70844,
+          "highLandedEgp": 73571,
           "status": "Pending",
           "evaluation": null,
           "horizonWeeks": 8
@@ -727,19 +727,19 @@
       ]
     },
     "snapshotIssuedDate": "2026-08-23",
-    "forecastGeneratedAt": "2026-08-23T07:14:41.097Z",
+    "forecastGeneratedAt": "2026-08-23T12:37:17.364Z",
     "modelVersion": "v1-linear-curve-fx-scenario",
     "baselineUSDPerMT": 1372.2557480098362,
-    "targetUSDPerMT": 1376.4150943396226,
-    "targetEGPPerMT": 70032,
-    "deltaUSDPerMT": 4.159346329786331,
-    "deltaPercent": 0.30310285351827265,
+    "targetUSDPerMT": 1376.4301159819147,
+    "targetEGPPerMT": 70019,
+    "deltaUSDPerMT": 4.174367972078471,
+    "deltaPercent": 0.30419752135361794,
     "confidencePercent": 35,
     "targetDate": "2026-08-30",
     "sourceMarketSnapshotDate": "2026-08-23",
-    "sourceMarketSnapshotId": "MARKET_SNAPSHOT|21f92c4d4b8a8eea214a",
-    "sourceInputIdentity": "FORECAST_INPUT|5432d47ae431dee9bff6",
-    "forecastId": "FORECAST_VINTAGE|ab03f13abc740a88fffa"
+    "sourceMarketSnapshotId": "MARKET_SNAPSHOT|afdc663d0962222c8530",
+    "sourceInputIdentity": "FORECAST_INPUT|1e5e97d7a721d375b18c",
+    "forecastId": "FORECAST_VINTAGE|9ca30e1c9fb0e7ceadee"
   },
   "marketFirstForecast": {
     "marketTodayUSD": 1227.5,
@@ -755,9 +755,9 @@
     "source": "FORECAST_SNAPSHOTS.forecastPoints[horizon=1].estimatedFobUsd",
     "legacyLandedCostForecast": {
       "baselineUSDPerMT": 1372.2557480098362,
-      "targetUSDPerMT": 1376.4150943396226,
-      "deltaUSDPerMT": 4.159346329786331,
-      "deltaPercent": 0.30310285351827265
+      "targetUSDPerMT": 1376.4301159819147,
+      "deltaUSDPerMT": 4.174367972078471,
+      "deltaPercent": 0.30419752135361794
     }
   },
   "status": {
