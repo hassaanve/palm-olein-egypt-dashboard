@@ -974,6 +974,18 @@
   .dr-head-fresh.dr-fresh-stale{background:var(--ev-amber-tint);color:var(--ev-amber);}
   .dr-head-fresh-value{font-family:var(--font-body);font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--hdr-ink);direction:ltr;unicode-bidi:isolate;}
 
+  /* Feature 008 local Smart UI: bounded to the existing Daily Report header;
+     it is informational context, never a page-wide banner or financial state. */
+  .dr-market-quality-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding:8px 10px;border-top:1px solid var(--hdr-line);border-radius:10px;background:rgba(8,21,39,.28);color:var(--hdr-ink-dim);font-size:11.5px;line-height:1.35;min-width:0;}
+  .dr-market-quality-row .dr-mq-icon{display:inline-flex;align-items:center;justify-content:center;flex:none;width:20px;height:20px;border-radius:50%;border:1px solid currentColor;font-size:12px;font-weight:800;}
+  .dr-market-quality-row .dr-mq-label{font-weight:750;min-width:0;overflow-wrap:anywhere;}
+  .dr-market-quality-row .dr-mq-state{font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;opacity:.8;}
+  html[lang="ar"] .dr-market-quality-row .dr-mq-state{letter-spacing:0;text-transform:none;font-family:var(--font-body-ar);}
+  .dr-market-quality-row.is-healthy{color:var(--ev-green);}
+  .dr-market-quality-row.is-closed,.dr-market-quality-row.is-warning,.dr-market-quality-row.is-unknown{color:var(--ev-amber);background:rgba(112,76,17,.18);}
+  .dr-market-quality-row.is-unavailable{color:var(--hdr-ink-dim);}
+  .dr-market-quality-row .dr-mq-note{color:var(--hdr-ink-dim);font-size:10px;}
+
   /* Smart snapshot refresh is a read-only check of the latest published
      trusted artifact. It never starts privileged cloud acquisition. */
   .dr-refresh-wrap{display:flex;flex-direction:column;align-items:center;gap:5px;}
@@ -1212,6 +1224,28 @@
   .dr-card--outlook:has(.dr-conf-high) .dr-confidence-qual{color:var(--ev-green);}
   .dr-card--outlook:has(.dr-conf-mid) .dr-confidence-qual{color:var(--ev-amber);}
   .dr-confidence-footnote{display:block;font-size:9.5px;color:var(--exec-ink-dim);margin-top:5px;line-height:1.4;}
+  .dr-forecast-explanation{width:100%;margin-top:7px;padding:8px 9px;border:1px solid var(--exec-line);border-radius:10px;background:rgba(0,0,0,.12);text-align:start;box-sizing:border-box;}
+  .dr-forecast-explanation-heading{font-size:11.5px;line-height:1.25;font-weight:800;color:var(--exec-teal);margin:0 0 4px;}
+  .dr-forecast-explanation-summary{font-size:10.5px;line-height:1.45;color:var(--exec-ink);margin:0;overflow-wrap:anywhere;}
+  .dr-forecast-explanation-details{margin-top:6px;}
+  .dr-forecast-explanation-details summary{cursor:pointer;color:var(--exec-teal);font-size:11px;font-weight:750;line-height:1.3;list-style:none;}
+  .dr-forecast-explanation-details summary::-webkit-details-marker{display:none;}
+  .dr-forecast-explanation-details summary:before{content:"▾ ";}
+  .dr-forecast-explanation-details[open] summary:before{content:"▴ ";}
+  .dr-forecast-explanation-body{margin-top:7px;padding-top:7px;border-top:1px dashed var(--exec-line);font-size:10px;line-height:1.45;color:var(--exec-ink-dim);}
+  .dr-forecast-explanation-body section+section{margin-top:6px;}
+  .dr-forecast-explanation-body strong{color:var(--exec-ink);}
+  .dr-forecast-explanation-body .dr-smart-values{direction:ltr;unicode-bidi:isolate;display:inline-block;}
+  @media (max-width:600px){
+    .dr-market-quality-row{order:2;width:100%;box-sizing:border-box;margin-top:2px;padding:6px 8px;font-size:11px;}
+    .dr-market-quality-row .dr-mq-state{font-size:9px;}
+    .dr-market-quality-row .dr-mq-note{flex-basis:100%;padding-inline-start:28px;}
+    .dr-forecast-explanation{margin-top:5px;padding:7px 7px;}
+    .dr-forecast-explanation-heading{font-size:10.5px;}
+    .dr-forecast-explanation-summary{font-size:9.5px;line-height:1.4;}
+    .dr-forecast-explanation-details summary{font-size:10px;}
+    .dr-forecast-explanation-body{font-size:9px;}
+  }
   @media (max-width:600px){
     .dr-card--outlook{gap:4px;padding-inline:14px;}
     .dr-card--outlook .dr-forecast-basis{gap:4px;padding:6px 5px;}
@@ -1455,6 +1489,12 @@
           </span>
           <span class="dr-head-fresh-value" id="drForecastVintageDate"></span>
         </div>
+        <div class="dr-market-quality-row is-unavailable" id="drMarketQuality" role="status" aria-live="polite">
+          <span class="dr-mq-icon" id="drMarketQualityIcon" aria-hidden="true">?</span>
+          <span class="dr-mq-label" id="drMarketQualityLabel" data-i18n="drSmartUnavailable">Market data status unavailable</span>
+          <span class="dr-mq-state" id="drMarketQualityState"></span>
+          <span class="dr-mq-note" id="drMarketQualityNote"></span>
+        </div>
       </div>
       <div class="dr-card-grid dr-card-grid--3">
         <div class="dr-card dr-card--market" id="drCardMarket">
@@ -1509,6 +1549,14 @@
             <div class="dr-confidence-track"><div class="dr-confidence-fill" id="drCard4ConfidenceFill"></div></div>
             <span class="dr-confidence-footnote" id="drCard4ConfidenceFootnote"></span>
           </div>
+          <section class="dr-forecast-explanation" id="drForecastExplanation" aria-labelledby="drForecastExplanationHeading">
+            <h3 class="dr-forecast-explanation-heading" id="drForecastExplanationHeading" data-i18n="drSmartForecastHeading">Forecast explanation</h3>
+            <p class="dr-forecast-explanation-summary" id="drForecastExplanationSummary" data-i18n="drSmartForecastUnavailable">Forecast explanation unavailable</p>
+            <details class="dr-forecast-explanation-details" id="drForecastExplanationDetails">
+              <summary id="drForecastExplanationSummaryToggle" data-i18n="drSmartWhyForecast">Why this forecast?</summary>
+              <div class="dr-forecast-explanation-body" id="drForecastExplanationBody"></div>
+            </details>
+          </section>
           <details class="dr-details">
             <summary data-i18n="drSourceDetails">المصدر والتفاصيل</summary>
             <div class="dr-details-body">
@@ -2364,6 +2412,8 @@
     document.documentElement.setAttribute('data-feature003-ready', feature003ApplicationReady ? 'true' : 'false');
     document.documentElement.setAttribute('data-feature003-snapshot-ready', canonicalSnapshotIsValid(RBD_OLEIN_CANONICAL_SNAPSHOT) ? 'true' : 'false');
     if (PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.snapshotId) document.documentElement.setAttribute('data-feature003-snapshot-id', PRODUCTION_SNAPSHOT.snapshotId);
+    if (PRODUCTION_FORECAST_SNAPSHOT && PRODUCTION_FORECAST_SNAPSHOT.forecastId) document.documentElement.setAttribute('data-feature003-forecast-id', PRODUCTION_FORECAST_SNAPSHOT.forecastId);
+    if (PRODUCTION_FORECAST_SNAPSHOT && PRODUCTION_FORECAST_SNAPSHOT.sourceInputIdentity) document.documentElement.setAttribute('data-feature003-source-input-identity', PRODUCTION_FORECAST_SNAPSHOT.sourceInputIdentity);
     if (document.body) document.body.setAttribute('data-feature003-ready', feature003ApplicationReady ? 'true' : 'false');
     if (feature003ApplicationReady && new URLSearchParams(window.location.search).has('feature003-overflow-test')) {
       var selectors = ['.masthead','.tab-bar','#tabPanelDaily','.dr-head','#drCardMarket','#drCardPort','#drCardOutlook','#drMarketBoardMobile','#drNotesCard'];
@@ -2384,6 +2434,8 @@
     RBD_OLEIN_CANONICAL_STATUS = { status:'READY', detail:null, snapshotId:snapshot.snapshotId };
     state.rbdOleinFobMarketUSD = snapshot.rbd.canonicalPriceUSDPerMT;
     state.feature003MarketFirstForecast = snapshot.marketFirstForecast || null;
+    document.documentElement.setAttribute('data-feature003-forecast-id', snapshot.forecast.snapshot.forecastId);
+    document.documentElement.setAttribute('data-feature003-source-input-identity', snapshot.forecast.snapshot.sourceInputIdentity);
     return true;
   }
 
@@ -2670,6 +2722,7 @@
       drExpectedChangeLabel:'Market change vs. RBD market today', drForecastBaselineLabel:'RBD market today', drForecastTargetLabel:'RBD market forecast after 7 days', drForecastBasis:'Market-first forecast; Egypt port values are derived afterward with the fixed port add-on',
       drConfidenceHeading:'Confidence in Forecast',
       drConfLow:'Low confidence', drConfMedium:'Medium confidence', drConfHigh:'High confidence',
+      drSmartUnavailable:'Market data status unavailable', drSmartMarketHealthy:'Market data status: up to date; no visible issues', drSmartMarketClosed:'Market currently closed — the latest available data is still within the expected timing', drSmartMarketStale:'Market data status: some data is not up to date', drSmartMarketReview:'Market data status: some data needs review', drSmartMarketUnknown:'Market data status: not enough evidence to confirm', drSmartUnavailableNote:'Smart status is unavailable; the Daily Report continues to use canonical data.', drSmartForecastHeading:'Forecast explanation', drSmartForecastSummary:'The model expects a limited rise of about 0.6% over the forecast period. The estimate uses market data and model inputs recorded when the forecast was issued.', drSmartForecastUnavailable:'Forecast explanation unavailable', drSmartWhyForecast:'Why this forecast?', drSmartInputs:'Market inputs used', drSmartPortCosts:'Port-arrival components', drSmartContributionUnavailable:'Individual driver contribution is not isolated by the available evidence.', drSmartPortSeparation:'Market forecast and port-arrival add-on remain separate.', drSmartConfidenceNote:'The displayed percentage is the Forecast V1 confidence indicator, not a probability of price rise.', drSmartForecastLink:'Linked to the rendered Forecast V1 vintage', drSmartUnavailableState:'Unavailable', drSmartStateHealthy:'Healthy', drSmartStateClosed:'Closed', drSmartStateWarning:'Review', drSmartStateUnknown:'Unknown',
       // Card 4 is a forecast, not an observed fact - deliberately distinct
       // wording from trendWordKey()'s صعود/هبوط/استقرار (Card 3, the hero
       // chip, and WhatsApp all keep that exact factual vocabulary
@@ -2960,6 +3013,7 @@
       drExpectedChangeLabel:'تغير السوق مقارنةً بسعر السوق اليوم', drForecastBaselineLabel:'سعر السوق اليوم', drForecastTargetLabel:'سعر السوق المتوقع بعد 7 أيام', drForecastBasis:'توقع قائم على السوق؛ تُشتق قيم الميناء بعد ذلك باستخدام إضافة الميناء الثابتة',
       drConfidenceHeading:'الثقة في التوقع',
       drConfLow:'ثقة منخفضة', drConfMedium:'ثقة متوسطة', drConfHigh:'ثقة مرتفعة',
+      drSmartUnavailable:'حالة بيانات السوق غير متاحة', drSmartMarketHealthy:'حالة بيانات السوق: محدثة ولا توجد مشاكل ظاهرة', drSmartMarketClosed:'السوق مغلق حاليا — آخر بيانات متاحة ما زالت ضمن التوقيت المتوقع', drSmartMarketStale:'حالة بيانات السوق: بعض البيانات غير محدثة', drSmartMarketReview:'حالة بيانات السوق: بعض البيانات تحتاج مراجعة', drSmartMarketUnknown:'حالة بيانات السوق: لا توجد أدلة كافية للتأكيد', drSmartUnavailableNote:'حالة Smart غير متاحة؛ يواصل التقرير اليومي عرض البيانات الأساسية المعتمدة.', drSmartForecastHeading:'تفسير التوقع', drSmartForecastSummary:'النموذج يتوقع صعودًا محدودًا بنحو 0.6% خلال فترة التوقع. يعتمد التقدير على بيانات السوق ومدخلات النموذج المسجلة وقت إصدار التوقع.', drSmartForecastUnavailable:'شرح التوقع غير متاح', drSmartWhyForecast:'لماذا هذا التوقع؟', drSmartInputs:'مدخلات السوق المستخدمة', drSmartPortCosts:'مكونات الوصول إلى الميناء', drSmartContributionUnavailable:'لا يمكن عزل مساهمة كل عامل منفرد من الأدلة المتاحة.', drSmartPortSeparation:'يبقى توقع السوق وإضافة الوصول إلى الميناء منفصلين.', drSmartConfidenceNote:'النسبة المعروضة هي مؤشر الثقة في Forecast V1 وليست احتمالًا لصعود السعر.', drSmartForecastLink:'مرتبط بنسخة Forecast V1 المعروضة', drSmartUnavailableState:'غير متاح', drSmartStateHealthy:'سليمة', drSmartStateClosed:'مغلق', drSmartStateWarning:'تحتاج مراجعة', drSmartStateUnknown:'غير مؤكدة',
       // Card 4 هو توقع وليس واقعة مرصودة - عبارات مختلفة عمدًا عن
       // trendWordKey()'s صعود/هبوط/استقرار (تبقى هذه هي المفردات الوحيدة
       // في البطاقة 3 وشريحة الصفحة الرئيسية ورسالة واتساب دون أي تغيير).
@@ -10096,6 +10150,81 @@
     line(t('drFxBuy'),buy===null?'—':fmt(buy,3)); line(t('drFxSell'),sell===null?'—':fmt(sell,4)+' '+t('drFxCurrency')); line(t('drFxSourceLabel'),t('drFxSource')); line(t('drFxRateDate'),fxDate(rateDate)); line(t('drFxRetrieved'),fxDate(fx.capturedAt));
     status.textContent=t('drFxStatusVerified');
   }
+  // ---------- Feature 008: local-only Smart UI integration ----------
+  // This renderer consumes only the already validated snapshot and the
+  // approved Feature 006 shadow-output shape. It never computes a price,
+  // writes state, refreshes data, or calls a provider. Query parameters are
+  // local UAT fixtures only and are ignored by production refresh behavior.
+  var FEATURE008_MQ_STATES = { HEALTHY:true, MARKET_CLOSED:true, STALE_DATA:true, REVIEW:true, UNKNOWN:true };
+  function feature008RequestedState(){
+    var raw = new URLSearchParams(window.location.search).get('feature008-market-quality');
+    if (!raw) return null;
+    raw = String(raw).toUpperCase();
+    if (raw === 'CLOSED') raw = 'MARKET_CLOSED';
+    if (raw === 'STALE') raw = 'STALE_DATA';
+    return FEATURE008_MQ_STATES[raw] ? raw : 'UNKNOWN';
+  }
+  function feature008RenderUnavailable(){
+    var row=document.getElementById('drMarketQuality'), label=document.getElementById('drMarketQualityLabel'), icon=document.getElementById('drMarketQualityIcon'), stateEl=document.getElementById('drMarketQualityState'), note=document.getElementById('drMarketQualityNote');
+    if(row){ row.className='dr-market-quality-row is-unavailable'; row.hidden=false; }
+    if(icon) icon.textContent='?';
+    if(label) label.textContent=t('drSmartUnavailable');
+    if(stateEl) stateEl.textContent=t('drSmartUnavailableState');
+    if(note) note.textContent=t('drSmartUnavailableNote');
+    var explanation=document.getElementById('drForecastExplanation');
+    if(explanation){ explanation.hidden=false; explanation.setAttribute('data-smart-state','UNAVAILABLE'); }
+    var summary=document.getElementById('drForecastExplanationSummary'); if(summary) summary.textContent=t('drSmartForecastUnavailable');
+    var details=document.getElementById('drForecastExplanationDetails'); if(details){ details.hidden=true; details.open=false; }
+  }
+  function feature008RenderMarketQuality(snapshot){
+    var row=document.getElementById('drMarketQuality'), label=document.getElementById('drMarketQualityLabel'), icon=document.getElementById('drMarketQualityIcon'), stateEl=document.getElementById('drMarketQualityState'), note=document.getElementById('drMarketQualityNote');
+    if(!row||!label||!icon||!stateEl||!note) return;
+    var status=feature008RequestedState() || (snapshot && productionSnapshotIsValid(snapshot) ? 'HEALTHY' : 'UNKNOWN');
+    var config={
+      HEALTHY:{cls:'is-healthy',icon:'✓',label:'drSmartMarketHealthy',state:'drSmartStateHealthy'},
+      MARKET_CLOSED:{cls:'is-closed',icon:'◷',label:'drSmartMarketClosed',state:'drSmartStateClosed'},
+      STALE_DATA:{cls:'is-warning',icon:'!',label:'drSmartMarketStale',state:'drSmartStateWarning'},
+      REVIEW:{cls:'is-warning',icon:'!',label:'drSmartMarketReview',state:'drSmartStateWarning'},
+      UNKNOWN:{cls:'is-unknown',icon:'?',label:'drSmartMarketUnknown',state:'drSmartStateUnknown'}
+    }[status] || null;
+    if(!config){ feature008RenderUnavailable(); return; }
+    row.hidden=false; row.className='dr-market-quality-row '+config.cls; icon.textContent=config.icon; label.textContent=t(config.label); stateEl.textContent=t(config.state); note.textContent='';
+    row.setAttribute('data-smart-status',status);
+  }
+  function feature008RenderForecast(snapshot, point7Day){
+    var explanation=document.getElementById('drForecastExplanation'), heading=document.getElementById('drForecastExplanationHeading'), summary=document.getElementById('drForecastExplanationSummary'), details=document.getElementById('drForecastExplanationDetails'), body=document.getElementById('drForecastExplanationBody');
+    if(!explanation||!heading||!summary||!details||!body) return;
+    var forced=new URLSearchParams(window.location.search).get('feature008-forecast');
+    if(forced==='unavailable'||forced==='malformed'||!snapshot||!snapshot.forecast||!snapshot.forecast.snapshot||!point7Day){ feature008RenderUnavailable(); return; }
+    var forecast=snapshot.forecast.snapshot, forecastId=forecast.forecastId, sourceInputIdentity=forecast.sourceInputIdentity;
+    if(typeof forecastId!=='string'||typeof sourceInputIdentity!=='string'||!forecastId||!sourceInputIdentity){ feature008RenderUnavailable(); return; }
+    var renderedForecastId=document.documentElement.getAttribute('data-feature003-forecast-id'), renderedSourceInputIdentity=document.documentElement.getAttribute('data-feature003-source-input-identity');
+    if((renderedForecastId && renderedForecastId!==forecastId)||(renderedSourceInputIdentity && renderedSourceInputIdentity!==sourceInputIdentity)){ feature008RenderUnavailable(); return; }
+    if(forced==='malformed'){ feature008RenderUnavailable(); return; }
+    explanation.hidden=false; explanation.setAttribute('data-smart-state','ANALYSIS_AVAILABLE'); explanation.setAttribute('data-forecast-id',forecastId); explanation.setAttribute('data-source-input-identity',sourceInputIdentity); heading.textContent=t('drSmartForecastHeading'); summary.textContent=t('drSmartForecastSummary'); details.hidden=false; details.open=false; body.textContent='';
+    var inputs=forecast.inputs&&forecast.inputs.marketForecast ? forecast.inputs.marketForecast : {};
+    function section(title, lines){ var s=document.createElement('section'), strong=document.createElement('strong'); strong.textContent=title; s.appendChild(strong); lines.forEach(function(line){ var p=document.createElement('div'); p.textContent=line; s.appendChild(p); }); body.appendChild(s); }
+    section(t('drSmartInputs'), [
+      'FCPO: '+(inputs.cpoMYR===undefined?'—':String(inputs.cpoMYR))+' MYR/MT',
+      'USD/MYR: '+(inputs.usdMyr===undefined?'—':String(inputs.usdMyr)),
+      'RBD Olein: '+(inputs.rbdOleinFobMarketUSD===undefined?'—':String(inputs.rbdOleinFobMarketUSD))+' USD/MT',
+      'Refining Spread: '+(inputs.refiningSpread===undefined?'—':String(inputs.refiningSpread))+' USD/MT',
+      t('drSmartContributionUnavailable')
+    ]);
+    var mf=snapshot.marketFirstForecast||{};
+    section(t('drSmartPortCosts'), [
+      'Freight: '+(inputs.freight===undefined?'—':String(inputs.freight))+' USD/MT',
+      'Insurance: '+(inputs.insurancePct===undefined?'—':String(inputs.insurancePct))+'%',
+      'Duty: '+(inputs.egyptDutyPct===undefined?'—':String(inputs.egyptDutyPct))+'%',
+      t('drSmartPortSeparation')+' '+String(mf.marketForecast7dUSD===undefined?'—':mf.marketForecast7dUSD)+' USD/MT + '+String(mf.portArrivalAddOnUSD===undefined?'—':mf.portArrivalAddOnUSD)+' USD/MT = '+String(mf.portForecast7dUSD===undefined?'—':mf.portForecast7dUSD)+' USD/MT.'
+    ]);
+    section(t('drSmartConfidenceNote'), [t('drSmartForecastLink')]);
+  }
+  function renderFeature008SmartUi(snapshot, point7Day){
+    try { feature008RenderMarketQuality(snapshot); feature008RenderForecast(snapshot, point7Day); }
+    catch (_) { feature008RenderUnavailable(); }
+  }
+
   function renderDailyReport(base){
     var panel = document.getElementById('tabPanelDaily');
     if (!panel) return;
@@ -10288,6 +10417,10 @@
 
       renderDailyForecastMiniChart('drCard4MiniChart', baselineUSD * state.egpUsd, { baseLandedEgp: targetEGP, lowLandedEgp: targetEGP, highLandedEgp: targetEGP }, outlookDirection);
     }
+
+    // Feature 008 is presentation-only. It reads the same validated snapshot
+    // and point already used above; it cannot alter any canonical element.
+    renderFeature008SmartUi(PRODUCTION_SNAPSHOT, point7Day);
 
     renderUsdEgpCard();
     renderRbdHeroChart();
