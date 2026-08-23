@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "snapshotId": "FEATURE003|93028930f40f46602227",
-  "canonicalVersion": "FEATURE003|93028930f40f46602227",
-  "generatedAt": "2026-08-22T22:34:23.088Z",
+  "snapshotId": "FEATURE003|3da3fb74c3a3ea71fe00",
+  "canonicalVersion": "FEATURE003|3da3fb74c3a3ea71fe00",
+  "generatedAt": "2026-08-23T05:53:38.926Z",
   "refresh": {
-    "completedAt": "2026-08-22T22:34:23.088Z",
-    "artifactGeneratedAt": "2026-08-22T22:34:23.088Z",
+    "completedAt": "2026-08-23T05:53:38.926Z",
+    "artifactGeneratedAt": "2026-08-23T05:53:38.926Z",
     "source": "daily-refresh validated completion"
   },
   "sourceIdentity": {
@@ -19,10 +19,10 @@
       "RBD_PALM_OLEIN|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT",
       "RBD_PALM_STEARIN|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT"
     ],
-    "forecastIssuedDate": "2026-08-22",
+    "forecastIssuedDate": "2026-08-23",
     "forecastModelVersion": "v1-linear-curve-fx-scenario",
-    "forecastInputIdentity": "FORECAST_INPUT|e07accbda22ada3bfc66",
-    "marketSnapshotId": "MARKET_SNAPSHOT|12168aac2ec1ec171089"
+    "forecastInputIdentity": "FORECAST_INPUT|ba4cd8c79b00fc9a8579",
+    "marketSnapshotId": "MARKET_SNAPSHOT|16a430d71191146ff6af"
   },
   "rbd": {
     "schemaVersion": 1,
@@ -406,18 +406,18 @@
     "egpUsd": {
       "value": 50.88,
       "source": "BankLive-reported Central Bank of Egypt official USD/EGP buy/sell rates (50.814 / 50.9534), 21 Aug 2026",
-      "capturedAt": "2026-08-22T22:34:22.630Z",
-      "observationDate": "2026-08-22",
-      "freshnessState": "Verified",
+      "capturedAt": "2026-08-23T05:53:38.413Z",
+      "observationDate": "2026-08-23",
+      "freshnessState": "Stale",
       "status": "Manual",
       "unit": "EGP/USD"
     },
     "usdMyr": {
       "value": 4.0449,
       "source": "Bank Negara Malaysia — KL USD/MYR Reference Rate (FMIP, financialmarkets.bnm.gov.my), 4.0449 for 21 Aug 2026",
-      "capturedAt": "2026-08-22T22:34:22.630Z",
-      "observationDate": "2026-08-22",
-      "freshnessState": "Verified",
+      "capturedAt": "2026-08-23T05:53:38.413Z",
+      "observationDate": "2026-08-23",
+      "freshnessState": "Stale",
       "status": "Manual",
       "unit": "MYR/USD"
     }
@@ -443,7 +443,7 @@
         "valueUSDPerMT": 1227.5
       },
       {
-        "date": "2026-08-29",
+        "date": "2026-08-30",
         "kind": "forecast",
         "valueUSDPerMT": 1234.37,
         "confidencePercent": 35
@@ -454,16 +454,17 @@
   "forecast": {
     "snapshot": {
       "schemaVersion": 1,
-      "issuedDate": "2026-08-22",
-      "capturedAt": "2026-08-22T22:34:21.672Z",
+      "issuedDate": "2026-08-23",
+      "capturedAt": "2026-08-23T05:53:37.603Z",
       "captureStatus": "CAPTURED",
       "forecastDefinitionVersion": "v1-linear-curve-fx-scenario",
       "landedFormulaVersion": "v1-fob-freight-insurance-cif-duty-vat-margin",
       "classification": "SCENARIO_DERIVED",
-      "sourceSnapshotDate": "2026-08-22",
-      "sourceMarketSnapshotId": "MARKET_SNAPSHOT|12168aac2ec1ec171089",
-      "sourceInputIdentity": "FORECAST_INPUT|e07accbda22ada3bfc66",
-      "forecastId": "FORECAST_VINTAGE|4913e76b06864176120d",
+      "sourceSnapshotDate": "2026-08-23",
+      "sourceMarketSnapshotId": "MARKET_SNAPSHOT|16a430d71191146ff6af",
+      "sourceInputIdentity": "FORECAST_INPUT|ba4cd8c79b00fc9a8579",
+      "sourceInputIdentityVersion": "v2-material-normalized",
+      "forecastId": "FORECAST_VINTAGE|17b88c4ab9666e93295d",
       "inputs": {
         "currentFcpoMYR": 4791,
         "currentUsdMyr": 4.0449,
@@ -608,12 +609,21 @@
             "crossCheckValue": 1147.5,
             "crossCheckObservationDate": "13 Aug 2026",
             "crossCheckDeltaUSD": 80
+          },
+          "portArrivalCostUSD": {
+            "source": "Trading-desk internal estimate (not an independently sourced market quote) — a bundled Malaysia→Egypt port-arrival cost figure (freight + port handling + related port-side costs) the desk uses for a quick buy-today reference",
+            "sourceType": "Internal / Trading-desk estimate",
+            "lastUpdated": "2026-08-20",
+            "confidence": "Low",
+            "status": "Estimated",
+            "unit": "USD/MT",
+            "refreshMethod": "Not refreshed by automation — static desk assumption, updated only on an explicit human-provided revision"
           }
         }
       },
       "forecastPoints": [
         {
-          "targetDate": "2026-08-29",
+          "targetDate": "2026-08-30",
           "horizonType": "WEEKS",
           "horizonValue": 1,
           "metric": "landedEGP",
@@ -630,7 +640,7 @@
           "horizonWeeks": 1
         },
         {
-          "targetDate": "2026-09-05",
+          "targetDate": "2026-09-06",
           "horizonType": "WEEKS",
           "horizonValue": 2,
           "metric": "landedEGP",
@@ -647,7 +657,7 @@
           "horizonWeeks": 2
         },
         {
-          "targetDate": "2026-09-12",
+          "targetDate": "2026-09-13",
           "horizonType": "WEEKS",
           "horizonValue": 3,
           "metric": "landedEGP",
@@ -664,7 +674,7 @@
           "horizonWeeks": 3
         },
         {
-          "targetDate": "2026-09-19",
+          "targetDate": "2026-09-20",
           "horizonType": "WEEKS",
           "horizonValue": 4,
           "metric": "landedEGP",
@@ -681,7 +691,7 @@
           "horizonWeeks": 4
         },
         {
-          "targetDate": "2026-10-17",
+          "targetDate": "2026-10-18",
           "horizonType": "WEEKS",
           "horizonValue": 8,
           "metric": "landedEGP",
@@ -698,7 +708,7 @@
           "horizonWeeks": 8
         },
         {
-          "targetDate": "2026-11-14",
+          "targetDate": "2026-11-15",
           "horizonType": "WEEKS",
           "horizonValue": 12,
           "metric": "landedEGP",
@@ -716,8 +726,8 @@
         }
       ]
     },
-    "snapshotIssuedDate": "2026-08-22",
-    "forecastGeneratedAt": "2026-08-22T22:34:21.672Z",
+    "snapshotIssuedDate": "2026-08-23",
+    "forecastGeneratedAt": "2026-08-23T05:53:37.603Z",
     "modelVersion": "v1-linear-curve-fx-scenario",
     "baselineUSDPerMT": 1372.2557480098362,
     "targetUSDPerMT": 1376.4150943396226,
@@ -725,11 +735,11 @@
     "deltaUSDPerMT": 4.159346329786331,
     "deltaPercent": 0.30310285351827265,
     "confidencePercent": 35,
-    "targetDate": "2026-08-29",
-    "sourceMarketSnapshotDate": "2026-08-22",
-    "sourceMarketSnapshotId": "MARKET_SNAPSHOT|12168aac2ec1ec171089",
-    "sourceInputIdentity": "FORECAST_INPUT|e07accbda22ada3bfc66",
-    "forecastId": "FORECAST_VINTAGE|4913e76b06864176120d"
+    "targetDate": "2026-08-30",
+    "sourceMarketSnapshotDate": "2026-08-23",
+    "sourceMarketSnapshotId": "MARKET_SNAPSHOT|16a430d71191146ff6af",
+    "sourceInputIdentity": "FORECAST_INPUT|ba4cd8c79b00fc9a8579",
+    "forecastId": "FORECAST_VINTAGE|17b88c4ab9666e93295d"
   },
   "marketFirstForecast": {
     "marketTodayUSD": 1227.5,
@@ -741,7 +751,7 @@
     "portForecast7dUSD": 1364.37,
     "portArrivalAddOnUSD": 130,
     "confidencePercent": 35,
-    "targetDate": "2026-08-29",
+    "targetDate": "2026-08-30",
     "source": "FORECAST_SNAPSHOTS.forecastPoints[horizon=1].estimatedFobUsd",
     "legacyLandedCostForecast": {
       "baselineUSDPerMT": 1372.2557480098362,
