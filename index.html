@@ -2423,28 +2423,12 @@
     }
   }
 
-  function fxObservationIsValid(fx){
-    fx = fx || {};
-    var pair = (typeof fx.buy==='number' && isFinite(fx.buy) && fx.buy > 0 && typeof fx.sell==='number' && isFinite(fx.sell) && fx.sell > 0 && fx.sell >= fx.buy) ? { buy:fx.buy, sell:fx.sell } : null;
-    if (!pair){
-      var match = String(fx.source || '').match(/(?:buy\/sell rates|buy\s*\/\s*sell)\s*\(\s*([0-9]+(?:\.[0-9]+)?)\s*\/\s*([0-9]+(?:\.[0-9]+)?)\s*\)/i);
-      if (match) pair = { buy:Number(match[1]), sell:Number(match[2]) };
-    }
-    if (!pair || typeof fx.value!=='number' || !isFinite(fx.value) || fx.value <= 0 || !fx.source || !fx.observationDate || !fx.capturedAt || fx.unit !== 'EGP/USD') return false;
-    if (fx.freshnessState === 'UNKNOWN' || fx.freshnessState === 'UNAVAILABLE' || fx.status === 'UNKNOWN') return false;
-    var midpoint = (pair.buy + pair.sell) / 2;
-    return Math.round(midpoint * 100) / 100 === Math.round(Number(fx.value) * 100) / 100;
-  }
-  function fxRateAvailable(){ return !!(PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.fx && fxObservationIsValid(PRODUCTION_SNAPSHOT.fx.egpUsd) && isFinite(state.egpUsd)); }
-  function fxEgp(value){ return fxRateAvailable() && isFinite(value) ? value * state.egpUsd : null; }
-
   function applyProductionSnapshot(snapshot){
     if (!productionSnapshotIsValid(snapshot)) return false;
     RBD_OLEIN_CANONICAL_SNAPSHOT = snapshot.rbd;
     PRODUCTION_SNAPSHOT = snapshot;
     PRODUCTION_FORECAST_SNAPSHOT = snapshot.forecast.snapshot;
-    state.egpUsd = null;
-    if (snapshot.fx && snapshot.fx.egpUsd && fxObservationIsValid(snapshot.fx.egpUsd)) state.egpUsd = snapshot.fx.egpUsd.value;
+    if (snapshot.fx && snapshot.fx.egpUsd && isFinite(snapshot.fx.egpUsd.value)) state.egpUsd = snapshot.fx.egpUsd.value;
     if (snapshot.fx && snapshot.fx.usdMyr && isFinite(snapshot.fx.usdMyr.value)) state.usdMyr = snapshot.fx.usdMyr.value;
     MARKET_BOARD_OBSERVATIONS = Object.keys(snapshot.marketBoard || {}).map(function(key){ return snapshot.marketBoard[key]; });
     RBD_OLEIN_CANONICAL_STATUS = { status:'READY', detail:null, snapshotId:snapshot.snapshotId };
@@ -2456,12 +2440,7 @@
   }
 
   function productionSnapshotIsValid(snapshot){
-    // Snapshot/application readiness is distinct from FX usability. A
-    // structurally valid publication with missing or malformed FX must still
-    // hydrate so the UI can render its explicit fail-closed state. FX
-    // validity is enforced by fxObservationIsValid(), state.egpUsd remains
-    // null, and all EGP/Smart outputs then render unavailable.
-    return !!(snapshot && snapshot.schemaVersion === 1 && typeof snapshot.snapshotId === 'string' && snapshot.snapshotId.length > 0 && snapshot.refresh && typeof snapshot.refresh.completedAt === 'string' && snapshot.status && snapshot.status.state === 'READY' && snapshot.status.validationState === 'VALIDATED' && canonicalSnapshotIsValid(snapshot.rbd) && snapshot.forecast && snapshot.forecast.snapshot && Array.isArray(snapshot.forecast.snapshot.forecastPoints) && snapshot.fx && snapshot.marketFirstForecast && isFinite(snapshot.marketFirstForecast.marketTodayUSD) && isFinite(snapshot.marketFirstForecast.marketForecast7dUSD) && isFinite(snapshot.marketFirstForecast.portArrivalAddOnUSD) && snapshot.marketFirstForecast.portTodayUSD === snapshot.marketFirstForecast.marketTodayUSD + snapshot.marketFirstForecast.portArrivalAddOnUSD && snapshot.marketFirstForecast.portForecast7dUSD === snapshot.marketFirstForecast.marketForecast7dUSD + snapshot.marketFirstForecast.portArrivalAddOnUSD && snapshot.fcpo && snapshot.fcpo.originalQuote && snapshot.fcpo.convertedEquivalents);
+    return !!(snapshot && snapshot.schemaVersion === 1 && typeof snapshot.snapshotId === 'string' && snapshot.snapshotId.length > 0 && snapshot.refresh && typeof snapshot.refresh.completedAt === 'string' && snapshot.status && snapshot.status.state === 'READY' && snapshot.status.validationState === 'VALIDATED' && canonicalSnapshotIsValid(snapshot.rbd) && snapshot.forecast && snapshot.forecast.snapshot && Array.isArray(snapshot.forecast.snapshot.forecastPoints) && snapshot.marketFirstForecast && isFinite(snapshot.marketFirstForecast.marketTodayUSD) && isFinite(snapshot.marketFirstForecast.marketForecast7dUSD) && isFinite(snapshot.marketFirstForecast.portArrivalAddOnUSD) && snapshot.marketFirstForecast.portTodayUSD === snapshot.marketFirstForecast.marketTodayUSD + snapshot.marketFirstForecast.portArrivalAddOnUSD && snapshot.marketFirstForecast.portForecast7dUSD === snapshot.marketFirstForecast.marketForecast7dUSD + snapshot.marketFirstForecast.portArrivalAddOnUSD && snapshot.fcpo && snapshot.fcpo.originalQuote && snapshot.fcpo.convertedEquivalents);
   }
 
   // Product → Origin → Evidence Chain. Only RBD Palm Olein is active; no
@@ -2550,7 +2529,6 @@
     egpUsd: {
       source:'BankLive.net-reported Central Bank of Egypt official USD/EGP buy/sell rates (50.7976 / 50.936), observed Sunday 23 Aug 2026 ~3:34 PM (site last update 2:40 PM)',
       sourceType:'Official Publication', lastUpdated:'2026-08-23', confidence:'High', status:'Manual',
-      buy:50.7976, sell:50.936,
       unit:'EGP/USD', refreshMethod:'Daily AI refresh'
     },
     freight: {
@@ -2728,7 +2706,7 @@
       // ---- Daily Report (التقرير اليومي) - V1 scaffold ----
       drTitle:'Daily Report', drSubtitle:'Today\'s market price, expected Egypt port price, current direction, and the 7-day outlook — one page, one validated rate.',
       drHeadSub:'Purchase Decision Summary',
-      drCard1Eyebrow:'RBD Palm Olein Market Price Today', drCard2Eyebrow:'Expected Egypt Port Price', drCard3Eyebrow:'Current Direction', drCard4Eyebrow:'7-Day Outlook', drFxTitle:'US Dollar vs Egyptian Pound', drFxMidpoint:'Calculated midpoint of buy/sell rates', drFxBuy:'Buy', drFxSell:'Sell', drFxCurrency:'EGP/USD', drFxSourceLabel:'Source', drFxSource:'BankLive reporting Central Bank of Egypt rates', drFxRateDate:'Rate date', drFxRetrieved:'Retrieved', drFxStatusVerified:'Verified', drFxStatusUnavailable:'Unavailable — not verified', drHeroKicker:'RBD Palm Olein market', drHeroChartTitle:'RBD Palm Olein Price Path', drHeroChartConcept:'Actual history · Today · 7-day forecast', drHeroActual:'Actual history', drHeroToday:'Today', drHeroForecast:'7-day forecast', drHeroLow:'Low', drHeroHigh:'High', drHeroDateActual:'Actual', drHeroDateToday:'Today', drHeroDateForecast:'Forecast',
+      drCard1Eyebrow:'RBD Palm Olein Market Price Today', drCard2Eyebrow:'Expected Egypt Port Price', drCard3Eyebrow:'Current Direction', drCard4Eyebrow:'7-Day Outlook', drFxTitle:'US Dollar vs Egyptian Pound', drFxMidpoint:'Calculated midpoint of buy/sell rates', drFxBuy:'Buy', drFxSell:'Sell', drFxCurrency:'EGP/USD', drFxSourceLabel:'Source', drFxSource:'BankLive reporting Central Bank of Egypt rates', drFxRateDate:'Rate date', drFxRetrieved:'Retrieved', drFxStatusVerified:'Verified', drHeroKicker:'RBD Palm Olein market', drHeroChartTitle:'RBD Palm Olein Price Path', drHeroChartConcept:'Actual history · Today · 7-day forecast', drHeroActual:'Actual history', drHeroToday:'Today', drHeroForecast:'7-day forecast', drHeroLow:'Low', drHeroHigh:'High', drHeroDateActual:'Actual', drHeroDateToday:'Today', drHeroDateForecast:'Forecast',
       drUnitUsd:'USD/MT', drUnitEgp:'EGP/MT',
       drSourceDetails:'Source & details', drCard2Details:'Details & disclaimer',
       drRefreshLabel:'Refresh Data Now', drRefreshDisabledHint:'Check the latest published trusted snapshot', drRefreshReadyHint:'Check the latest published trusted snapshot', drRefreshLoading:'Checking the latest published data…', drRefreshSuccess:'Latest market data loaded', drRefreshNoChange:'You already have the latest available data', drRefreshFailure:'Could not check for a new update — showing the last trusted data', drRefreshUnavailable:'Published snapshot unavailable',
@@ -3019,7 +2997,7 @@
       // ---- التقرير اليومي (Daily Report) - V1 scaffold ----
       drTitle:'التقرير اليومي', drSubtitle:'سعر السوق اليوم، والسعر المتوقع بميناء مصر، والاتجاه الحالي، وتوقعات 7 أيام — في صفحة واحدة وبسعر صرف واحد معتمد.',
       drHeadSub:'ملخص قرار الشراء',
-      drCard1Eyebrow:'سعر أولين النخيل المكرر اليوم', drCard2Eyebrow:'السعر المتوقع في ميناء مصر', drCard3Eyebrow:'الاتجاه الحالي', drCard4Eyebrow:'توقع 7 أيام', drFxTitle:'سعر الدولار مقابل الجنيه', drFxMidpoint:'متوسط محسوب بين سعر الشراء والبيع', drFxBuy:'الشراء', drFxSell:'البيع', drFxCurrency:'جنيه/دولار', drFxSourceLabel:'المصدر', drFxSource:'BankLive نقلاً عن أسعار البنك المركزي المصري', drFxRateDate:'تاريخ السعر', drFxRetrieved:'آخر جلب للبيانات', drFxStatusVerified:'تم التحقق', drFxStatusUnavailable:'غير متاح — لم يتم التحقق', drHeroKicker:'سوق الأولين المكرر', drHeroChartTitle:'مسار سعر أولين النخيل المكرر', drHeroChartConcept:'السجل الفعلي · اليوم · توقع 7 أيام', drHeroActual:'السجل الفعلي', drHeroToday:'اليوم', drHeroForecast:'توقع 7 أيام', drHeroLow:'الأدنى', drHeroHigh:'الأعلى', drHeroDateActual:'فعلي', drHeroDateToday:'اليوم', drHeroDateForecast:'توقع',
+      drCard1Eyebrow:'سعر أولين النخيل المكرر اليوم', drCard2Eyebrow:'السعر المتوقع في ميناء مصر', drCard3Eyebrow:'الاتجاه الحالي', drCard4Eyebrow:'توقع 7 أيام', drFxTitle:'سعر الدولار مقابل الجنيه', drFxMidpoint:'متوسط محسوب بين سعر الشراء والبيع', drFxBuy:'الشراء', drFxSell:'البيع', drFxCurrency:'جنيه/دولار', drFxSourceLabel:'المصدر', drFxSource:'BankLive نقلاً عن أسعار البنك المركزي المصري', drFxRateDate:'تاريخ السعر', drFxRetrieved:'آخر جلب للبيانات', drFxStatusVerified:'تم التحقق', drHeroKicker:'سوق الأولين المكرر', drHeroChartTitle:'مسار سعر أولين النخيل المكرر', drHeroChartConcept:'السجل الفعلي · اليوم · توقع 7 أيام', drHeroActual:'السجل الفعلي', drHeroToday:'اليوم', drHeroForecast:'توقع 7 أيام', drHeroLow:'الأدنى', drHeroHigh:'الأعلى', drHeroDateActual:'فعلي', drHeroDateToday:'اليوم', drHeroDateForecast:'توقع',
       drUnitUsd:'USD/MT', drUnitEgp:'EGP/MT',
       drSourceDetails:'المصدر والتفاصيل', drCard2Details:'التفاصيل والتنبيه',
       drRefreshLabel:'تحديث البيانات الآن', drRefreshDisabledHint:'التحقق من أحدث لقطة موثوقة منشورة', drRefreshReadyHint:'التحقق من أحدث لقطة موثوقة منشورة', drRefreshLoading:'جاري التحقق من أحدث البيانات...', drRefreshSuccess:'تم تحميل أحدث بيانات السوق', drRefreshNoChange:'أنت بالفعل على أحدث بيانات متاحة', drRefreshFailure:'تعذر التحقق من تحديث جديد — يتم عرض آخر بيانات موثوقة', drRefreshUnavailable:'لا تتوفر اللقطة المنشورة',
@@ -7645,7 +7623,6 @@
 
   function fmt(n, d){
     d = d === undefined ? 0 : d;
-    if (typeof n !== 'number' || !isFinite(n)) return '—';
     return n.toLocaleString('en-US', { minimumFractionDigits:d, maximumFractionDigits:d });
   }
 
@@ -8467,11 +8444,10 @@
       tbody.appendChild(tr);
     });
 
-    document.getElementById('fxScenarioNote').textContent = state.egpUsd === null || !isFinite(state.egpUsd)
-      ? t('drFxStatusUnavailable')
-      : t('fxNotePrefix') + ' ' + t('fxNoteStable') + ': ' + state.egpUsd.toFixed(1) + ' → ' + FX_SCENARIOS.stableEnd.toFixed(1) +
-        '; ' + t('fxNoteBase') + ': ' + state.egpUsd.toFixed(1) + ' → ' + FX_SCENARIOS.baseEnd.toFixed(1) +
-        '; ' + t('fxNoteDep') + ': ' + state.egpUsd.toFixed(1) + ' → ' + FX_SCENARIOS.depEnd.toFixed(1) + ' ' + t('fxNoteSuffix');
+    document.getElementById('fxScenarioNote').textContent =
+      t('fxNotePrefix') + ' ' + t('fxNoteStable') + ': ' + state.egpUsd.toFixed(1) + ' → ' + FX_SCENARIOS.stableEnd.toFixed(1) +
+      '; ' + t('fxNoteBase') + ': ' + state.egpUsd.toFixed(1) + ' → ' + FX_SCENARIOS.baseEnd.toFixed(1) +
+      '; ' + t('fxNoteDep') + ': ' + state.egpUsd.toFixed(1) + ' → ' + FX_SCENARIOS.depEnd.toFixed(1) + ' ' + t('fxNoteSuffix');
 
     var first = points[0].base, last = points[points.length-1].base;
     var pct = (last - first) / first * 100;
@@ -10059,7 +10035,7 @@
         price.textContent = '—'; egp.textContent = '—'; var fcpoUnavailable = document.createElement('span'); fcpoUnavailable.className = 'dr-board-badge unavailable'; fcpoUnavailable.textContent = 'بيانات غير محدثة'; status.appendChild(fcpoUnavailable); timing.className = 'dr-board-meta'; timing.textContent = fcpoRecord && fcpoRecord.observationTimestamp ? fcpoRecord.observationTimestamp : t('drBoardUnavailable');
       } else if (row.primary && canonicalSnapshotIsValid(s)){
         price.innerHTML = '<span class="dr-board-price"></span> <small>USD/MT</small>'; price.querySelector('.dr-board-price').textContent = fmt(s.canonicalPriceUSDPerMT, 2);
-        egp.innerHTML = '<span class="dr-board-secondary"></span> EGP/MT'; egp.querySelector('.dr-board-secondary').textContent = fxEgp(s.canonicalPriceUSDPerMT) === null ? '—' : fmt(fxEgp(s.canonicalPriceUSDPerMT), 2);
+        egp.innerHTML = '<span class="dr-board-secondary"></span> EGP/MT'; egp.querySelector('.dr-board-secondary').textContent = fmt(s.canonicalPriceUSDPerMT * state.egpUsd, 2);
         var badge = document.createElement('span'); badge.className = 'dr-board-badge ' + q.cls; badge.textContent = t(q.labelKey); status.appendChild(badge);
         timing.className = 'dr-board-meta'; renderBoardDate(timing, s.observationDate, s.capturedAt);
       } else if (row.primary){
@@ -10068,7 +10044,7 @@
         var boardRecord = boardByProduct[row.en === 'Crude Palm Oil (CPO)' ? 'CPO_PHYSICAL' : row.en === 'RBD Palm Oil' ? 'RBD_PALM_OIL' : row.en === 'RBD Palm Stearin' ? 'RBD_PALM_STEARIN' : 'RBD_PALM_KERNEL_OIL'];
         if (boardRecord && boardRecord.validationState === 'VALIDATED' && boardRecord.canonicalEligibility) {
           price.innerHTML = '<span class="dr-board-price"></span> <small>USD/MT</small>'; price.querySelector('.dr-board-price').textContent = fmt(boardRecord.normalizedPrice, 2);
-          egp.innerHTML = '<span class="dr-board-secondary"></span> EGP/MT'; egp.querySelector('.dr-board-secondary').textContent = fxEgp(boardRecord.normalizedPrice) === null ? '—' : fmt(fxEgp(boardRecord.normalizedPrice), 2);
+          egp.innerHTML = '<span class="dr-board-secondary"></span> EGP/MT'; egp.querySelector('.dr-board-secondary').textContent = fmt(boardRecord.normalizedPrice * state.egpUsd, 2);
           var boardBadge = document.createElement('span'); boardBadge.className = 'dr-board-badge trusted'; boardBadge.textContent = t('drQualityTrusted'); status.appendChild(boardBadge); timing.className = 'dr-board-meta'; renderBoardDate(timing, boardRecord.observationDate, boardRecord.acquiredAt);
         } else {
           price.textContent = '—'; egp.textContent = '—'; var unavailable = document.createElement('span'); unavailable.className = 'dr-board-badge unavailable'; unavailable.textContent = t('drQualityReview'); status.appendChild(unavailable); timing.className = 'dr-board-meta'; timing.textContent = t('drBoardUnavailable');
@@ -10162,17 +10138,17 @@
     var rangeLabel=document.createElementNS(ns,'text');rangeLabel.setAttribute('x',left);rangeLabel.setAttribute('y',246);rangeLabel.setAttribute('class','dr-hero-axis');rangeLabel.textContent=t('drHeroLow')+' '+fmt(domainMin,2)+' · '+t('drHeroHigh')+' '+fmt(domainMax,2)+' USD/MT';svg.appendChild(rangeLabel);
   }
   function renderUsdEgpCard(){
-    var fx=PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.fx && PRODUCTION_SNAPSHOT.fx.egpUsd || {}, value=document.getElementById('drFxValue'), meta=document.getElementById('drFxMeta'), status=document.getElementById('drFxStatus');
-    if(!value||!status){return;}
-    var valid=fxObservationIsValid(fx), buy=valid && isFinite(fx.buy)?Number(fx.buy):null, sell=valid && isFinite(fx.sell)?Number(fx.sell):null, midpoint=valid?Number(fx.value):null, rateDate=fx.observationDate||'—';
+    var fx=PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.fx && PRODUCTION_SNAPSHOT.fx.egpUsd, value=document.getElementById('drFxValue'), meta=document.getElementById('drFxMeta'), status=document.getElementById('drFxStatus');
+    if(!value||!fx){return;}
+    var source=String(fx.source||''), match=source.match(/buy\/sell rates \(([^/]+) \/ ([^)]+)\),\s*(\d{1,2} [A-Za-z]+ \d{4})/i), buy=match?Number(match[1]):null, sell=match?Number(match[2]):null, rateDate=match?match[3]:(fx.observationDate||'—');
+    var midpoint=(buy!==null&&sell!==null)?(buy+sell)/2:null;
     value.textContent=midpoint===null?'—':fmt(midpoint,2)+' EGP/USD';
     document.getElementById('drFxMidpoint').textContent=t('drFxMidpoint');
     meta.innerHTML='';
     function line(label, text){var row=document.createElement('div'); row.textContent=label+': '+text; meta.appendChild(row);}
     function fxDate(value){var raw=String(value||''); var human=raw.match(/^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/), d; if(human){var months={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11}; d=new Date(Date.UTC(Number(human[3]),months[human[2].slice(0,3)],Number(human[1])));} else d=new Date(raw); if(isNaN(d.getTime())) return value||'—'; return d.toLocaleDateString(state.lang==='ar'?'ar-EG':'en-GB',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'});}
-    line(t('drFxBuy'),buy===null?'—':fmt(buy,4)+' '+t('drFxCurrency')); line(t('drFxSell'),sell===null?'—':fmt(sell,4)+' '+t('drFxCurrency')); line(t('drFxSourceLabel'),t('drFxSource')); line(t('drFxRateDate'),fxDate(rateDate)); line(t('drFxRetrieved'),fxDate(fx.capturedAt));
-    status.textContent=valid?t('drFxStatusVerified'):t('drFxStatusUnavailable');
-    status.className='dr-fx-status '+(valid?'is-verified':'is-unavailable');
+    line(t('drFxBuy'),buy===null?'—':fmt(buy,3)); line(t('drFxSell'),sell===null?'—':fmt(sell,4)+' '+t('drFxCurrency')); line(t('drFxSourceLabel'),t('drFxSource')); line(t('drFxRateDate'),fxDate(rateDate)); line(t('drFxRetrieved'),fxDate(fx.capturedAt));
+    status.textContent=t('drFxStatusVerified');
   }
   // ---------- Feature 008: local-only Smart UI integration ----------
   // This renderer consumes only the already validated snapshot and the
@@ -10203,7 +10179,7 @@
   function feature008RenderMarketQuality(snapshot){
     var row=document.getElementById('drMarketQuality'), label=document.getElementById('drMarketQualityLabel'), icon=document.getElementById('drMarketQualityIcon'), stateEl=document.getElementById('drMarketQualityState'), note=document.getElementById('drMarketQualityNote');
     if(!row||!label||!icon||!stateEl||!note) return;
-    var requestedStatus=feature008RequestedState(), status=(requestedStatus === 'HEALTHY' && !fxRateAvailable()) ? 'UNKNOWN' : (requestedStatus || (snapshot && productionSnapshotIsValid(snapshot) && fxRateAvailable() ? 'HEALTHY' : 'UNKNOWN'));
+    var status=feature008RequestedState() || (snapshot && productionSnapshotIsValid(snapshot) ? 'HEALTHY' : 'UNKNOWN');
     var config={
       HEALTHY:{cls:'is-healthy',icon:'✓',label:'drSmartMarketHealthy',state:'drSmartStateHealthy'},
       MARKET_CLOSED:{cls:'is-closed',icon:'◷',label:'drSmartMarketClosed',state:'drSmartStateClosed'},
@@ -10219,7 +10195,7 @@
     var explanation=document.getElementById('drForecastExplanation'), heading=document.getElementById('drForecastExplanationHeading'), summary=document.getElementById('drForecastExplanationSummary'), details=document.getElementById('drForecastExplanationDetails'), body=document.getElementById('drForecastExplanationBody');
     if(!explanation||!heading||!summary||!details||!body) return;
     var forced=new URLSearchParams(window.location.search).get('feature008-forecast');
-    if(forced==='unavailable'||forced==='malformed'||!snapshot||!snapshot.forecast||!snapshot.forecast.snapshot||!point7Day||!fxRateAvailable()){ feature008RenderUnavailable(); return; }
+    if(forced==='unavailable'||forced==='malformed'||!snapshot||!snapshot.forecast||!snapshot.forecast.snapshot||!point7Day){ feature008RenderUnavailable(); return; }
     var forecast=snapshot.forecast.snapshot, forecastId=forecast.forecastId, sourceInputIdentity=forecast.sourceInputIdentity;
     if(typeof forecastId!=='string'||typeof sourceInputIdentity!=='string'||!forecastId||!sourceInputIdentity){ feature008RenderUnavailable(); return; }
     var renderedForecastId=document.documentElement.getAttribute('data-feature003-forecast-id'), renderedSourceInputIdentity=document.documentElement.getAttribute('data-feature003-source-input-identity');
@@ -10257,7 +10233,7 @@
     var canonical = canonicalSnapshotIsValid(RBD_OLEIN_CANONICAL_SNAPSHOT) ? RBD_OLEIN_CANONICAL_SNAPSHOT : null;
     var marketUSD = canonical ? canonical.canonicalPriceUSDPerMT : null;
     document.getElementById('drCard1ValueUSD').textContent = marketUSD === null ? '—' : fmt(marketUSD, 2);
-    document.getElementById('drCard1ValueEGP').textContent = fxEgp(marketUSD) === null ? '—' : fmt(fxEgp(marketUSD), 2);
+    document.getElementById('drCard1ValueEGP').textContent = marketUSD === null ? '—' : fmt(marketUSD * state.egpUsd, 2);
     renderCanonicalQualityBadge('drCard1Evidence', canonical || RBD_OLEIN_CANONICAL_SNAPSHOT);
     var marketProv = canonical ? { source:canonical.selectedSourceName, observationDate:canonical.observationDate } : null;
     var marketMetaEl = document.getElementById('drCard1Meta');
@@ -10322,8 +10298,8 @@
     // deliberate, documented divergence in WHICH figure feeds the shared
     // formula, not a second formula.
     var portArrival = marketUSD === null ? null : computeExpectedPortArrivalCost(marketUSD, state.portArrivalCostUSD);
-    var portArrivalEGP = portArrival ? fxEgp(portArrival.expectedPortArrivalUSD) : null;
-    var adjustmentEGP = fxEgp(state.portArrivalCostUSD);
+    var portArrivalEGP = portArrival ? portArrival.expectedPortArrivalUSD * state.egpUsd : null;
+    var adjustmentEGP = state.portArrivalCostUSD * state.egpUsd;
     document.getElementById('drCard2ValueUSD').textContent = portArrival ? fmt(portArrival.expectedPortArrivalUSD, 2) : '—';
     document.getElementById('drCard2ValueEGP').textContent = portArrival ? fmt(portArrivalEGP, 2) : '—';
     // Visual equation (price -> +$130 -> total), USD-only for compactness -
@@ -10401,13 +10377,13 @@
       var baselineUSD = marketFirst ? marketFirst.marketTodayUSD : marketUSD;
       var changeUSD = marketFirst ? marketFirst.marketDeltaUSD : (targetUSD - baselineUSD);
       var changePct = marketFirst ? marketFirst.marketDeltaPct : (baselineUSD ? changeUSD / baselineUSD * 100 : 0);
-      var targetEGP = fxEgp(targetUSD);
-      var changeEGP = fxEgp(changeUSD);
+      var targetEGP = targetUSD * state.egpUsd;
+      var changeEGP = changeUSD * state.egpUsd;
       var outlookDirection = changeUSD === 0 ? 'flat' : (changeUSD > 0 ? 'up' : 'down');
       var oCls = directionCssClass(outlookDirection);
       outlookCard.classList.add(oCls);
       document.getElementById('drCard4TargetUSD').textContent = fmt(targetUSD, 2);
-      document.getElementById('drCard4TargetEGP').textContent = targetEGP === null ? '—' : fmt(targetEGP, 2);
+      document.getElementById('drCard4TargetEGP').textContent = fmt(targetEGP, 2);
       document.getElementById('drCard4BaselineUSD').textContent = fmt(baselineUSD, 2) + ' USD/MT';
       document.getElementById('drCard4TargetExactUSD').textContent = fmt(targetUSD, 2) + ' USD/MT';
       // Forecast-specific wording (صعود محتمل) - color still comes from
@@ -10420,7 +10396,7 @@
       // unchanged, only split across three isolated lines.
       renderDeltaLines('drCard4Change', [
         oSign + fmt(changeUSD, 2) + ' USD/MT',
-        (changeEGP === null ? '—' : oSign + fmt(changeEGP, 0)) + ' EGP/MT',
+        oSign + fmt(changeEGP, 0) + ' EGP/MT',
         oSign + fmt(changePct, 1) + '%'
       ]);
       outlookMetaEl.innerHTML = '';
@@ -10439,7 +10415,7 @@
       else { confQualEl.textContent = t('drConfLow'); }
       confFootEl.textContent = t('drConfidenceFootnote');
 
-      renderDailyForecastMiniChart('drCard4MiniChart', fxEgp(baselineUSD), targetEGP === null ? null : { baseLandedEgp: targetEGP, lowLandedEgp: targetEGP, highLandedEgp: targetEGP }, outlookDirection);
+      renderDailyForecastMiniChart('drCard4MiniChart', baselineUSD * state.egpUsd, { baseLandedEgp: targetEGP, lowLandedEgp: targetEGP, highLandedEgp: targetEGP }, outlookDirection);
     }
 
     // Feature 008 is presentation-only. It reads the same validated snapshot
