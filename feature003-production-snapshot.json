@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "snapshotId": "FEATURE003|3da3fb74c3a3ea71fe00",
-  "canonicalVersion": "FEATURE003|3da3fb74c3a3ea71fe00",
-  "generatedAt": "2026-08-23T06:24:14.228Z",
+  "snapshotId": "FEATURE003|38905a38c74f396c6de5",
+  "canonicalVersion": "FEATURE003|38905a38c74f396c6de5",
+  "generatedAt": "2026-08-23T07:14:42.320Z",
   "refresh": {
-    "completedAt": "2026-08-23T06:24:14.228Z",
-    "artifactGeneratedAt": "2026-08-23T06:24:14.228Z",
+    "completedAt": "2026-08-23T07:14:42.320Z",
+    "artifactGeneratedAt": "2026-08-23T07:14:42.320Z",
     "source": "daily-refresh validated completion"
   },
   "sourceIdentity": {
@@ -21,8 +21,8 @@
     ],
     "forecastIssuedDate": "2026-08-23",
     "forecastModelVersion": "v1-linear-curve-fx-scenario",
-    "forecastInputIdentity": "FORECAST_INPUT|ba4cd8c79b00fc9a8579",
-    "marketSnapshotId": "MARKET_SNAPSHOT|16a430d71191146ff6af"
+    "forecastInputIdentity": "FORECAST_INPUT|5432d47ae431dee9bff6",
+    "marketSnapshotId": "MARKET_SNAPSHOT|21f92c4d4b8a8eea214a"
   },
   "rbd": {
     "schemaVersion": 1,
@@ -405,17 +405,17 @@
   "fx": {
     "egpUsd": {
       "value": 50.88,
-      "source": "BankLive-reported Central Bank of Egypt official USD/EGP buy/sell rates (50.814 / 50.9534), 21 Aug 2026",
-      "capturedAt": "2026-08-23T05:53:38.413Z",
+      "source": "EgyptRates.com-reported Central Bank of Egypt official USD/EGP buy/sell rates (50.814 / 50.953), confirmed 23 Aug 2026 (rate unchanged since 21 Aug 2026 — Egypt banking days)",
+      "capturedAt": "2026-08-23T07:14:41.869Z",
       "observationDate": "2026-08-23",
-      "freshnessState": "Stale",
+      "freshnessState": "Verified",
       "status": "Manual",
       "unit": "EGP/USD"
     },
     "usdMyr": {
       "value": 4.0449,
       "source": "Bank Negara Malaysia — KL USD/MYR Reference Rate (FMIP, financialmarkets.bnm.gov.my), 4.0449 for 21 Aug 2026",
-      "capturedAt": "2026-08-23T05:53:38.413Z",
+      "capturedAt": "2026-08-23T07:14:41.869Z",
       "observationDate": "2026-08-23",
       "freshnessState": "Stale",
       "status": "Manual",
@@ -455,16 +455,16 @@
     "snapshot": {
       "schemaVersion": 1,
       "issuedDate": "2026-08-23",
-      "capturedAt": "2026-08-23T05:53:37.603Z",
+      "capturedAt": "2026-08-23T07:14:41.097Z",
       "captureStatus": "CAPTURED",
       "forecastDefinitionVersion": "v1-linear-curve-fx-scenario",
       "landedFormulaVersion": "v1-fob-freight-insurance-cif-duty-vat-margin",
       "classification": "SCENARIO_DERIVED",
       "sourceSnapshotDate": "2026-08-23",
-      "sourceMarketSnapshotId": "MARKET_SNAPSHOT|16a430d71191146ff6af",
-      "sourceInputIdentity": "FORECAST_INPUT|ba4cd8c79b00fc9a8579",
+      "sourceMarketSnapshotId": "MARKET_SNAPSHOT|21f92c4d4b8a8eea214a",
+      "sourceInputIdentity": "FORECAST_INPUT|5432d47ae431dee9bff6",
       "sourceInputIdentityVersion": "v2-material-normalized",
-      "forecastId": "FORECAST_VINTAGE|17b88c4ab9666e93295d",
+      "forecastId": "FORECAST_VINTAGE|ab03f13abc740a88fffa",
       "inputs": {
         "currentFcpoMYR": 4791,
         "currentUsdMyr": 4.0449,
@@ -550,9 +550,9 @@
             "observationDate": "21 Aug 2026"
           },
           "egpUsd": {
-            "source": "BankLive-reported Central Bank of Egypt official USD/EGP buy/sell rates (50.814 / 50.9534), 21 Aug 2026",
+            "source": "EgyptRates.com-reported Central Bank of Egypt official USD/EGP buy/sell rates (50.814 / 50.953), confirmed 23 Aug 2026 (rate unchanged since 21 Aug 2026 — Egypt banking days)",
             "sourceType": "Official Publication",
-            "lastUpdated": "2026-08-21",
+            "lastUpdated": "2026-08-23",
             "confidence": "High",
             "status": "Manual",
             "unit": "EGP/USD",
@@ -727,7 +727,7 @@
       ]
     },
     "snapshotIssuedDate": "2026-08-23",
-    "forecastGeneratedAt": "2026-08-23T05:53:37.603Z",
+    "forecastGeneratedAt": "2026-08-23T07:14:41.097Z",
     "modelVersion": "v1-linear-curve-fx-scenario",
     "baselineUSDPerMT": 1372.2557480098362,
     "targetUSDPerMT": 1376.4150943396226,
@@ -737,9 +737,9 @@
     "confidencePercent": 35,
     "targetDate": "2026-08-30",
     "sourceMarketSnapshotDate": "2026-08-23",
-    "sourceMarketSnapshotId": "MARKET_SNAPSHOT|16a430d71191146ff6af",
-    "sourceInputIdentity": "FORECAST_INPUT|ba4cd8c79b00fc9a8579",
-    "forecastId": "FORECAST_VINTAGE|17b88c4ab9666e93295d"
+    "sourceMarketSnapshotId": "MARKET_SNAPSHOT|21f92c4d4b8a8eea214a",
+    "sourceInputIdentity": "FORECAST_INPUT|5432d47ae431dee9bff6",
+    "forecastId": "FORECAST_VINTAGE|ab03f13abc740a88fffa"
   },
   "marketFirstForecast": {
     "marketTodayUSD": 1227.5,
