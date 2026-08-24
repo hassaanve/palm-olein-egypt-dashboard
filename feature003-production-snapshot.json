@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "snapshotId": "FEATURE003|769add0968e877f5da29",
-  "canonicalVersion": "FEATURE003|769add0968e877f5da29",
-  "generatedAt": "2026-08-24T18:05:42.691Z",
+  "snapshotId": "FEATURE003|276453cfd8fde912ff7e",
+  "canonicalVersion": "FEATURE003|276453cfd8fde912ff7e",
+  "generatedAt": "2026-08-24T19:01:44.342Z",
   "refresh": {
-    "completedAt": "2026-08-24T18:05:42.691Z",
-    "artifactGeneratedAt": "2026-08-24T18:05:42.691Z",
+    "completedAt": "2026-08-24T19:01:44.342Z",
+    "artifactGeneratedAt": "2026-08-24T19:01:44.342Z",
     "source": "daily-refresh validated completion"
   },
   "sourceIdentity": {
@@ -21,7 +21,7 @@
     ],
     "forecastIssuedDate": "2026-08-24",
     "forecastModelVersion": "v1-linear-curve-fx-scenario",
-    "forecastInputIdentity": "FORECAST_INPUT|1c43c8930167e91cd46d",
+    "forecastInputIdentity": "FORECAST_INPUT|295134575d37af0279e0",
     "marketSnapshotId": "MARKET_SNAPSHOT|df095b25e6a7e31eb48a"
   },
   "rbd": {
@@ -455,16 +455,16 @@
     "snapshot": {
       "schemaVersion": 1,
       "issuedDate": "2026-08-24",
-      "capturedAt": "2026-08-24T15:05:20.611Z",
+      "capturedAt": "2026-08-24T19:01:43.073Z",
       "captureStatus": "CAPTURED",
       "forecastDefinitionVersion": "v1-linear-curve-fx-scenario",
       "landedFormulaVersion": "v1-fob-freight-insurance-cif-duty-vat-margin",
       "classification": "SCENARIO_DERIVED",
       "sourceSnapshotDate": "2026-08-24",
       "sourceMarketSnapshotId": "MARKET_SNAPSHOT|df095b25e6a7e31eb48a",
-      "sourceInputIdentity": "FORECAST_INPUT|1c43c8930167e91cd46d",
-      "sourceInputIdentityVersion": "v2-material-normalized",
-      "forecastId": "FORECAST_VINTAGE|2689467b1f21a811de90",
+      "sourceInputIdentity": "FORECAST_INPUT|295134575d37af0279e0",
+      "sourceInputIdentityVersion": "v3-forecast-driving-normalized",
+      "forecastId": "FORECAST_VINTAGE|c7ec7ec30d9b8d3845ef",
       "inputs": {
         "currentFcpoMYR": 4720,
         "currentUsdMyr": 4.0394,
@@ -472,14 +472,18 @@
         "marketForecast": {
           "cpoMYR": 4720,
           "usdMyr": 4.0394,
-          "refiningSpread": 44.5,
           "refiningProcessingAdjustment": 15,
           "oleinFractionationPremium": 15,
           "physicalMarketBasisAdjustment": 14.5,
           "freight": 36,
           "insurancePct": 0.75,
           "egyptDutyPct": 1.5,
-          "rbdOleinFobMarketUSD": 1207.5,
+          "origin": "my",
+          "idLevyPct": 9,
+          "vatOn": false,
+          "vatPct": 14,
+          "marginPct": 6,
+          "egpUsd": 50.83,
           "horizonWeeks": [
             1,
             2,
@@ -727,7 +731,7 @@
       ]
     },
     "snapshotIssuedDate": "2026-08-24",
-    "forecastGeneratedAt": "2026-08-24T15:05:20.611Z",
+    "forecastGeneratedAt": "2026-08-24T19:01:43.073Z",
     "modelVersion": "v1-linear-curve-fx-scenario",
     "baselineUSDPerMT": 1353.867154471017,
     "targetUSDPerMT": 1358.6464686208933,
@@ -738,8 +742,8 @@
     "targetDate": "2026-08-31",
     "sourceMarketSnapshotDate": "2026-08-24",
     "sourceMarketSnapshotId": "MARKET_SNAPSHOT|df095b25e6a7e31eb48a",
-    "sourceInputIdentity": "FORECAST_INPUT|1c43c8930167e91cd46d",
-    "forecastId": "FORECAST_VINTAGE|2689467b1f21a811de90"
+    "sourceInputIdentity": "FORECAST_INPUT|295134575d37af0279e0",
+    "forecastId": "FORECAST_VINTAGE|c7ec7ec30d9b8d3845ef"
   },
   "marketFirstForecast": {
     "marketTodayUSD": 1227.5,
