@@ -1,43 +1,44 @@
 {
   "schemaVersion": 1,
-  "snapshotId": "FEATURE003|f4b54bb8498defeef3ca",
-  "canonicalVersion": "FEATURE003|f4b54bb8498defeef3ca",
-  "generatedAt": "2026-08-25T04:59:22.092Z",
+  "contractVersion": "1.0.0",
+  "snapshotId": "FEATURE003|81720974fe5916a5900f",
+  "canonicalVersion": "FEATURE003|81720974fe5916a5900f",
+  "generatedAt": "2026-08-25T06:00:00.000Z",
   "refresh": {
-    "completedAt": "2026-08-25T04:59:22.092Z",
-    "artifactGeneratedAt": "2026-08-25T04:59:22.092Z",
+    "completedAt": "2026-08-25T06:00:00.000Z",
+    "artifactGeneratedAt": "2026-08-25T06:00:00.000Z",
     "source": "daily-refresh validated completion"
   },
   "sourceIdentity": {
-    "canonicalSnapshotId": "RBD_PALM_OLEIN|RBD_PALM_OLEIN|MBLION_RBD_OLEIN_FOB|2026-08-21T11:32:44.453Z|USD|USD/MT",
-    "fcpoObservationId": "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-08-21|2026-11",
+    "canonicalSnapshotId": "RBD_PALM_OLEIN|RBD_PALM_OLEIN|AGROPOST_PHYSICAL_FOB_2026-09|2026-08-24T00:00:00.000Z|USD|USD/MT",
+    "fcpoObservationId": "MARKET_OBSERVATION|55e202ed0c6b52a942c2",
     "boardObservationIds": [
       "CPO_PHYSICAL|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT",
-      "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-08-21|2026-11",
+      "MARKET_OBSERVATION|55e202ed0c6b52a942c2",
       "RBD_PALM_KERNEL_OIL|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT",
       "RBD_PALM_OIL|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT",
-      "RBD_PALM_OLEIN|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT",
+      "MARKET_OBSERVATION|f00851f817b0ec193a77",
       "RBD_PALM_STEARIN|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT"
     ],
     "forecastIssuedDate": "2026-08-25",
     "forecastModelVersion": "v1-linear-curve-fx-scenario",
     "forecastInputIdentity": "FORECAST_INPUT|295134575d37af0279e0",
-    "marketSnapshotId": "MARKET_SNAPSHOT|32b4042b5ba757763d58"
+    "marketSnapshotId": "MARKET_SNAPSHOT|5eca88892f65fc18cb31"
   },
   "rbd": {
     "schemaVersion": 1,
-    "snapshotId": "RBD_PALM_OLEIN|RBD_PALM_OLEIN|MBLION_RBD_OLEIN_FOB|2026-08-21T11:32:44.453Z|USD|USD/MT",
+    "snapshotId": "RBD_PALM_OLEIN|RBD_PALM_OLEIN|AGROPOST_PHYSICAL_FOB_2026-09|2026-08-24T00:00:00.000Z|USD|USD/MT",
     "productId": "RBD_PALM_OLEIN",
     "productCanonicalName": "RBD Palm Olein",
-    "canonicalPriceUSDPerMT": 1227.5,
-    "rawSelectedPrice": 1227.5,
+    "canonicalPriceUSDPerMT": 1207.5,
+    "rawSelectedPrice": 1207.5,
     "rawSelectedCurrency": "USD",
     "rawSelectedUnit": "USD/MT",
-    "observationDate": "2026-08-21",
-    "observationDateTime": "2026-08-21T11:32:44.453Z",
-    "selectedSourceId": "MBLION_RBD_OLEIN_FOB",
-    "selectedSourceName": "MBLion Oleochemicals",
-    "selectedSourceReference": "https://www.mblionoleo.com/",
+    "observationDate": "2026-08-24",
+    "observationDateTime": "2026-08-24T00:00:00.000Z",
+    "selectedSourceId": "AGROPOST_PHYSICAL_FOB_2026-09",
+    "selectedSourceName": "Agropost",
+    "selectedSourceReference": "https://agropost.wordpress.com/",
     "sourceTier": "DIRECT_MARKET",
     "freshnessState": "CURRENT",
     "validationState": "VALIDATED",
@@ -45,26 +46,26 @@
     "temporalComparisonState": "TEMPORALLY_DIFFERENT",
     "corroborationCount": 1,
     "comparedObservationIds": [
-      "RBD_PALM_OLEIN|MBLION_RBD_OLEIN_FOB|2026-08-21T11:32:44.453Z|USD|USD/MT"
+      "RBD_PALM_OLEIN|AGROPOST_PHYSICAL_FOB_2026-09|2026-08-24T00:00:00.000Z|USD|USD/MT"
     ],
     "sourceObservationIds": [
-      "RBD_PALM_OLEIN|MBLION_RBD_OLEIN_FOB|2026-08-21T11:32:44.453Z|USD|USD/MT",
-      "RBD_PALM_OLEIN|MPOB_EID_RBD_OLEIN_EXPORT|2026-08-20T00:00:00.000Z|USD|USD/MT"
+      "RBD_PALM_OLEIN|AGROPOST_PHYSICAL_FOB_2026-09|2026-08-24T00:00:00.000Z|USD|USD/MT",
+      "RBD_PALM_OLEIN|MBLION_RBD_OLEIN_FOB|2026-08-21T11:32:44.453Z|USD|USD/MT"
     ],
     "sourceEvidenceReferences": [
-      "https://price.mpob.gov.my/excel/daily/mas_ppo/20260821",
+      "https://agropost.wordpress.com/",
       "https://www.mblionoleo.com/"
     ],
-    "latestTrustedObservationAt": "2026-08-21T11:32:44.453Z",
-    "latestTrustedSource": "MBLION_RBD_OLEIN_FOB",
-    "latestTrustedPrice": 1227.5,
-    "latestOfficialObservationAt": "2026-08-20T00:00:00.000Z",
-    "latestOfficialPrice": 1197.5,
+    "latestTrustedObservationAt": "2026-08-24T00:00:00.000Z",
+    "latestTrustedSource": "AGROPOST_PHYSICAL_FOB_2026-09",
+    "latestTrustedPrice": 1207.5,
+    "latestOfficialObservationAt": null,
+    "latestOfficialPrice": null,
     "latestMarketWindow": {
-      "start": "2026-08-21",
-      "end": "2026-08-21",
+      "start": "2026-08-24",
+      "end": "2026-08-24",
       "observationIds": [
-        "RBD_PALM_OLEIN|MBLION_RBD_OLEIN_FOB|2026-08-21T11:32:44.453Z|USD|USD/MT"
+        "RBD_PALM_OLEIN|AGROPOST_PHYSICAL_FOB_2026-09|2026-08-24T00:00:00.000Z|USD|USD/MT"
       ]
     },
     "freshnessPolicy": {
@@ -73,91 +74,56 @@
       "sourceCurrentMaxAgeDays": 1
     },
     "warningState": "OFFICIAL_OR_OTHER_SOURCE_LAGGING",
-    "capturedAt": "2026-08-21T11:32:46.998Z",
-    "selectionReason": "newest trusted eligible observation selected; source tier is the deterministic tie-break when observations are equally recent; older observations remain audit evidence; older eligible source observation is outside the latest market window"
+    "capturedAt": "2026-08-25T06:00:00.000Z",
+    "selectionReason": "newest trusted eligible observation selected; source tier is the deterministic tie-break when observations are equally recent; older observations remain audit evidence; older eligible source observation is outside the latest market window",
+    "contractMonth": "2026-09"
   },
   "portArrival": {
-    "usdPerMT": 1357.5,
+    "usdPerMT": 1337.5,
     "rule": "canonical RBD Palm Olein + 130 USD/MT",
     "adjustmentUSDPerMT": 130,
     "currency": "USD",
     "unit": "USD/MT"
   },
   "fcpo": {
-    "schemaVersion": 2,
-    "observationId": "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-08-21|2026-11",
+    "schemaVersion": 1,
+    "observationId": "MARKET_OBSERVATION|55e202ed0c6b52a942c2",
     "instrumentId": "BMD_FCPO",
-    "instrumentName": "Crude Palm Oil Futures (FCPO)",
-    "productId": "FCPO_FUTURES",
-    "exchange": "Bursa Malaysia Derivatives",
-    "symbol": "FCPO",
-    "marketType": "FUTURES",
-    "sourceId": "AGROPOST_FCPO_CLOSING",
-    "sourceName": "Agropost Palm Oil Prices at Closing",
-    "sourceReference": "https://agropost.wordpress.com/2026/08/21/21-aug-2026-palm-oil-prices-at-closing/",
-    "sourceTier": "SECONDARY_MARKET_DATA",
-    "sourceAccessMethod": "public WordPress REST API",
-    "contractMonth": "2026-11",
-    "contractExpiry": "2026-11-13",
-    "rawValue": 5020,
-    "rawPrice": 5020,
+    "instrumentName": "BMD_FCPO",
+    "productId": "BMD_FCPO",
+    "productCanonicalName": "FCPO Futures",
+    "sourceId": "AGROPOST_FCPO_CLOSING_2026-09",
+    "sourceName": "Agropost",
+    "sourceReference": "https://agropost.wordpress.com/",
+    "contractMonth": "2026-09",
+    "rawValue": 4720,
+    "rawPrice": 4720,
     "rawCurrency": "MYR",
     "rawUnit": "MYR/MT",
-    "priceType": "SESSION_LAST",
-    "observationTimestamp": "2026-08-21",
-    "acquiredAt": "2026-08-21T22:37:30.981Z",
-    "delayedBy": null,
-    "freshnessAge": 22.6252725,
-    "freshnessState": "CURRENT",
-    "freshness": {
-      "state": "CURRENT",
-      "ageHours": 22.6252725,
-      "reason": "within FCPO session-close window"
-    },
-    "selectedContract": "2026-11",
-    "contractSelectionPolicy": "ACTIVE_CURRENT_THEN_EARLIEST_NON_EXPIRED_FALLBACK",
-    "contractSelectionSource": "DRARIF_FCPO_ACTIVE_CALENDAR",
-    "contractSelectionReason": "SOURCE_DESIGNATED_ACTIVE_CURRENT_CONTRACT",
-    "fallbackUsed": false,
-    "previousContract": null,
-    "rollOccurred": false,
-    "rollTimestamp": null,
-    "activeContractEvidence": {
-      "status": "ACTIVE_DESIGNATION",
-      "sourceId": "DRARIF_FCPO_ACTIVE_CALENDAR",
-      "sourceName": "Dr Arif FCPO Calendar",
-      "sourceReference": "https://drarifcpo.my/calendar/",
-      "contractMonth": "2026-11",
-      "designation": "ACTIVE_CURRENT",
-      "observedAt": "2026-08-21T22:37:31.531Z",
-      "evidenceText": "Current FCPO Active Contract Kontrak FCPO NOVEMBER 2026"
-    },
-    "validationState": "VALIDATED",
-    "canonicalEligibility": true,
-    "responseHash": "sha256:b5f103ff6869150147752054000a41199ce72a622c0d5a2f89dc2626e8889e32",
-    "rejectionReason": null,
-    "delayedOrLive": "DELAYED",
-    "nativeQuote": {
-      "value": 5020,
-      "currency": "MYR",
-      "unit": "MYR/MT"
-    },
-    "canonicalRbdEligible": false,
-    "productCanonicalName": "Crude Palm Oil Futures (FCPO)",
-    "normalizedPrice": 5020,
+    "normalizedPrice": 4720,
     "normalizedCurrency": "MYR",
     "normalizedUnit": "MYR/MT",
-    "instrumentType": "EXCHANGE_FUTURES",
-    "directOrProxy": "SECONDARY",
+    "observationTimestamp": "2026-08-24",
+    "acquiredAt": "2026-08-24T00:00:00.000Z",
+    "freshnessState": "UNKNOWN",
+    "validationState": "VALIDATED",
+    "canonicalEligibility": true,
+    "fallbackUsed": false,
+    "selectedContract": "2026-09",
     "originalQuote": {
-      "value": 5020,
+      "value": 4720,
       "currency": "MYR",
       "unit": "MYR/MT",
       "official": true
     },
+    "nativeQuote": {
+      "value": 4720,
+      "currency": "MYR",
+      "unit": "MYR/MT"
+    },
     "convertedEquivalents": {
-      "usdPerMT": 1242.7588255681537,
-      "egpPerMT": 63169.43110362925,
+      "usdPerMT": 1168.4903698569096,
+      "egpPerMT": 59394.365499826716,
       "fxChain": "MYR → USD → EGP",
       "usdMyr": 4.0394,
       "egpUsd": 50.83
@@ -165,104 +131,77 @@
   },
   "marketBoard": {
     "FCPO_FUTURES": {
-      "schemaVersion": 2,
-      "observationId": "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-08-21|2026-11",
+      "schemaVersion": 1,
+      "observationId": "MARKET_OBSERVATION|55e202ed0c6b52a942c2",
       "instrumentId": "BMD_FCPO",
-      "instrumentName": "Crude Palm Oil Futures (FCPO)",
-      "productId": "FCPO_FUTURES",
-      "exchange": "Bursa Malaysia Derivatives",
-      "symbol": "FCPO",
-      "marketType": "FUTURES",
-      "sourceId": "AGROPOST_FCPO_CLOSING",
-      "sourceName": "Agropost Palm Oil Prices at Closing",
-      "sourceReference": "https://agropost.wordpress.com/2026/08/21/21-aug-2026-palm-oil-prices-at-closing/",
-      "sourceTier": "SECONDARY_MARKET_DATA",
-      "sourceAccessMethod": "public WordPress REST API",
-      "contractMonth": "2026-11",
-      "contractExpiry": "2026-11-13",
-      "rawValue": 5020,
-      "rawPrice": 5020,
+      "instrumentName": "BMD_FCPO",
+      "productId": "BMD_FCPO",
+      "productCanonicalName": "FCPO Futures",
+      "sourceId": "AGROPOST_FCPO_CLOSING_2026-09",
+      "sourceName": "Agropost",
+      "sourceReference": "https://agropost.wordpress.com/",
+      "contractMonth": "2026-09",
+      "rawValue": 4720,
+      "rawPrice": 4720,
       "rawCurrency": "MYR",
       "rawUnit": "MYR/MT",
-      "priceType": "SESSION_LAST",
-      "observationTimestamp": "2026-08-21",
-      "acquiredAt": "2026-08-21T22:37:30.981Z",
-      "delayedBy": null,
-      "freshnessAge": 22.6252725,
-      "freshnessState": "CURRENT",
-      "freshness": {
-        "state": "CURRENT",
-        "ageHours": 22.6252725,
-        "reason": "within FCPO session-close window"
-      },
-      "selectedContract": "2026-11",
-      "contractSelectionPolicy": "ACTIVE_CURRENT_THEN_EARLIEST_NON_EXPIRED_FALLBACK",
-      "contractSelectionSource": "DRARIF_FCPO_ACTIVE_CALENDAR",
-      "contractSelectionReason": "SOURCE_DESIGNATED_ACTIVE_CURRENT_CONTRACT",
-      "fallbackUsed": false,
-      "previousContract": null,
-      "rollOccurred": false,
-      "rollTimestamp": null,
-      "activeContractEvidence": {
-        "status": "ACTIVE_DESIGNATION",
-        "sourceId": "DRARIF_FCPO_ACTIVE_CALENDAR",
-        "sourceName": "Dr Arif FCPO Calendar",
-        "sourceReference": "https://drarifcpo.my/calendar/",
-        "contractMonth": "2026-11",
-        "designation": "ACTIVE_CURRENT",
-        "observedAt": "2026-08-21T22:37:31.531Z",
-        "evidenceText": "Current FCPO Active Contract Kontrak FCPO NOVEMBER 2026"
-      },
-      "validationState": "VALIDATED",
-      "canonicalEligibility": true,
-      "responseHash": "sha256:b5f103ff6869150147752054000a41199ce72a622c0d5a2f89dc2626e8889e32",
-      "rejectionReason": null,
-      "delayedOrLive": "DELAYED",
-      "nativeQuote": {
-        "value": 5020,
-        "currency": "MYR",
-        "unit": "MYR/MT"
-      },
-      "canonicalRbdEligible": false,
-      "productCanonicalName": "Crude Palm Oil Futures (FCPO)",
-      "normalizedPrice": 5020,
+      "normalizedPrice": 4720,
       "normalizedCurrency": "MYR",
       "normalizedUnit": "MYR/MT",
-      "instrumentType": "EXCHANGE_FUTURES",
-      "directOrProxy": "SECONDARY"
+      "observationTimestamp": "2026-08-24",
+      "acquiredAt": "2026-08-24T00:00:00.000Z",
+      "freshnessState": "UNKNOWN",
+      "validationState": "VALIDATED",
+      "canonicalEligibility": true,
+      "fallbackUsed": false,
+      "selectedContract": "2026-09",
+      "originalQuote": {
+        "value": 4720,
+        "currency": "MYR",
+        "unit": "MYR/MT",
+        "official": false
+      },
+      "nativeQuote": {
+        "value": 4720,
+        "currency": "MYR",
+        "unit": "MYR/MT"
+      }
     },
     "RBD_PALM_OLEIN": {
       "schemaVersion": 1,
-      "observationId": "RBD_PALM_OLEIN|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT",
+      "observationId": "MARKET_OBSERVATION|f00851f817b0ec193a77",
+      "instrumentId": "RBD_PALM_OLEIN",
+      "instrumentName": "RBD_PALM_OLEIN",
       "productId": "RBD_PALM_OLEIN",
       "productCanonicalName": "RBD Palm Olein",
-      "rawProductLabel": "RBD Palm Olein",
-      "rawPrice": 1227.5,
+      "sourceId": "AGROPOST_PHYSICAL_FOB_2026-09",
+      "sourceName": "Agropost",
+      "sourceReference": "https://agropost.wordpress.com/",
+      "contractMonth": "2026-09",
+      "rawValue": 1207.5,
+      "rawPrice": 1207.5,
       "rawCurrency": "USD",
       "rawUnit": "USD/MT",
-      "normalizedPrice": 1227.5,
+      "normalizedPrice": 1207.5,
       "normalizedCurrency": "USD",
       "normalizedUnit": "USD/MT",
-      "sourceId": "MBLION_CURRENT_TICKER",
-      "sourceName": "MBLion Oleochemicals",
-      "sourceReference": "https://www.mblionoleo.com/",
-      "sourceTier": "DIRECT_MARKET",
-      "directOrProxy": "DIRECT",
-      "marketType": "PHYSICAL_PRODUCT",
-      "instrumentType": "PHYSICAL_PRODUCT",
-      "marketLocationBasis": "Malaysia FOB market indication",
-      "priceType": "CURRENT_MARKET_INDICATION",
-      "observationDate": "2026-08-21",
-      "observationTimestamp": "2026-08-21T11:32:44.453Z",
-      "acquiredAt": "2026-08-21T11:32:44.453Z",
-      "freshnessState": "CURRENT",
+      "observationTimestamp": "2026-08-24",
+      "acquiredAt": "2026-08-24T00:00:00.000Z",
+      "freshnessState": "UNKNOWN",
       "validationState": "VALIDATED",
-      "conflictState": "NOT_ASSESSED",
       "canonicalEligibility": true,
-      "responseHash": "sha256:88339a231893130f3dc5e1e37e5a1802297efe6fc36491128c0eb6f5859e88e9",
-      "sourceEvidence": {
-        "sourceCurrentUndated": true,
-        "pageDescriptionBasis": "Malaysia FOB market prices"
+      "fallbackUsed": false,
+      "selectedContract": "2026-09",
+      "originalQuote": {
+        "value": 1207.5,
+        "currency": "USD",
+        "unit": "USD/MT",
+        "official": false
+      },
+      "nativeQuote": {
+        "value": 1207.5,
+        "currency": "USD",
+        "unit": "USD/MT"
       }
     },
     "CPO_PHYSICAL": {
@@ -404,24 +343,73 @@
   },
   "fx": {
     "egpUsd": {
+      "contractVersion": "1.0.0",
+      "fxObservationId": "FX_OBSERVATION|be2f9d3edf3458bce2e0",
+      "pair": "USD/EGP",
       "value": 50.83,
-      "source": "BankLive (banklive.net) reporting Central Bank of Egypt official USD/EGP buy/sell rates (50.759 / 50.8974), Monday 24 Aug 2026",
-      "capturedAt": "2026-08-25T01:44:33.203Z",
-      "observationDate": "2026-08-25",
+      "buy": 50.759,
+      "sell": 50.8974,
+      "businessDate": "2026-08-24",
+      "observedAt": "2026-08-24T00:00:00.000Z",
+      "source": "Central Bank of Egypt official website - Average Client Rate in EGP, 24 Aug 2026, USD/EGP buy/sell rates (50.759 / 50.8974)",
+      "sourceUrl": "https://www.cbe.org.eg/",
+      "sourceCapturedAt": "2026-08-24T00:00:00.000Z",
+      "sourceIdentity": "BANKLIVE_CBE_USD_EGP",
+      "validationStatus": "VALID",
+      "reasonCodes": [],
       "freshnessState": "Verified",
       "status": "Manual",
-      "unit": "EGP/USD"
+      "unit": "EGP/USD",
+      "freshness": {
+        "state": "CURRENT",
+        "policyId": "MARKET_SESSION_V1",
+        "asOf": "2026-08-24T00:00:00.000Z"
+      }
     },
     "usdMyr": {
       "value": 4.0394,
       "source": "Bank Negara Malaysia — KL USD/MYR Reference Rate (FMIP, financialmarkets.bnm.gov.my), 4.0394 for 24 Aug 2026",
-      "capturedAt": "2026-08-25T01:44:33.203Z",
-      "observationDate": "2026-08-25",
+      "capturedAt": "2026-08-25T06:00:00.000Z",
+      "observationDate": "2026-08-24",
       "freshnessState": "Verified",
       "status": "Manual",
       "unit": "MYR/USD"
     }
   },
+  "marketObservationId": "MARKET_OBSERVATION|f00851f817b0ec193a77",
+  "fxObservationId": "FX_OBSERVATION|be2f9d3edf3458bce2e0",
+  "forecastVintageId": "FORECAST_VINTAGE|cf523f300f36f01c54c6",
+  "rbdObservation": {
+    "contractVersion": "1.0.0",
+    "instrument": "RBD_PALM_OLEIN",
+    "product": "RBD Palm Olein",
+    "contractMonth": "2026-09",
+    "price": 1207.5,
+    "currency": "USD",
+    "unit": "USD/MT",
+    "marketSessionDate": "2026-08-24",
+    "observedAt": "2026-08-24T00:00:00.000Z",
+    "source": "Agropost",
+    "sourceUrl": "https://agropost.wordpress.com/",
+    "sourceCapturedAt": "2026-08-25T06:00:00.000Z",
+    "sourceIdentity": "AGROPOST_PHYSICAL_FOB_2026-09",
+    "validationStatus": "VALID",
+    "reasonCodes": [],
+    "observationId": "MARKET_OBSERVATION|f00851f817b0ec193a77"
+  },
+  "portCostContract": {
+    "version": "PORT_COST_V1",
+    "adjustmentUSDPerMT": 130,
+    "unit": "USD/MT"
+  },
+  "freshness": {
+    "state": "STALE",
+    "marketSessionDate": "2026-08-24",
+    "expectedLatestMarketSession": "2026-08-25",
+    "policyId": "MARKET_SESSION_V1"
+  },
+  "integrityStatus": "DEGRADE",
+  "publicationStatus": "AUTHORIZED",
   "rbdMarketChart": {
     "unit": "USD/MT",
     "series": [
@@ -439,8 +427,14 @@
       },
       {
         "date": "2026-08-21",
-        "kind": "today",
+        "observationDateTime": "2026-08-21T11:32:44.453Z",
+        "kind": "actual",
         "valueUSDPerMT": 1227.5
+      },
+      {
+        "date": "2026-08-24",
+        "kind": "latest",
+        "valueUSDPerMT": 1207.5
       },
       {
         "date": "2026-09-01",
@@ -746,12 +740,12 @@
     "forecastId": "FORECAST_VINTAGE|cf523f300f36f01c54c6"
   },
   "marketFirstForecast": {
-    "marketTodayUSD": 1227.5,
+    "marketTodayUSD": 1207.5,
     "marketForecast7dUSD": 1217.87,
-    "marketDeltaUSD": -9.63000000000011,
-    "marketDeltaPct": -0.7845213849287259,
-    "forecastDirection": "down",
-    "portTodayUSD": 1357.5,
+    "marketDeltaUSD": 10.36999999999989,
+    "marketDeltaPct": 0.858799171842641,
+    "forecastDirection": "up",
+    "portTodayUSD": 1337.5,
     "portForecast7dUSD": 1347.87,
     "portArrivalAddOnUSD": 130,
     "confidencePercent": 35,
@@ -768,5 +762,9 @@
     "state": "READY",
     "validationState": "VALIDATED",
     "freshnessState": "CURRENT"
-  }
+  },
+  "publicationDecision": "AUTHORIZE",
+  "reasonCodes": [
+    "MARKET_OBSERVATION_STALE"
+  ]
 }

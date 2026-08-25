@@ -2354,8 +2354,8 @@
     vatPct: 14,
     marginPct: 6,
     egpUsd: 50.83,
-    cpoIDR: 15844,
-    usdIdr: 17722,
+    cpoIDR: 15888,
+    usdIdr: 17705,
     // Stage 3A — direct market-reported RBD Palm Olein FOB Malaysian Port
     // price, USD/MT (see DATA_PROVENANCE.rbdOleinFobMarketUSD below).
     // DISPLAY / MARKET-INTELLIGENCE ONLY: never read by computeLandedCore(),
@@ -2423,12 +2423,24 @@
     }
   }
 
+  function fxObservationIsValid(fx){
+    fx = fx || {};
+    var pair = (typeof fx.buy==='number' && isFinite(fx.buy) && fx.buy > 0 && typeof fx.sell==='number' && isFinite(fx.sell) && fx.sell > 0 && fx.sell >= fx.buy) ? { buy:fx.buy, sell:fx.sell } : null;
+    if (!pair || typeof fx.value!=='number' || !isFinite(fx.value) || fx.value <= 0 || !fx.source || !fx.sourceUrl || !fx.businessDate || !fx.observedAt || !fx.sourceCapturedAt || !fx.fxObservationId || fx.validationStatus !== 'VALID' || !Array.isArray(fx.reasonCodes) || fx.unit !== 'EGP/USD') return false;
+    if (!fx.freshness || fx.freshness.state !== 'CURRENT' || fx.freshnessState === 'UNKNOWN' || fx.freshnessState === 'UNAVAILABLE' || fx.status === 'UNKNOWN') return false;
+    var midpoint = (pair.buy + pair.sell) / 2;
+    return Math.round(midpoint * 100) / 100 === Math.round(Number(fx.value) * 100) / 100;
+  }
+  function fxRateAvailable(){ return !!(PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.fx && fxObservationIsValid(PRODUCTION_SNAPSHOT.fx.egpUsd) && isFinite(state.egpUsd)); }
+  function fxEgp(value){ return fxRateAvailable() && isFinite(value) ? value * state.egpUsd : null; }
+
   function applyProductionSnapshot(snapshot){
     if (!productionSnapshotIsValid(snapshot)) return false;
     RBD_OLEIN_CANONICAL_SNAPSHOT = snapshot.rbd;
     PRODUCTION_SNAPSHOT = snapshot;
     PRODUCTION_FORECAST_SNAPSHOT = snapshot.forecast.snapshot;
-    if (snapshot.fx && snapshot.fx.egpUsd && isFinite(snapshot.fx.egpUsd.value)) state.egpUsd = snapshot.fx.egpUsd.value;
+    state.egpUsd = null;
+    if (snapshot.fx && snapshot.fx.egpUsd && fxObservationIsValid(snapshot.fx.egpUsd)) state.egpUsd = snapshot.fx.egpUsd.value;
     if (snapshot.fx && snapshot.fx.usdMyr && isFinite(snapshot.fx.usdMyr.value)) state.usdMyr = snapshot.fx.usdMyr.value;
     MARKET_BOARD_OBSERVATIONS = Object.keys(snapshot.marketBoard || {}).map(function(key){ return snapshot.marketBoard[key]; });
     RBD_OLEIN_CANONICAL_STATUS = { status:'READY', detail:null, snapshotId:snapshot.snapshotId };
@@ -2440,7 +2452,7 @@
   }
 
   function productionSnapshotIsValid(snapshot){
-    return !!(snapshot && snapshot.schemaVersion === 1 && typeof snapshot.snapshotId === 'string' && snapshot.snapshotId.length > 0 && snapshot.refresh && typeof snapshot.refresh.completedAt === 'string' && snapshot.status && snapshot.status.state === 'READY' && snapshot.status.validationState === 'VALIDATED' && canonicalSnapshotIsValid(snapshot.rbd) && snapshot.forecast && snapshot.forecast.snapshot && Array.isArray(snapshot.forecast.snapshot.forecastPoints) && snapshot.marketFirstForecast && isFinite(snapshot.marketFirstForecast.marketTodayUSD) && isFinite(snapshot.marketFirstForecast.marketForecast7dUSD) && isFinite(snapshot.marketFirstForecast.portArrivalAddOnUSD) && snapshot.marketFirstForecast.portTodayUSD === snapshot.marketFirstForecast.marketTodayUSD + snapshot.marketFirstForecast.portArrivalAddOnUSD && snapshot.marketFirstForecast.portForecast7dUSD === snapshot.marketFirstForecast.marketForecast7dUSD + snapshot.marketFirstForecast.portArrivalAddOnUSD && snapshot.fcpo && snapshot.fcpo.originalQuote && snapshot.fcpo.convertedEquivalents);
+    return !!(snapshot && snapshot.schemaVersion === 1 && snapshot.contractVersion === '1.0.0' && typeof snapshot.snapshotId === 'string' && snapshot.snapshotId.length > 0 && snapshot.marketObservationId && snapshot.fxObservationId && snapshot.forecastVintageId && snapshot.portCostContract && snapshot.portCostContract.version === 'PORT_COST_V1' && snapshot.publicationStatus === 'AUTHORIZED' && snapshot.integrityStatus !== 'BLOCK' && snapshot.freshness && ['CURRENT','LAST_AVAILABLE_MARKET_SESSION','STALE','MARKET_CLOSED','SOURCE_UNAVAILABLE'].indexOf(snapshot.freshness.state) !== -1 && snapshot.rbdObservation && snapshot.rbdObservation.observationId === snapshot.marketObservationId && snapshot.refresh && typeof snapshot.refresh.completedAt === 'string' && snapshot.status && snapshot.status.state === 'READY' && snapshot.status.validationState === 'VALIDATED' && canonicalSnapshotIsValid(snapshot.rbd) && snapshot.forecast && snapshot.forecast.snapshot && Array.isArray(snapshot.forecast.snapshot.forecastPoints) && snapshot.fx && snapshot.fx.egpUsd && snapshot.fx.egpUsd.fxObservationId === snapshot.fxObservationId && fxObservationIsValid(snapshot.fx.egpUsd) && snapshot.marketFirstForecast && isFinite(snapshot.marketFirstForecast.marketTodayUSD) && isFinite(snapshot.marketFirstForecast.marketForecast7dUSD) && isFinite(snapshot.marketFirstForecast.portArrivalAddOnUSD) && snapshot.marketFirstForecast.portTodayUSD === snapshot.marketFirstForecast.marketTodayUSD + snapshot.marketFirstForecast.portArrivalAddOnUSD && snapshot.marketFirstForecast.portForecast7dUSD === snapshot.marketFirstForecast.marketForecast7dUSD + snapshot.marketFirstForecast.portArrivalAddOnUSD && snapshot.fcpo && snapshot.fcpo.originalQuote && snapshot.fcpo.convertedEquivalents);
   }
 
   // Product → Origin → Evidence Chain. Only RBD Palm Olein is active; no
@@ -2527,8 +2539,8 @@
       unit:'MYR/USD', refreshMethod:'Daily AI refresh', observationDate:'24 Aug 2026'
     },
     egpUsd: {
-      source:'BankLive (banklive.net) reporting Central Bank of Egypt official USD/EGP buy/sell rates (50.759 / 50.8974), Tuesday 25 Aug 2026',
-      sourceType:'Official Publication', lastUpdated:'2026-08-25', confidence:'High', status:'Manual',
+      source:'Central Bank of Egypt official website - Average Client Rate in EGP, 24 Aug 2026, USD/EGP buy/sell rates (50.759 / 50.8974)',
+      sourceType:'Official Publication', lastUpdated:'2026-08-24', confidence:'High', status:'Manual',
       unit:'EGP/USD', refreshMethod:'Daily AI refresh'
     },
     freight: {
@@ -2706,7 +2718,8 @@
       // ---- Daily Report (التقرير اليومي) - V1 scaffold ----
       drTitle:'Daily Report', drSubtitle:'Today\'s market price, expected Egypt port price, current direction, and the 7-day outlook — one page, one validated rate.',
       drHeadSub:'Purchase Decision Summary',
-      drCard1Eyebrow:'RBD Palm Olein Market Price Today', drCard2Eyebrow:'Expected Egypt Port Price', drCard3Eyebrow:'Current Direction', drCard4Eyebrow:'7-Day Outlook', drFxTitle:'US Dollar vs Egyptian Pound', drFxMidpoint:'Calculated midpoint of buy/sell rates', drFxBuy:'Buy', drFxSell:'Sell', drFxCurrency:'EGP/USD', drFxSourceLabel:'Source', drFxSource:'BankLive reporting Central Bank of Egypt rates', drFxRateDate:'Rate date', drFxRetrieved:'Retrieved', drFxStatusVerified:'Verified', drHeroKicker:'RBD Palm Olein market', drHeroChartTitle:'RBD Palm Olein Price Path', drHeroChartConcept:'Actual history · Today · 7-day forecast', drHeroActual:'Actual history', drHeroToday:'Today', drHeroForecast:'7-day forecast', drHeroLow:'Low', drHeroHigh:'High', drHeroDateActual:'Actual', drHeroDateToday:'Today', drHeroDateForecast:'Forecast',
+      drCard1LatestEyebrow:'Latest Available RBD Palm Olein Market Price', drCard2LatestEyebrow:'Expected Egypt Port Price from Latest Available Market Data',
+      drCard1Eyebrow:'RBD Palm Olein Market Price Today', drCard2Eyebrow:'Expected Egypt Port Price', drCard3Eyebrow:'Current Direction', drCard4Eyebrow:'7-Day Outlook', drFxTitle:'US Dollar vs Egyptian Pound', drFxMidpoint:'Calculated midpoint of buy/sell rates', drFxBuy:'Buy', drFxSell:'Sell', drFxCurrency:'EGP/USD', drFxSourceLabel:'Source', drFxSource:'BankLive reporting Central Bank of Egypt rates', drFxRateDate:'Rate date', drFxRetrieved:'Retrieved', drFxStatusVerified:'Verified', drFxStatusUnavailable:'Unavailable — not verified', drHeroKicker:'RBD Palm Olein market', drHeroChartTitle:'RBD Palm Olein Price Path', drHeroChartConcept:'Actual history · Today · Latest available market price · 7-day forecast', drHeroActual:'Actual history', drHeroToday:'Today', drHeroLatest:'Latest available market price', drHeroForecast:'7-day forecast', drHeroLow:'Low', drHeroHigh:'High', drHeroDateActual:'Actual', drHeroDateToday:'Today', drHeroDateLatest:'Latest available', drHeroDateForecast:'Forecast',
       drUnitUsd:'USD/MT', drUnitEgp:'EGP/MT',
       drSourceDetails:'Source & details', drCard2Details:'Details & disclaimer',
       drRefreshLabel:'Refresh Data Now', drRefreshDisabledHint:'Check the latest published trusted snapshot', drRefreshReadyHint:'Check the latest published trusted snapshot', drRefreshLoading:'Checking the latest published data…', drRefreshSuccess:'Latest market data loaded', drRefreshNoChange:'You already have the latest available data', drRefreshFailure:'Could not check for a new update — showing the last trusted data', drRefreshUnavailable:'Published snapshot unavailable',
@@ -2719,7 +2732,7 @@
       drTargetLabel:'Target', drChangeLabel:'Change vs. today',
       drConfidenceLabel:'Model Confidence', drConfidenceFootnote:'Based on input data quality and forecast scenario-band width — not a backtested accuracy measure.',
       drDataUpdateLabel:'Data update date', drMarketObservationLabel:'Market data through', drCloudRefreshLabel:'Last successful cloud refresh', drForecastVintageLabel:'Forecast vintage',
-      drExpectedChangeLabel:'Market change vs. RBD market today', drForecastBaselineLabel:'RBD market today', drForecastTargetLabel:'RBD market forecast after 7 days', drForecastBasis:'Market-first forecast; Egypt port values are derived afterward with the fixed port add-on',
+      drExpectedChangeLabel:'Market change vs. RBD market today', drExpectedChangeLatestLabel:'Market change vs. latest available RBD market price', drForecastBaselineLabel:'RBD market today', drForecastBaselineLatestLabel:'Latest available RBD market price', drForecastTargetLabel:'RBD market forecast after 7 days', drForecastBasis:'Market-first forecast; Egypt port values are derived afterward with the fixed port add-on', drHeroChartConceptLatest:'Actual history · Latest available market price · 7-day forecast',
       drConfidenceHeading:'Confidence in Forecast',
       drConfLow:'Low confidence', drConfMedium:'Medium confidence', drConfHigh:'High confidence',
       drSmartUnavailable:'Market data status unavailable', drSmartMarketHealthy:'Market data status: up to date; no visible issues', drSmartMarketClosed:'Market currently closed — the latest available data is still within the expected timing', drSmartMarketStale:'Market data status: some data is not up to date', drSmartMarketReview:'Market data status: some data needs review', drSmartMarketUnknown:'Market data status: not enough evidence to confirm', drSmartUnavailableNote:'Smart status is unavailable; the Daily Report continues to use canonical data.', drSmartForecastHeading:'Forecast explanation', drSmartForecastSummary:'The model expects a limited rise of about 0.6% over the forecast period. The estimate uses market data and model inputs recorded when the forecast was issued.', drSmartForecastUnavailable:'Forecast explanation unavailable', drSmartWhyForecast:'Why this forecast?', drSmartInputs:'Market inputs used', drSmartPortCosts:'Port-arrival components', drSmartContributionUnavailable:'Individual driver contribution is not isolated by the available evidence.', drSmartPortSeparation:'Market forecast and port-arrival add-on remain separate.', drSmartConfidenceNote:'The displayed percentage is the Forecast V1 confidence indicator, not a probability of price rise.', drSmartForecastLink:'Linked to the rendered Forecast V1 vintage', drSmartUnavailableState:'Unavailable', drSmartStateHealthy:'Healthy', drSmartStateClosed:'Closed', drSmartStateWarning:'Review', drSmartStateUnknown:'Unknown',
@@ -2997,7 +3010,8 @@
       // ---- التقرير اليومي (Daily Report) - V1 scaffold ----
       drTitle:'التقرير اليومي', drSubtitle:'سعر السوق اليوم، والسعر المتوقع بميناء مصر، والاتجاه الحالي، وتوقعات 7 أيام — في صفحة واحدة وبسعر صرف واحد معتمد.',
       drHeadSub:'ملخص قرار الشراء',
-      drCard1Eyebrow:'سعر أولين النخيل المكرر اليوم', drCard2Eyebrow:'السعر المتوقع في ميناء مصر', drCard3Eyebrow:'الاتجاه الحالي', drCard4Eyebrow:'توقع 7 أيام', drFxTitle:'سعر الدولار مقابل الجنيه', drFxMidpoint:'متوسط محسوب بين سعر الشراء والبيع', drFxBuy:'الشراء', drFxSell:'البيع', drFxCurrency:'جنيه/دولار', drFxSourceLabel:'المصدر', drFxSource:'BankLive نقلاً عن أسعار البنك المركزي المصري', drFxRateDate:'تاريخ السعر', drFxRetrieved:'آخر جلب للبيانات', drFxStatusVerified:'تم التحقق', drHeroKicker:'سوق الأولين المكرر', drHeroChartTitle:'مسار سعر أولين النخيل المكرر', drHeroChartConcept:'السجل الفعلي · اليوم · توقع 7 أيام', drHeroActual:'السجل الفعلي', drHeroToday:'اليوم', drHeroForecast:'توقع 7 أيام', drHeroLow:'الأدنى', drHeroHigh:'الأعلى', drHeroDateActual:'فعلي', drHeroDateToday:'اليوم', drHeroDateForecast:'توقع',
+      drCard1LatestEyebrow:'أحدث سعر سوق متاح لأولين النخيل المكرر', drCard2LatestEyebrow:'السعر المتوقع في ميناء مصر اعتماداً على أحدث بيانات السوق المتاحة',
+      drCard1Eyebrow:'سعر أولين النخيل المكرر اليوم', drCard2Eyebrow:'السعر المتوقع في ميناء مصر', drCard3Eyebrow:'الاتجاه الحالي', drCard4Eyebrow:'توقع 7 أيام', drFxTitle:'سعر الدولار مقابل الجنيه', drFxMidpoint:'متوسط محسوب بين سعر الشراء والبيع', drFxBuy:'الشراء', drFxSell:'البيع', drFxCurrency:'جنيه/دولار', drFxSourceLabel:'المصدر', drFxSource:'BankLive نقلاً عن أسعار البنك المركزي المصري', drFxRateDate:'تاريخ السعر', drFxRetrieved:'آخر جلب للبيانات', drFxStatusVerified:'تم التحقق', drFxStatusUnavailable:'غير متاح — لم يتم التحقق', drHeroKicker:'سوق الأولين المكرر', drHeroChartTitle:'مسار سعر أولين النخيل المكرر', drHeroChartConcept:'السجل الفعلي · اليوم · أحدث سعر سوق متاح · توقع 7 أيام', drHeroActual:'السجل الفعلي', drHeroToday:'اليوم', drHeroLatest:'أحدث سعر سوق متاح', drHeroForecast:'توقع 7 أيام', drHeroLow:'الأدنى', drHeroHigh:'الأعلى', drHeroDateActual:'فعلي', drHeroDateToday:'اليوم', drHeroDateLatest:'أحدث سعر متاح', drHeroDateForecast:'توقع',
       drUnitUsd:'USD/MT', drUnitEgp:'EGP/MT',
       drSourceDetails:'المصدر والتفاصيل', drCard2Details:'التفاصيل والتنبيه',
       drRefreshLabel:'تحديث البيانات الآن', drRefreshDisabledHint:'التحقق من أحدث لقطة موثوقة منشورة', drRefreshReadyHint:'التحقق من أحدث لقطة موثوقة منشورة', drRefreshLoading:'جاري التحقق من أحدث البيانات...', drRefreshSuccess:'تم تحميل أحدث بيانات السوق', drRefreshNoChange:'أنت بالفعل على أحدث بيانات متاحة', drRefreshFailure:'تعذر التحقق من تحديث جديد — يتم عرض آخر بيانات موثوقة', drRefreshUnavailable:'لا تتوفر اللقطة المنشورة',
@@ -3010,7 +3024,7 @@
       drTargetLabel:'الهدف', drChangeLabel:'التغير مقارنة باليوم',
       drConfidenceLabel:'درجة ثقة النموذج', drConfidenceFootnote:'مبنية على جودة البيانات المُدخلة واتساع نطاق سيناريو التوقع — وليست مقياس دقة تاريخي مُختبر.',
       drDataUpdateLabel:'تاريخ تحديث البيانات', drMarketObservationLabel:'بيانات السوق حتى', drCloudRefreshLabel:'آخر تحديث سحابي ناجح', drForecastVintageLabel:'نسخة التوقع',
-      drExpectedChangeLabel:'تغير السوق مقارنةً بسعر السوق اليوم', drForecastBaselineLabel:'سعر السوق اليوم', drForecastTargetLabel:'سعر السوق المتوقع بعد 7 أيام', drForecastBasis:'توقع قائم على السوق؛ تُشتق قيم الميناء بعد ذلك باستخدام إضافة الميناء الثابتة',
+      drExpectedChangeLabel:'تغير السوق مقارنةً بسعر السوق اليوم', drExpectedChangeLatestLabel:'تغير السوق مقارنةً بآخر سعر سوق متاح', drForecastBaselineLabel:'سعر السوق اليوم', drForecastBaselineLatestLabel:'آخر سعر سوق متاح', drForecastTargetLabel:'سعر السوق المتوقع بعد 7 أيام', drForecastBasis:'توقع قائم على السوق؛ تُشتق قيم الميناء بعد ذلك باستخدام إضافة الميناء الثابتة', drHeroChartConceptLatest:'السجل الفعلي · أحدث سعر سوق متاح · توقع 7 أيام',
       drConfidenceHeading:'الثقة في التوقع',
       drConfLow:'ثقة منخفضة', drConfMedium:'ثقة متوسطة', drConfHigh:'ثقة مرتفعة',
       drSmartUnavailable:'حالة بيانات السوق غير متاحة', drSmartMarketHealthy:'حالة بيانات السوق: محدثة ولا توجد مشاكل ظاهرة', drSmartMarketClosed:'السوق مغلق حاليا — آخر بيانات متاحة ما زالت ضمن التوقيت المتوقع', drSmartMarketStale:'حالة بيانات السوق: بعض البيانات غير محدثة', drSmartMarketReview:'حالة بيانات السوق: بعض البيانات تحتاج مراجعة', drSmartMarketUnknown:'حالة بيانات السوق: لا توجد أدلة كافية للتأكيد', drSmartUnavailableNote:'حالة Smart غير متاحة؛ يواصل التقرير اليومي عرض البيانات الأساسية المعتمدة.', drSmartForecastHeading:'تفسير التوقع', drSmartForecastSummary:'النموذج يتوقع صعودًا محدودًا بنحو 0.6% خلال فترة التوقع. يعتمد التقدير على بيانات السوق ومدخلات النموذج المسجلة وقت إصدار التوقع.', drSmartForecastUnavailable:'شرح التوقع غير متاح', drSmartWhyForecast:'لماذا هذا التوقع؟', drSmartInputs:'مدخلات السوق المستخدمة', drSmartPortCosts:'مكونات الوصول إلى الميناء', drSmartContributionUnavailable:'لا يمكن عزل مساهمة كل عامل منفرد من الأدلة المتاحة.', drSmartPortSeparation:'يبقى توقع السوق وإضافة الوصول إلى الميناء منفصلين.', drSmartConfidenceNote:'النسبة المعروضة هي مؤشر الثقة في Forecast V1 وليست احتمالًا لصعود السعر.', drSmartForecastLink:'مرتبط بنسخة Forecast V1 المعروضة', drSmartUnavailableState:'غير متاح', drSmartStateHealthy:'سليمة', drSmartStateClosed:'مغلق', drSmartStateWarning:'تحتاج مراجعة', drSmartStateUnknown:'غير مؤكدة',
@@ -3462,8 +3476,7 @@
     { date:'2026-08-21', landedUSD:1373, landedEGP:69834 },
     { date:'2026-08-22', landedUSD:1372, landedEGP:69820 },
     { date:'2026-08-23', landedUSD:1372, landedEGP:69807 },
-    { date:'2026-08-24', landedUSD:1354, landedEGP:68817 },
-    { date:'2026-08-25', landedUSD:1354, landedEGP:68817 }
+    { date:'2026-08-24', landedUSD:1354, landedEGP:68817 }
   ];
 
   // Forecast-accountability log: each snapshot freezes exactly what the
@@ -8821,6 +8834,160 @@
     },
     {
       schemaVersion: 1,
+      snapshotDate: '2026-08-24',
+      capturedAt: '2026-08-25T06:00:00.000Z',
+      landedFormulaVersion: 'v1-fob-freight-insurance-cif-duty-vat-margin',
+      malaysia: {
+        cpoMYR: 4720,
+        usdMyr: 4.0394,
+        refiningProcessingAdjustment: 15,
+        oleinFractionationPremium: 15,
+        physicalMarketBasisAdjustment: 14.5,
+        totalRbdAdjustment: 44.5,
+        estimatedFobOleinUsd: 1212.9904,
+        rbdOleinFobMarketUSD: 1207.5
+      },
+      fx: {
+        usdMyr: 4.0394,
+        egpUsd: 50.83,
+        usdIdr: 17705
+      },
+      freight: {
+        freight: 36,
+        origin: 'my',
+        transitDays: 35,
+        clearanceDays: 7
+      },
+      importCosts: {
+        insurancePct: 0.75,
+        egyptDutyPct: 1.5,
+        vatOn: false,
+        vatPct: 14,
+        marginPct: 6
+      },
+      outputs: {
+        fobOleinUsd: 1212.9904,
+        originCostUsd: 0,
+        cifUsd: 1258.3578,
+        dutyUsd: 18.8754,
+        vatUsd: 0,
+        marginUsd: 76.634,
+        landedUSD: 1353.8672,
+        landedEGP: 68817.07
+      },
+      provenance: {
+        cpoMYR: {
+          source: 'agropost.wordpress.com dated "24 Aug 2026 – Palm Oil Prices at Closing" post, MDEX Bursa Malaysia Derivatives CPO futures table, Sep’26 contract',
+          sourceType: 'Market Report',
+          lastUpdated: '2026-08-24',
+          confidence: 'Medium',
+          status: 'Manual',
+          unit: 'MYR/MT',
+          refreshMethod: 'Daily AI refresh',
+          contractCode: 'Not confirmed by source (referred to only as "September 2026 contract")',
+          contractMonth: 'September 2026',
+          priceType: 'Last Traded (Agropost’s dated table lists this price under a "Last" column; no independent Bursa Malaysia/MPOB/Bernama settlement confirmation available for this exact date)',
+          observationDate: '24 Aug 2026',
+          contractSelectionRule: 'Nearest liquid FCPO contract (currently Sep’26, unchanged contract month from previous run; 24 Aug 2026 is a normal Monday trading session)'
+        },
+        usdMyr: {
+          source: 'Bank Negara Malaysia — KL USD/MYR Reference Rate (FMIP, financialmarkets.bnm.gov.my), 4.0394 for 24 Aug 2026',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-08-24',
+          confidence: 'High',
+          status: 'Manual',
+          unit: 'MYR/USD',
+          refreshMethod: 'Daily AI refresh',
+          observationDate: '24 Aug 2026'
+        },
+        egpUsd: {
+          source: 'Central Bank of Egypt official website - Average Client Rate in EGP, 24 Aug 2026, USD/EGP buy/sell rates (50.759 / 50.8974)',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-08-24',
+          confidence: 'High',
+          status: 'Manual',
+          unit: 'EGP/USD',
+          refreshMethod: 'Daily AI refresh'
+        },
+        freight: {
+          source: 'No Egypt-route source documented; nearest §09 citation (MPOB West Malaysia–Sumatra rates) is a different route',
+          sourceType: 'Not documented (route mismatch)',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily automation, only on Egypt-route-specific evidence, else left unchanged — scripts/daily-refresh-prompt.txt'
+        },
+        refiningSpread: {
+          source: 'agropost.wordpress.com dated "24 Aug 2026 – Palm Oil Prices at Closing" table (PHYSICAL MARKET PRICES FOB Malaysia), Sep’26 contract (RBD Palm Olein $1,207.50/MT selling vs CPO $1,163.00/MT selling); mblionoleo.com still shows its earlier dated table (13 Aug 2026, RBD Palm Olein $1,147.50/MT vs CPO $1,109.00/MT, spread $38.50) with no fresher print available this run',
+          sourceType: 'Market Report',
+          lastUpdated: '2026-08-24',
+          confidence: 'Medium',
+          status: 'Derived',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily AI refresh'
+        },
+        insurancePct: {
+          source: 'Not documented',
+          sourceType: 'Not documented',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Hardcoded',
+          unit: '%',
+          refreshMethod: 'Not refreshed by automation (static assumption)'
+        },
+        egyptDutyPct: {
+          source: 'WTO Tariff & Trade Data — Egypt member profile (§09 sources)',
+          sourceType: 'Regulatory / trade data',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: '%',
+          refreshMethod: 'Re-checked only on evidence of change — scripts/daily-refresh-prompt.txt'
+        },
+        rbdOleinFobMarketUSD: {
+          product: 'RBD Palm Olein',
+          priceBasis: 'FOB Malaysia (physical, dated price sheet)',
+          source: 'Agropost dated "PHYSICAL MARKET PRICES FOB Malaysia" table (agropost.wordpress.com), 24 Aug 2026 "Palm Oil Prices at Closing" post — Sep’26 contract, RBD Palm Olein $1,207.50/MT selling vs CPO $1,163.00/MT selling (spread $44.50/MT)',
+          sourceType: 'Market Report (dated physical price sheet)',
+          observationDate: '24 Aug 2026',
+          contractOrDeliveryMonth: 'September 2026 (Sep’26, as labeled on the source table)',
+          confidence: 'Medium',
+          status: 'Manual',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily automation — freshest of the MBLion/Agropost dated tables selected by observation date, scripts/daily-refresh-prompt.txt (commit 00edf0d)',
+          crossCheckSource: 'MBLion Oleo dated homepage table (mblionoleo.com) — the dated "FOB Malaysian Port" table, still showing its 13 Aug 2026 print unchanged as of this run',
+          crossCheckValue: 1147.5,
+          crossCheckObservationDate: '13 Aug 2026',
+          crossCheckDeltaUSD: 60
+        }
+      },
+      evidence: {
+        cpoMYR: {
+          tier: 'Estimated',
+          reason: 'Provenance is insufficient for a stronger tier'
+        },
+        usdMyr: {
+          tier: 'Verified',
+          reason: 'High-confidence, directly sourced figure'
+        },
+        egpUsd: {
+          tier: 'Verified',
+          reason: 'High-confidence, directly sourced figure'
+        },
+        freight: {
+          tier: 'Low Confidence',
+          reason: 'Source confidence is recorded as Low'
+        },
+        rbdOleinFobMarketUSD: {
+          tier: 'Low Confidence',
+          reason: 'Disagrees with MBLion Oleo dated homepage table (mblionoleo.com) — the dated "FOB Malaysian Port" table, still showing its 13 Aug 2026 print unchanged as of this run by 60 USD/MT, beyond the 20 USD/MT tolerance - not silently treated as cross-checked'
+        }
+      },
+      snapshotId: 'MARKET_SNAPSHOT|5eca88892f65fc18cb31'
+    },
+    {
+      schemaVersion: 1,
       snapshotDate: '2026-08-25',
       capturedAt: '2026-08-25T01:44:33.203Z',
       landedFormulaVersion: 'v1-fob-freight-insurance-cif-duty-vat-margin',
@@ -9280,6 +9447,160 @@
         }
       },
       snapshotId: 'MARKET_SNAPSHOT|77b211cdc8322be4a30c'
+    },
+    {
+      schemaVersion: 1,
+      snapshotDate: '2026-08-25',
+      capturedAt: '2026-08-25T06:00:00.000Z',
+      landedFormulaVersion: 'v1-fob-freight-insurance-cif-duty-vat-margin',
+      malaysia: {
+        cpoMYR: 4720,
+        usdMyr: 4.0394,
+        refiningProcessingAdjustment: 15,
+        oleinFractionationPremium: 15,
+        physicalMarketBasisAdjustment: 14.5,
+        totalRbdAdjustment: 44.5,
+        estimatedFobOleinUsd: 1212.9904,
+        rbdOleinFobMarketUSD: 1207.5
+      },
+      fx: {
+        usdMyr: 4.0394,
+        egpUsd: 50.83,
+        usdIdr: 17705
+      },
+      freight: {
+        freight: 36,
+        origin: 'my',
+        transitDays: 35,
+        clearanceDays: 7
+      },
+      importCosts: {
+        insurancePct: 0.75,
+        egyptDutyPct: 1.5,
+        vatOn: false,
+        vatPct: 14,
+        marginPct: 6
+      },
+      outputs: {
+        fobOleinUsd: 1212.9904,
+        originCostUsd: 0,
+        cifUsd: 1258.3578,
+        dutyUsd: 18.8754,
+        vatUsd: 0,
+        marginUsd: 76.634,
+        landedUSD: 1353.8672,
+        landedEGP: 68817.07
+      },
+      provenance: {
+        cpoMYR: {
+          source: 'agropost.wordpress.com dated "24 Aug 2026 – Palm Oil Prices at Closing" post, MDEX Bursa Malaysia Derivatives CPO futures table, Sep’26 contract',
+          sourceType: 'Market Report',
+          lastUpdated: '2026-08-24',
+          confidence: 'Medium',
+          status: 'Manual',
+          unit: 'MYR/MT',
+          refreshMethod: 'Daily AI refresh',
+          contractCode: 'Not confirmed by source (referred to only as "September 2026 contract")',
+          contractMonth: 'September 2026',
+          priceType: 'Last Traded (Agropost’s dated table lists this price under a "Last" column; no independent Bursa Malaysia/MPOB/Bernama settlement confirmation available for this exact date)',
+          observationDate: '24 Aug 2026',
+          contractSelectionRule: 'Nearest liquid FCPO contract (currently Sep’26, unchanged contract month from previous run; 24 Aug 2026 is a normal Monday trading session)'
+        },
+        usdMyr: {
+          source: 'Bank Negara Malaysia — KL USD/MYR Reference Rate (FMIP, financialmarkets.bnm.gov.my), 4.0394 for 24 Aug 2026',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-08-24',
+          confidence: 'High',
+          status: 'Manual',
+          unit: 'MYR/USD',
+          refreshMethod: 'Daily AI refresh',
+          observationDate: '24 Aug 2026'
+        },
+        egpUsd: {
+          source: 'Central Bank of Egypt official website - Average Client Rate in EGP, 24 Aug 2026, USD/EGP buy/sell rates (50.759 / 50.8974)',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-08-24',
+          confidence: 'High',
+          status: 'Manual',
+          unit: 'EGP/USD',
+          refreshMethod: 'Daily AI refresh'
+        },
+        freight: {
+          source: 'No Egypt-route source documented; nearest §09 citation (MPOB West Malaysia–Sumatra rates) is a different route',
+          sourceType: 'Not documented (route mismatch)',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily automation, only on Egypt-route-specific evidence, else left unchanged — scripts/daily-refresh-prompt.txt'
+        },
+        refiningSpread: {
+          source: 'agropost.wordpress.com dated "24 Aug 2026 – Palm Oil Prices at Closing" table (PHYSICAL MARKET PRICES FOB Malaysia), Sep’26 contract (RBD Palm Olein $1,207.50/MT selling vs CPO $1,163.00/MT selling); mblionoleo.com still shows its earlier dated table (13 Aug 2026, RBD Palm Olein $1,147.50/MT vs CPO $1,109.00/MT, spread $38.50) with no fresher print available this run',
+          sourceType: 'Market Report',
+          lastUpdated: '2026-08-24',
+          confidence: 'Medium',
+          status: 'Derived',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily AI refresh'
+        },
+        insurancePct: {
+          source: 'Not documented',
+          sourceType: 'Not documented',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Hardcoded',
+          unit: '%',
+          refreshMethod: 'Not refreshed by automation (static assumption)'
+        },
+        egyptDutyPct: {
+          source: 'WTO Tariff & Trade Data — Egypt member profile (§09 sources)',
+          sourceType: 'Regulatory / trade data',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: '%',
+          refreshMethod: 'Re-checked only on evidence of change — scripts/daily-refresh-prompt.txt'
+        },
+        rbdOleinFobMarketUSD: {
+          product: 'RBD Palm Olein',
+          priceBasis: 'FOB Malaysia (physical, dated price sheet)',
+          source: 'Agropost dated "PHYSICAL MARKET PRICES FOB Malaysia" table (agropost.wordpress.com), 24 Aug 2026 "Palm Oil Prices at Closing" post — Sep’26 contract, RBD Palm Olein $1,207.50/MT selling vs CPO $1,163.00/MT selling (spread $44.50/MT)',
+          sourceType: 'Market Report (dated physical price sheet)',
+          observationDate: '24 Aug 2026',
+          contractOrDeliveryMonth: 'September 2026 (Sep’26, as labeled on the source table)',
+          confidence: 'Medium',
+          status: 'Manual',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily automation — freshest of the MBLion/Agropost dated tables selected by observation date, scripts/daily-refresh-prompt.txt (commit 00edf0d)',
+          crossCheckSource: 'MBLion Oleo dated homepage table (mblionoleo.com) — the dated "FOB Malaysian Port" table, still showing its 13 Aug 2026 print unchanged as of this run',
+          crossCheckValue: 1147.5,
+          crossCheckObservationDate: '13 Aug 2026',
+          crossCheckDeltaUSD: 60
+        }
+      },
+      evidence: {
+        cpoMYR: {
+          tier: 'Estimated',
+          reason: 'Provenance is insufficient for a stronger tier'
+        },
+        usdMyr: {
+          tier: 'Verified',
+          reason: 'High-confidence, directly sourced figure'
+        },
+        egpUsd: {
+          tier: 'Verified',
+          reason: 'High-confidence, directly sourced figure'
+        },
+        freight: {
+          tier: 'Low Confidence',
+          reason: 'Source confidence is recorded as Low'
+        },
+        rbdOleinFobMarketUSD: {
+          tier: 'Low Confidence',
+          reason: 'Disagrees with MBLion Oleo dated homepage table (mblionoleo.com) — the dated "FOB Malaysian Port" table, still showing its 13 Aug 2026 print unchanged as of this run by 60 USD/MT, beyond the 20 USD/MT tolerance - not silently treated as cross-checked'
+        }
+      },
+      snapshotId: 'MARKET_SNAPSHOT|296a9bbd6693189062c4'
     }
   ];
 
@@ -9420,6 +9741,7 @@
 
   function fmt(n, d){
     d = d === undefined ? 0 : d;
+    if (n === null || n === undefined || !isFinite(n)) return '—';
     return n.toLocaleString('en-US', { minimumFractionDigits:d, maximumFractionDigits:d });
   }
 
@@ -10241,10 +10563,11 @@
       tbody.appendChild(tr);
     });
 
-    document.getElementById('fxScenarioNote').textContent =
-      t('fxNotePrefix') + ' ' + t('fxNoteStable') + ': ' + state.egpUsd.toFixed(1) + ' → ' + FX_SCENARIOS.stableEnd.toFixed(1) +
-      '; ' + t('fxNoteBase') + ': ' + state.egpUsd.toFixed(1) + ' → ' + FX_SCENARIOS.baseEnd.toFixed(1) +
-      '; ' + t('fxNoteDep') + ': ' + state.egpUsd.toFixed(1) + ' → ' + FX_SCENARIOS.depEnd.toFixed(1) + ' ' + t('fxNoteSuffix');
+    document.getElementById('fxScenarioNote').textContent = state.egpUsd === null || !isFinite(state.egpUsd)
+      ? t('drFxStatusUnavailable')
+      : t('fxNotePrefix') + ' ' + t('fxNoteStable') + ': ' + state.egpUsd.toFixed(1) + ' → ' + FX_SCENARIOS.stableEnd.toFixed(1) +
+        '; ' + t('fxNoteBase') + ': ' + state.egpUsd.toFixed(1) + ' → ' + FX_SCENARIOS.baseEnd.toFixed(1) +
+        '; ' + t('fxNoteDep') + ': ' + state.egpUsd.toFixed(1) + ' → ' + FX_SCENARIOS.depEnd.toFixed(1) + ' ' + t('fxNoteSuffix');
 
     var first = points[0].base, last = points[points.length-1].base;
     var pct = (last - first) / first * 100;
@@ -10435,7 +10758,7 @@
     var indonesiaDecision = computeProductOriginDecision(ACTIVE_PRODUCT_ID, 'ID', state.egpUsd);
     var base = malaysiaDecision.outputs;
     compareCompletedOriginResults(malaysiaDecision, indonesiaDecision);
-    document.getElementById('sharedEgyptFx').textContent = fmt(state.egpUsd,2) + ' EGP/USD';
+    document.getElementById('sharedEgyptFx').textContent = state.egpUsd === null ? '— EGP/USD' : fmt(state.egpUsd,2) + ' EGP/USD';
     document.getElementById('sharedEgyptDuty').textContent = fmt(state.egyptDutyPct,1) + '%';
     document.getElementById('sharedEgyptVat').textContent = state.vatOn ? fmt(state.vatPct,1) + '%' : 'Off / ' + fmt(state.vatPct,1) + '%';
     document.getElementById('heroEGP').textContent = fmt(base.landedEGP);
@@ -11832,7 +12155,7 @@
         price.textContent = '—'; egp.textContent = '—'; var fcpoUnavailable = document.createElement('span'); fcpoUnavailable.className = 'dr-board-badge unavailable'; fcpoUnavailable.textContent = 'بيانات غير محدثة'; status.appendChild(fcpoUnavailable); timing.className = 'dr-board-meta'; timing.textContent = fcpoRecord && fcpoRecord.observationTimestamp ? fcpoRecord.observationTimestamp : t('drBoardUnavailable');
       } else if (row.primary && canonicalSnapshotIsValid(s)){
         price.innerHTML = '<span class="dr-board-price"></span> <small>USD/MT</small>'; price.querySelector('.dr-board-price').textContent = fmt(s.canonicalPriceUSDPerMT, 2);
-        egp.innerHTML = '<span class="dr-board-secondary"></span> EGP/MT'; egp.querySelector('.dr-board-secondary').textContent = fmt(s.canonicalPriceUSDPerMT * state.egpUsd, 2);
+        egp.innerHTML = '<span class="dr-board-secondary"></span> EGP/MT'; egp.querySelector('.dr-board-secondary').textContent = fxEgp(s.canonicalPriceUSDPerMT) === null ? '—' : fmt(fxEgp(s.canonicalPriceUSDPerMT), 2);
         var badge = document.createElement('span'); badge.className = 'dr-board-badge ' + q.cls; badge.textContent = t(q.labelKey); status.appendChild(badge);
         timing.className = 'dr-board-meta'; renderBoardDate(timing, s.observationDate, s.capturedAt);
       } else if (row.primary){
@@ -11841,7 +12164,7 @@
         var boardRecord = boardByProduct[row.en === 'Crude Palm Oil (CPO)' ? 'CPO_PHYSICAL' : row.en === 'RBD Palm Oil' ? 'RBD_PALM_OIL' : row.en === 'RBD Palm Stearin' ? 'RBD_PALM_STEARIN' : 'RBD_PALM_KERNEL_OIL'];
         if (boardRecord && boardRecord.validationState === 'VALIDATED' && boardRecord.canonicalEligibility) {
           price.innerHTML = '<span class="dr-board-price"></span> <small>USD/MT</small>'; price.querySelector('.dr-board-price').textContent = fmt(boardRecord.normalizedPrice, 2);
-          egp.innerHTML = '<span class="dr-board-secondary"></span> EGP/MT'; egp.querySelector('.dr-board-secondary').textContent = fmt(boardRecord.normalizedPrice * state.egpUsd, 2);
+          egp.innerHTML = '<span class="dr-board-secondary"></span> EGP/MT'; egp.querySelector('.dr-board-secondary').textContent = fxEgp(boardRecord.normalizedPrice) === null ? '—' : fmt(fxEgp(boardRecord.normalizedPrice), 2);
           var boardBadge = document.createElement('span'); boardBadge.className = 'dr-board-badge trusted'; boardBadge.textContent = t('drQualityTrusted'); status.appendChild(boardBadge); timing.className = 'dr-board-meta'; renderBoardDate(timing, boardRecord.observationDate, boardRecord.acquiredAt);
         } else {
           price.textContent = '—'; egp.textContent = '—'; var unavailable = document.createElement('span'); unavailable.className = 'dr-board-badge unavailable'; unavailable.textContent = t('drQualityReview'); status.appendChild(unavailable); timing.className = 'dr-board-meta'; timing.textContent = t('drBoardUnavailable');
@@ -11926,26 +12249,28 @@
     function y(v){ return bottom - (bottom-top) * ((v-domainMin)/range); }
     var ns='http://www.w3.org/2000/svg';
     [0,.5,1].forEach(function(frac){ var gy=top+(bottom-top)*frac, gv=domainMax-(domainMax-domainMin)*frac; var grid=document.createElementNS(ns,'line'); grid.setAttribute('x1',left);grid.setAttribute('x2',right);grid.setAttribute('y1',gy);grid.setAttribute('y2',gy);grid.setAttribute('class','dr-hero-grid');svg.appendChild(grid); var tick=document.createElementNS(ns,'text'); tick.setAttribute('x',left-8);tick.setAttribute('y',gy+4);tick.setAttribute('class','dr-hero-axis');tick.setAttribute('text-anchor','end');tick.textContent=fmt(gv,2);svg.appendChild(tick); });
-    var actual=series.map(function(p,i){return p.kind==='forecast'?null:x(i).toFixed(1)+','+y(p.valueUSDPerMT).toFixed(1);}).filter(Boolean), forecast=series.filter(function(p){return p.kind==='today'||p.kind==='forecast';}).map(function(p){var i=series.indexOf(p);return x(i).toFixed(1)+','+y(p.valueUSDPerMT).toFixed(1);});
+    var actual=series.map(function(p,i){return p.kind==='forecast'?null:x(i).toFixed(1)+','+y(p.valueUSDPerMT).toFixed(1);}).filter(Boolean), forecast=series.filter(function(p){return p.kind==='today'||p.kind==='latest'||p.kind==='forecast';}).map(function(p){var i=series.indexOf(p);return x(i).toFixed(1)+','+y(p.valueUSDPerMT).toFixed(1);});
     function path(cls,pts){if(pts.length<2)return;var el=document.createElementNS(ns,'path');el.setAttribute('class',cls);el.setAttribute('d','M'+pts.join(' L'));svg.appendChild(el);}
     path('dr-hero-actual',actual); path('dr-hero-forecast',forecast);
     function dateLabel(date){ if(!date)return '—'; var d=new Date(date+'T00:00:00Z'); return isNaN(d.getTime())?date:d.toLocaleDateString(state.lang==='ar'?'ar-EG':'en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}); }
-    function pointKind(p){ return p.kind==='today'?t('drHeroDateToday'):(p.kind==='forecast'?t('drHeroDateForecast'):t('drHeroDateActual')); }
-    series.forEach(function(p,i){var c=document.createElementNS(ns,'circle');c.setAttribute('cx',x(i));c.setAttribute('cy',y(p.valueUSDPerMT));c.setAttribute('r',p.kind==='today'?7:(p.kind==='forecast'?5:4));c.setAttribute('class',p.kind==='today'?'dr-hero-today':'dr-hero-point');c.setAttribute('tabindex','0');var title=document.createElementNS(ns,'title');title.textContent=pointKind(p)+' · '+dateLabel(p.date)+' · '+fmt(p.valueUSDPerMT,2)+' USD/MT'+(p.confidencePercent!==null&&p.confidencePercent!==undefined?' · '+p.confidencePercent+'%':'');c.appendChild(title);svg.appendChild(c); if(p.kind!=='actual'){var lab=document.createElementNS(ns,'text');lab.setAttribute('x',x(i));lab.setAttribute('y',y(p.valueUSDPerMT)-12);lab.setAttribute('class','dr-hero-endpoint');lab.setAttribute('text-anchor',i===series.length-1?'end':'middle');lab.textContent=pointKind(p)+' '+fmt(p.valueUSDPerMT,2);svg.appendChild(lab);} var dt=document.createElementNS(ns,'text');dt.setAttribute('x',x(i));dt.setAttribute('y',220);dt.setAttribute('class','dr-hero-date');dt.setAttribute('text-anchor',i===0?'start':(i===series.length-1?'end':'middle'));dt.textContent=dateLabel(p.date);svg.appendChild(dt);});
+    function pointKind(p){ return p.kind==='today'?t('drHeroDateToday'):(p.kind==='latest'?t('drHeroDateLatest'):(p.kind==='forecast'?t('drHeroDateForecast'):t('drHeroDateActual'))); }
+    series.forEach(function(p,i){var c=document.createElementNS(ns,'circle');c.setAttribute('cx',x(i));c.setAttribute('cy',y(p.valueUSDPerMT));c.setAttribute('r',p.kind==='today'||p.kind==='latest'?7:(p.kind==='forecast'?5:4));c.setAttribute('class',p.kind==='today'||p.kind==='latest'?'dr-hero-today':'dr-hero-point');c.setAttribute('tabindex','0');var title=document.createElementNS(ns,'title');title.textContent=pointKind(p)+' · '+dateLabel(p.date)+' · '+fmt(p.valueUSDPerMT,2)+' USD/MT'+(p.confidencePercent!==null&&p.confidencePercent!==undefined?' · '+p.confidencePercent+'%':'');c.appendChild(title);svg.appendChild(c); if(p.kind!=='actual'){var lab=document.createElementNS(ns,'text');lab.setAttribute('x',x(i));lab.setAttribute('y',y(p.valueUSDPerMT)-12);lab.setAttribute('class','dr-hero-endpoint');lab.setAttribute('text-anchor',i===series.length-1?'end':'middle');lab.textContent=pointKind(p)+' '+fmt(p.valueUSDPerMT,2);svg.appendChild(lab);} var dt=document.createElementNS(ns,'text');dt.setAttribute('x',x(i));dt.setAttribute('y',220);dt.setAttribute('class','dr-hero-date');dt.setAttribute('text-anchor',i===0?'start':(i===series.length-1?'end':'middle'));dt.textContent=dateLabel(p.date);svg.appendChild(dt);});
     var rangeLabel=document.createElementNS(ns,'text');rangeLabel.setAttribute('x',left);rangeLabel.setAttribute('y',246);rangeLabel.setAttribute('class','dr-hero-axis');rangeLabel.textContent=t('drHeroLow')+' '+fmt(domainMin,2)+' · '+t('drHeroHigh')+' '+fmt(domainMax,2)+' USD/MT';svg.appendChild(rangeLabel);
   }
   function renderUsdEgpCard(){
     var fx=PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.fx && PRODUCTION_SNAPSHOT.fx.egpUsd, value=document.getElementById('drFxValue'), meta=document.getElementById('drFxMeta'), status=document.getElementById('drFxStatus');
-    if(!value||!fx){return;}
-    var source=String(fx.source||''), match=source.match(/buy\/sell rates \(([^/]+) \/ ([^)]+)\),\s*(\d{1,2} [A-Za-z]+ \d{4})/i), buy=match?Number(match[1]):null, sell=match?Number(match[2]):null, rateDate=match?match[3]:(fx.observationDate||'—');
+    if(!value){return;}
+    if(!fx){ value.textContent='—'; if(status){ status.textContent=t('drFxStatusUnavailable'); status.className='dr-fx-status is-unavailable'; } return; }
+    var valid=fxObservationIsValid(fx), buy=typeof fx.buy==='number'?fx.buy:null, sell=typeof fx.sell==='number'?fx.sell:null, rateDate=fx.businessDate||'—';
     var midpoint=(buy!==null&&sell!==null)?(buy+sell)/2:null;
-    value.textContent=midpoint===null?'—':fmt(midpoint,2)+' EGP/USD';
+    value.textContent=!valid || midpoint===null?'—':fmt(midpoint,2)+' EGP/USD';
     document.getElementById('drFxMidpoint').textContent=t('drFxMidpoint');
     meta.innerHTML='';
     function line(label, text){var row=document.createElement('div'); row.textContent=label+': '+text; meta.appendChild(row);}
     function fxDate(value){var raw=String(value||''); var human=raw.match(/^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/), d; if(human){var months={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11}; d=new Date(Date.UTC(Number(human[3]),months[human[2].slice(0,3)],Number(human[1])));} else d=new Date(raw); if(isNaN(d.getTime())) return value||'—'; return d.toLocaleDateString(state.lang==='ar'?'ar-EG':'en-GB',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'});}
-    line(t('drFxBuy'),buy===null?'—':fmt(buy,3)); line(t('drFxSell'),sell===null?'—':fmt(sell,4)+' '+t('drFxCurrency')); line(t('drFxSourceLabel'),t('drFxSource')); line(t('drFxRateDate'),fxDate(rateDate)); line(t('drFxRetrieved'),fxDate(fx.capturedAt));
-    status.textContent=t('drFxStatusVerified');
+    line(t('drFxBuy'),buy===null?'—':fmt(buy,3)); line(t('drFxSell'),sell===null?'—':fmt(sell,4)+' '+t('drFxCurrency')); line(t('drFxSourceLabel'),fx.sourceUrl||t('drFxSource')); line(t('drFxRateDate'),fxDate(rateDate)); line(t('drFxRetrieved'),fxDate(fx.sourceCapturedAt||fx.observedAt));
+    status.textContent=valid?t('drFxStatusVerified'):t('drFxStatusUnavailable');
+    status.className='dr-fx-status '+(valid?'is-verified':'is-unavailable');
   }
   // ---------- Feature 008: local-only Smart UI integration ----------
   // This renderer consumes only the already validated snapshot and the
@@ -11976,7 +12301,9 @@
   function feature008RenderMarketQuality(snapshot){
     var row=document.getElementById('drMarketQuality'), label=document.getElementById('drMarketQualityLabel'), icon=document.getElementById('drMarketQualityIcon'), stateEl=document.getElementById('drMarketQualityState'), note=document.getElementById('drMarketQualityNote');
     if(!row||!label||!icon||!stateEl||!note) return;
-    var status=feature008RequestedState() || (snapshot && productionSnapshotIsValid(snapshot) ? 'HEALTHY' : 'UNKNOWN');
+    var requestedStatus=feature008RequestedState(), freshnessStatus = snapshot && snapshot.freshness && snapshot.freshness.state;
+    var derivedStatus = freshnessStatus === 'CURRENT' ? 'HEALTHY' : freshnessStatus === 'LAST_AVAILABLE_MARKET_SESSION' || freshnessStatus === 'MARKET_CLOSED' ? 'MARKET_CLOSED' : freshnessStatus === 'STALE' ? 'STALE_DATA' : 'UNKNOWN';
+    var status=(requestedStatus === 'HEALTHY' && !fxRateAvailable()) ? 'UNKNOWN' : (requestedStatus || (snapshot && productionSnapshotIsValid(snapshot) && fxRateAvailable() ? derivedStatus : 'UNKNOWN'));
     var config={
       HEALTHY:{cls:'is-healthy',icon:'✓',label:'drSmartMarketHealthy',state:'drSmartStateHealthy'},
       MARKET_CLOSED:{cls:'is-closed',icon:'◷',label:'drSmartMarketClosed',state:'drSmartStateClosed'},
@@ -11992,7 +12319,7 @@
     var explanation=document.getElementById('drForecastExplanation'), heading=document.getElementById('drForecastExplanationHeading'), summary=document.getElementById('drForecastExplanationSummary'), details=document.getElementById('drForecastExplanationDetails'), body=document.getElementById('drForecastExplanationBody');
     if(!explanation||!heading||!summary||!details||!body) return;
     var forced=new URLSearchParams(window.location.search).get('feature008-forecast');
-    if(forced==='unavailable'||forced==='malformed'||!snapshot||!snapshot.forecast||!snapshot.forecast.snapshot||!point7Day){ feature008RenderUnavailable(); return; }
+    if(forced==='unavailable'||forced==='malformed'||!snapshot||!snapshot.forecast||!snapshot.forecast.snapshot||!point7Day||!fxRateAvailable()){ feature008RenderUnavailable(); return; }
     var forecast=snapshot.forecast.snapshot, forecastId=forecast.forecastId, sourceInputIdentity=forecast.sourceInputIdentity;
     if(typeof forecastId!=='string'||typeof sourceInputIdentity!=='string'||!forecastId||!sourceInputIdentity){ feature008RenderUnavailable(); return; }
     var renderedForecastId=document.documentElement.getAttribute('data-feature003-forecast-id'), renderedSourceInputIdentity=document.documentElement.getAttribute('data-feature003-source-input-identity');
@@ -12026,15 +12353,27 @@
     var panel = document.getElementById('tabPanelDaily');
     if (!panel) return;
 
-    // ---- Card 1: Today's Market Price ----
+    // ---- Card 1: canonical market observation ----
     var canonical = canonicalSnapshotIsValid(RBD_OLEIN_CANONICAL_SNAPSHOT) ? RBD_OLEIN_CANONICAL_SNAPSHOT : null;
+    var snapshotFreshnessState = PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.freshness ? PRODUCTION_SNAPSHOT.freshness.state : 'SOURCE_UNAVAILABLE';
+    var isCurrentMarket = snapshotFreshnessState === 'CURRENT';
+    var forecastBaselineLabel = panel.querySelector('[data-i18n="drForecastBaselineLabel"]');
+    var expectedChangeLabel = panel.querySelector('[data-i18n="drExpectedChangeLabel"]');
+    var chartConceptLabel = panel.querySelector('[data-i18n="drHeroChartConcept"]');
+    if (forecastBaselineLabel) forecastBaselineLabel.textContent = t(isCurrentMarket ? 'drForecastBaselineLabel' : 'drForecastBaselineLatestLabel');
+    if (expectedChangeLabel) expectedChangeLabel.textContent = t(isCurrentMarket ? 'drExpectedChangeLabel' : 'drExpectedChangeLatestLabel');
+    if (chartConceptLabel) chartConceptLabel.textContent = t(isCurrentMarket ? 'drHeroChartConcept' : 'drHeroChartConceptLatest');
+    var card1Eyebrow = panel.querySelector('[data-i18n="drCard1Eyebrow"]');
+    var card2Eyebrow = panel.querySelector('[data-i18n="drCard2Eyebrow"]');
+    if (card1Eyebrow) card1Eyebrow.textContent = t(isCurrentMarket ? 'drCard1Eyebrow' : 'drCard1LatestEyebrow');
+    if (card2Eyebrow) card2Eyebrow.textContent = t(isCurrentMarket ? 'drCard2Eyebrow' : 'drCard2LatestEyebrow');
     var marketUSD = canonical ? canonical.canonicalPriceUSDPerMT : null;
     document.getElementById('drCard1ValueUSD').textContent = marketUSD === null ? '—' : fmt(marketUSD, 2);
-    document.getElementById('drCard1ValueEGP').textContent = marketUSD === null ? '—' : fmt(marketUSD * state.egpUsd, 2);
+    document.getElementById('drCard1ValueEGP').textContent = fxEgp(marketUSD) === null ? '—' : fmt(fxEgp(marketUSD), 2);
     renderCanonicalQualityBadge('drCard1Evidence', canonical || RBD_OLEIN_CANONICAL_SNAPSHOT);
     var marketProv = canonical ? { source:canonical.selectedSourceName, observationDate:canonical.observationDate } : null;
     var marketMetaEl = document.getElementById('drCard1Meta');
-    var marketIsStale = !canonical;
+    var marketIsStale = !canonical || !isCurrentMarket;
     marketMetaEl.innerHTML = '';
     var sourceText = (marketProv && marketProv.source) ? (marketProv.source + ' · ') : '';
     if (marketProv && marketProv.observationDate){
@@ -12095,10 +12434,10 @@
     // deliberate, documented divergence in WHICH figure feeds the shared
     // formula, not a second formula.
     var portArrival = marketUSD === null ? null : computeExpectedPortArrivalCost(marketUSD, state.portArrivalCostUSD);
-    var portArrivalEGP = portArrival ? portArrival.expectedPortArrivalUSD * state.egpUsd : null;
-    var adjustmentEGP = state.portArrivalCostUSD * state.egpUsd;
+    var portArrivalEGP = portArrival ? fxEgp(portArrival.expectedPortArrivalUSD) : null;
+    var adjustmentEGP = fxEgp(state.portArrivalCostUSD);
     document.getElementById('drCard2ValueUSD').textContent = portArrival ? fmt(portArrival.expectedPortArrivalUSD, 2) : '—';
-    document.getElementById('drCard2ValueEGP').textContent = portArrival ? fmt(portArrivalEGP, 2) : '—';
+    document.getElementById('drCard2ValueEGP').textContent = !portArrival || portArrivalEGP === null ? '—' : fmt(portArrivalEGP, 2);
     // Visual equation (price -> +$130 -> total), USD-only for compactness -
     // the EGP figures for every one of these three amounts are already
     // shown (hero above, and the collapsible detail below), so the
@@ -12174,26 +12513,26 @@
       var baselineUSD = marketFirst ? marketFirst.marketTodayUSD : marketUSD;
       var changeUSD = marketFirst ? marketFirst.marketDeltaUSD : (targetUSD - baselineUSD);
       var changePct = marketFirst ? marketFirst.marketDeltaPct : (baselineUSD ? changeUSD / baselineUSD * 100 : 0);
-      var targetEGP = targetUSD * state.egpUsd;
-      var changeEGP = changeUSD * state.egpUsd;
+      var targetEGP = fxEgp(targetUSD);
+      var changeEGP = fxEgp(changeUSD);
       var outlookDirection = changeUSD === 0 ? 'flat' : (changeUSD > 0 ? 'up' : 'down');
       var oCls = directionCssClass(outlookDirection);
       outlookCard.classList.add(oCls);
       document.getElementById('drCard4TargetUSD').textContent = fmt(targetUSD, 2);
-      document.getElementById('drCard4TargetEGP').textContent = fmt(targetEGP, 2);
+      document.getElementById('drCard4TargetEGP').textContent = targetEGP === null ? '—' : fmt(targetEGP, 2);
       document.getElementById('drCard4BaselineUSD').textContent = fmt(baselineUSD, 2) + ' USD/MT';
       document.getElementById('drCard4TargetExactUSD').textContent = fmt(targetUSD, 2) + ' USD/MT';
       // Forecast-specific wording (صعود محتمل) - color still comes from
       // outlookDirection alone via the .up/.down/.stable CSS rule, exactly
       // as before; only the displayed word text changes.
       renderDirectionWordInto(outlookWordEl, outlookDirection, t(forecastTrendWordKey(outlookDirection)));
-      var oSign = changeEGP >= 0 ? '+' : '';
+      var oSign = changeEGP === null ? '' : (changeEGP >= 0 ? '+' : '');
       // Each line is its own LTR block (renderDeltaLines), same bidi fix
       // as Card 3 - the numbers (changeUSD/changeEGP/changePct) are
       // unchanged, only split across three isolated lines.
       renderDeltaLines('drCard4Change', [
         oSign + fmt(changeUSD, 2) + ' USD/MT',
-        oSign + fmt(changeEGP, 0) + ' EGP/MT',
+        changeEGP === null ? '— EGP/MT' : oSign + fmt(changeEGP, 0) + ' EGP/MT',
         oSign + fmt(changePct, 1) + '%'
       ]);
       outlookMetaEl.innerHTML = '';
@@ -12212,7 +12551,7 @@
       else { confQualEl.textContent = t('drConfLow'); }
       confFootEl.textContent = t('drConfidenceFootnote');
 
-      renderDailyForecastMiniChart('drCard4MiniChart', baselineUSD * state.egpUsd, { baseLandedEgp: targetEGP, lowLandedEgp: targetEGP, highLandedEgp: targetEGP }, outlookDirection);
+      renderDailyForecastMiniChart('drCard4MiniChart', fxEgp(baselineUSD), targetEGP === null ? null : { baseLandedEgp: targetEGP, lowLandedEgp: targetEGP, highLandedEgp: targetEGP }, outlookDirection);
     }
 
     // Feature 008 is presentation-only. It reads the same validated snapshot
@@ -12327,7 +12666,7 @@
     var c2p = document.createElement('p'); c2p.textContent = t('execCard2WhyExplain'); card2Why.appendChild(c2p);
     [
       [t('fldCpo'), fmt(state.cpoMYR) + ' MYR/MT'],
-      [t('fldFx'), fmt(state.egpUsd, 2) + ' EGP/USD'],
+      [t('fldFx'), state.egpUsd === null ? '— EGP/USD' : fmt(state.egpUsd, 2) + ' EGP/USD'],
       [t('fldFreight'), '$' + fmt(state.freight) + '/MT']
     ].forEach(function(r){
       var row = document.createElement('div'); row.className = 'wr';
