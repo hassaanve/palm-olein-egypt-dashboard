@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "contractVersion": "1.0.0",
-  "snapshotId": "FEATURE003|81720974fe5916a5900f",
-  "canonicalVersion": "FEATURE003|81720974fe5916a5900f",
-  "generatedAt": "2026-08-25T11:23:26.944Z",
+  "snapshotId": "FEATURE003|f7003550fa1e716cff6d",
+  "canonicalVersion": "FEATURE003|f7003550fa1e716cff6d",
+  "generatedAt": "2026-08-25T11:36:47.138Z",
   "refresh": {
-    "completedAt": "2026-08-25T11:23:26.944Z",
-    "artifactGeneratedAt": "2026-08-25T11:23:26.944Z",
+    "completedAt": "2026-08-25T11:36:47.138Z",
+    "artifactGeneratedAt": "2026-08-25T11:36:47.138Z",
     "source": "daily-refresh validated completion"
   },
   "sourceIdentity": {
@@ -23,7 +23,7 @@
     "forecastIssuedDate": "2026-08-25",
     "forecastModelVersion": "v1-linear-curve-fx-scenario",
     "forecastInputIdentity": "FORECAST_INPUT|295134575d37af0279e0",
-    "marketSnapshotId": "MARKET_SNAPSHOT|5eca88892f65fc18cb31"
+    "marketSnapshotId": "MARKET_SNAPSHOT|f306cd3c68b7738f1db8"
   },
   "rbd": {
     "schemaVersion": 1,
@@ -369,8 +369,8 @@
     "usdMyr": {
       "value": 4.0394,
       "source": "Bank Negara Malaysia — KL USD/MYR Reference Rate (FMIP, financialmarkets.bnm.gov.my), 4.0394 for 24 Aug 2026",
-      "capturedAt": "2026-08-25T06:00:00.000Z",
-      "observationDate": "2026-08-24",
+      "capturedAt": "2026-08-25T11:36:46.804Z",
+      "observationDate": "2026-08-25",
       "freshnessState": "Verified",
       "status": "Manual",
       "unit": "MYR/USD"
