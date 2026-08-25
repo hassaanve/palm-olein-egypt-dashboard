@@ -2353,9 +2353,9 @@
     vatOn: false,
     vatPct: 14,
     marginPct: 6,
-    egpUsd: 50.83,
+    egpUsd: 50.42,
     cpoIDR: 15844,
-    usdIdr: 17710,
+    usdIdr: 17703,
     // Stage 3A — direct market-reported RBD Palm Olein FOB Malaysian Port
     // price, USD/MT (see DATA_PROVENANCE.rbdOleinFobMarketUSD below).
     // DISPLAY / MARKET-INTELLIGENCE ONLY: never read by computeLandedCore(),
@@ -2539,9 +2539,10 @@
       unit:'MYR/USD', refreshMethod:'Daily AI refresh', observationDate:'24 Aug 2026'
     },
     egpUsd: {
-      source:'Central Bank of Egypt official website - Average Client Rate in EGP, 24 Aug 2026, USD/EGP buy/sell rates (50.759 / 50.8974)',
-      sourceType:'Official Publication', lastUpdated:'2026-08-24', confidence:'High', status:'Manual',
-      unit:'EGP/USD', refreshMethod:'Daily AI refresh'
+      source:'Central Bank of Egypt Average Client Rate for USD/EGP, 25 Aug 2026, buy/sell 50.3513 / 50.4906 (via banklive.net, cross-checked against egrates.com which independently reports the same CBE rate as 50.351 / 50.491 for 25 Aug 2026)',
+      sourceType:'Official Publication', lastUpdated:'2026-08-25', confidence:'High', status:'Manual',
+      unit:'EGP/USD', refreshMethod:'Daily AI refresh', observationDate:'25 Aug 2026',
+      buy:50.3513, sell:50.4906
     },
     freight: {
       source:'No Egypt-route source documented; nearest §09 citation (MPOB West Malaysia–Sumatra rates) is a different route',
@@ -3476,7 +3477,8 @@
     { date:'2026-08-21', landedUSD:1373, landedEGP:69834 },
     { date:'2026-08-22', landedUSD:1372, landedEGP:69820 },
     { date:'2026-08-23', landedUSD:1372, landedEGP:69807 },
-    { date:'2026-08-24', landedUSD:1354, landedEGP:68817 }
+    { date:'2026-08-24', landedUSD:1354, landedEGP:68817 },
+    { date:'2026-08-25', landedUSD:1354, landedEGP:68262 }
   ];
 
   // Forecast-accountability log: each snapshot freezes exactly what the
@@ -5542,6 +5544,84 @@
       ],
       sourceInputIdentity: 'FORECAST_INPUT|295134575d37af0279e0',
       sourceMarketSnapshotId: 'MARKET_SNAPSHOT|32b4042b5ba757763d58'
+    },
+    {
+      issuedDate: '2026-08-25',
+      modelVersion: 'v1-linear-curve-fx-scenario',
+      sourceSnapshotDate: '2026-08-25',
+      currentFcpoMYR: 4720,
+      currentUsdMyr: 4.0394,
+      currentEgpUsd: 50.42,
+      forecastPoints: [
+        {
+          targetDate: '2026-09-01',
+          horizonWeeks: 1,
+          fcpoMYR: 4740,
+          estimatedFobUsd: 1217.87,
+          baseLandedUsd: 1359.16,
+          baseLandedEgp: 68549,
+          lowLandedEgp: 68470,
+          highLandedEgp: 68798,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-09-08',
+          horizonWeeks: 2,
+          fcpoMYR: 4759,
+          estimatedFobUsd: 1222.75,
+          baseLandedUsd: 1364.45,
+          baseLandedEgp: 68836,
+          lowLandedEgp: 68677,
+          highLandedEgp: 69337,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-09-15',
+          horizonWeeks: 3,
+          fcpoMYR: 4779,
+          estimatedFobUsd: 1227.63,
+          baseLandedUsd: 1369.74,
+          baseLandedEgp: 69124,
+          lowLandedEgp: 68884,
+          highLandedEgp: 69877,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-09-22',
+          horizonWeeks: 4,
+          fcpoMYR: 4799,
+          estimatedFobUsd: 1232.51,
+          baseLandedUsd: 1375.03,
+          baseLandedEgp: 69411,
+          lowLandedEgp: 69091,
+          highLandedEgp: 70420,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-10-20',
+          horizonWeeks: 8,
+          fcpoMYR: 4876,
+          estimatedFobUsd: 1251.51,
+          baseLandedUsd: 1395.62,
+          baseLandedEgp: 70535,
+          lowLandedEgp: 69883,
+          highLandedEgp: 72582,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-11-17',
+          horizonWeeks: 12,
+          fcpoMYR: 4946,
+          estimatedFobUsd: 1268.94,
+          baseLandedUsd: 1414.51,
+          baseLandedEgp: 71574,
+          lowLandedEgp: 70584,
+          highLandedEgp: 74686,
+          status: 'Pending'
+        }
+      ],
+      sourceInputIdentity: 'FORECAST_INPUT|d467895fc65b1243c458',
+      sourceMarketSnapshotId: 'MARKET_SNAPSHOT|95fade9a5ef57fe01c97'
     }
   ];
 
@@ -9755,6 +9835,163 @@
         }
       },
       snapshotId: 'MARKET_SNAPSHOT|f306cd3c68b7738f1db8'
+    },
+    {
+      schemaVersion: 1,
+      snapshotDate: '2026-08-25',
+      capturedAt: '2026-08-25T12:50:03.105Z',
+      landedFormulaVersion: 'v1-fob-freight-insurance-cif-duty-vat-margin',
+      malaysia: {
+        cpoMYR: 4720,
+        usdMyr: 4.0394,
+        refiningProcessingAdjustment: 15,
+        oleinFractionationPremium: 15,
+        physicalMarketBasisAdjustment: 14.5,
+        totalRbdAdjustment: 44.5,
+        estimatedFobOleinUsd: 1212.9904,
+        rbdOleinFobMarketUSD: 1207.5
+      },
+      fx: {
+        usdMyr: 4.0394,
+        egpUsd: 50.42,
+        usdIdr: 17703
+      },
+      freight: {
+        freight: 36,
+        origin: 'my',
+        transitDays: 35,
+        clearanceDays: 7
+      },
+      importCosts: {
+        insurancePct: 0.75,
+        egyptDutyPct: 1.5,
+        vatOn: false,
+        vatPct: 14,
+        marginPct: 6
+      },
+      outputs: {
+        fobOleinUsd: 1212.9904,
+        originCostUsd: 0,
+        cifUsd: 1258.3578,
+        dutyUsd: 18.8754,
+        vatUsd: 0,
+        marginUsd: 76.634,
+        landedUSD: 1353.8672,
+        landedEGP: 68261.98
+      },
+      provenance: {
+        cpoMYR: {
+          source: 'agropost.wordpress.com dated "24 Aug 2026 – Palm Oil Prices at Closing" post, MDEX Bursa Malaysia Derivatives CPO futures table, Sep’26 contract',
+          sourceType: 'Market Report',
+          lastUpdated: '2026-08-24',
+          confidence: 'Medium',
+          status: 'Manual',
+          unit: 'MYR/MT',
+          refreshMethod: 'Daily AI refresh',
+          contractCode: 'Not confirmed by source (referred to only as "September 2026 contract")',
+          contractMonth: 'September 2026',
+          priceType: 'Last Traded (Agropost’s dated table lists this price under a "Last" column; no independent Bursa Malaysia/MPOB/Bernama settlement confirmation available for this exact date)',
+          observationDate: '24 Aug 2026',
+          contractSelectionRule: 'Nearest liquid FCPO contract (currently Sep’26, unchanged contract month from previous run; 24 Aug 2026 is a normal Monday trading session)'
+        },
+        usdMyr: {
+          source: 'Bank Negara Malaysia — KL USD/MYR Reference Rate (FMIP, financialmarkets.bnm.gov.my), 4.0394 for 24 Aug 2026',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-08-24',
+          confidence: 'High',
+          status: 'Manual',
+          unit: 'MYR/USD',
+          refreshMethod: 'Daily AI refresh',
+          observationDate: '24 Aug 2026'
+        },
+        egpUsd: {
+          source: 'Central Bank of Egypt Average Client Rate for USD/EGP, 25 Aug 2026, buy/sell 50.3513 / 50.4906 (via banklive.net, cross-checked against egrates.com which independently reports the same CBE rate as 50.351 / 50.491 for 25 Aug 2026)',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-08-25',
+          confidence: 'High',
+          status: 'Manual',
+          unit: 'EGP/USD',
+          refreshMethod: 'Daily AI refresh',
+          observationDate: '25 Aug 2026',
+          buy: 50.3513,
+          sell: 50.4906
+        },
+        freight: {
+          source: 'No Egypt-route source documented; nearest §09 citation (MPOB West Malaysia–Sumatra rates) is a different route',
+          sourceType: 'Not documented (route mismatch)',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily automation, only on Egypt-route-specific evidence, else left unchanged — scripts/daily-refresh-prompt.txt'
+        },
+        refiningSpread: {
+          source: 'agropost.wordpress.com dated "24 Aug 2026 – Palm Oil Prices at Closing" table (PHYSICAL MARKET PRICES FOB Malaysia), Sep’26 contract (RBD Palm Olein $1,207.50/MT selling vs CPO $1,163.00/MT selling); mblionoleo.com still shows its earlier dated table (13 Aug 2026, RBD Palm Olein $1,147.50/MT vs CPO $1,109.00/MT, spread $38.50) with no fresher print available this run',
+          sourceType: 'Market Report',
+          lastUpdated: '2026-08-24',
+          confidence: 'Medium',
+          status: 'Derived',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily AI refresh'
+        },
+        insurancePct: {
+          source: 'Not documented',
+          sourceType: 'Not documented',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Hardcoded',
+          unit: '%',
+          refreshMethod: 'Not refreshed by automation (static assumption)'
+        },
+        egyptDutyPct: {
+          source: 'WTO Tariff & Trade Data — Egypt member profile (§09 sources)',
+          sourceType: 'Regulatory / trade data',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: '%',
+          refreshMethod: 'Re-checked only on evidence of change — scripts/daily-refresh-prompt.txt'
+        },
+        rbdOleinFobMarketUSD: {
+          product: 'RBD Palm Olein',
+          priceBasis: 'FOB Malaysia (physical, dated price sheet)',
+          source: 'Agropost dated "PHYSICAL MARKET PRICES FOB Malaysia" table (agropost.wordpress.com), 24 Aug 2026 "Palm Oil Prices at Closing" post — Sep’26 contract, RBD Palm Olein $1,207.50/MT selling vs CPO $1,163.00/MT selling (spread $44.50/MT)',
+          sourceType: 'Market Report (dated physical price sheet)',
+          observationDate: '24 Aug 2026',
+          contractOrDeliveryMonth: 'September 2026 (Sep’26, as labeled on the source table)',
+          confidence: 'Medium',
+          status: 'Manual',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily automation — freshest of the MBLion/Agropost dated tables selected by observation date, scripts/daily-refresh-prompt.txt (commit 00edf0d)',
+          crossCheckSource: 'MBLion Oleo dated homepage table (mblionoleo.com) — the dated "FOB Malaysian Port" table, still showing its 13 Aug 2026 print unchanged as of this run',
+          crossCheckValue: 1147.5,
+          crossCheckObservationDate: '13 Aug 2026',
+          crossCheckDeltaUSD: 60
+        }
+      },
+      evidence: {
+        cpoMYR: {
+          tier: 'Estimated',
+          reason: 'Provenance is insufficient for a stronger tier'
+        },
+        usdMyr: {
+          tier: 'Verified',
+          reason: 'High-confidence, directly sourced figure'
+        },
+        egpUsd: {
+          tier: 'Verified',
+          reason: 'High-confidence, directly sourced figure'
+        },
+        freight: {
+          tier: 'Low Confidence',
+          reason: 'Source confidence is recorded as Low'
+        },
+        rbdOleinFobMarketUSD: {
+          tier: 'Low Confidence',
+          reason: 'Disagrees with MBLion Oleo dated homepage table (mblionoleo.com) — the dated "FOB Malaysian Port" table, still showing its 13 Aug 2026 print unchanged as of this run by 60 USD/MT, beyond the 20 USD/MT tolerance - not silently treated as cross-checked'
+        }
+      },
+      snapshotId: 'MARKET_SNAPSHOT|95fade9a5ef57fe01c97'
     }
   ];
 
