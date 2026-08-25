@@ -2334,11 +2334,16 @@
 <div class="tooltip" id="tooltip" role="status" aria-live="polite"></div>
 <div class="tooltip prov" id="provTooltip" role="dialog" aria-live="polite"></div>
 
-<script>
+<script id="canonical-publication-manifest" type="application/json">{"contractVersion":"PUBLICATION_ARTIFACT_MANIFEST_V1","publicationSnapshotId":"FEATURE003|d1651f4ed9535983fc74","marketObservationId":"MARKET_OBSERVATION|f00851f817b0ec193a77","fxObservationId":"FX_OBSERVATION|be2f9d3edf3458bce2e0","forecastVintageId":"FORECAST_VINTAGE|cf523f300f36f01c54c6","integrityStatus":"DEGRADE","marketUSD":1207.5,"fxValue":50.83,"fxBuy":50.759,"fxSell":50.8974,"forecastUSD":1217.87,"portUSD":1337.5,"marketEGP":61377.23,"portEGP":67985.13,"forecastEGP":61904.33,"marketSessionDate":"2026-08-24","fxBusinessDate":"2026-08-24"}</script>
+<script id="trader-note-contamination-registry" type="application/json">{"schemaVersion":1,"registryId":"FEATURE011_TEST_CONTAMINATION_REGISTRY_V1","records":[{"noteId":"NOTE|88417c67-4415-4c6d-b9d5-754413da831d","classification":"TEST_CONTAMINATION","reason":"Created by former unsafe Feature004 live UAT test","incident":"TEST_SAFETY_UNINTENDED_PRODUCTION_MUTATION_2026-08-25","knownCreatedAt":"2026-08-25T14:37:42.043Z","disposition":"PRESERVE_AND_EXCLUDE","eligibleForTraderIntelligence":false}]}</script><script>
 (function(){
   "use strict";
 
   var DEFAULTS = {
+    // These legacy configuration fields are retained for protected formula
+    // fixtures only. They are never copied into runtime state until a valid
+    // PublicationSnapshot is hydrated, and the generator never reads them as
+    // canonical publication inputs.
     cpoMYR: 4720,
     usdMyr: 4.0394,
     refiningSpread: 44.5,
@@ -2353,7 +2358,9 @@
     vatOn: false,
     vatPct: 14,
     marginPct: 6,
-    egpUsd: 50.42,
+    // Canonical FX is supplied only by PublicationSnapshot after hydration.
+    // Raw candidates are quarantined in data/raw-candidate-fx-evidence.json.
+    egpUsd: null,
     cpoIDR: 15844,
     usdIdr: 17703,
     // Stage 3A — direct market-reported RBD Palm Olein FOB Malaysian Port
@@ -2389,7 +2396,15 @@
     // supports. See PROJECT_DECISIONS.md's Daily Report entry.
     lang: 'ar'
   };
-  var state = Object.assign({}, DEFAULTS);
+  // Financial DEFAULTS are legacy research/configuration data, never a
+  // publication authority. Start with a neutral shell so no real historical
+  // value can render before the canonical PublicationSnapshot hydrates.
+  var state = Object.assign({}, DEFAULTS, {
+    cpoMYR:null, usdMyr:null, egpUsd:null, cpoIDR:null, usdIdr:null,
+    freight:null, insurancePct:null, egyptDutyPct:null, vatPct:null,
+    marginPct:null, refiningSpread:null, rbdOleinFobMarketUSD:null,
+    portArrivalCostUSD:null
+  });
   // Feature 003 canonical market bridge. The legacy DEFAULTS value remains
   // available to protected legacy calculations, but it is never the normal
   // Daily Report market-price authority after this bridge is loaded.
@@ -2410,6 +2425,7 @@
     feature003ApplicationReady = canonicalHydrationAttempted === true;
     window.feature003ApplicationReady = feature003ApplicationReady;
     document.documentElement.setAttribute('data-feature003-ready', feature003ApplicationReady ? 'true' : 'false');
+    document.documentElement.setAttribute('data-financial-state', canonicalSnapshotIsValid(RBD_OLEIN_CANONICAL_SNAPSHOT) && productionSnapshotIsValid(PRODUCTION_SNAPSHOT) ? 'READY' : (canonicalHydrationAttempted ? 'SNAPSHOT_INVALID' : 'UNAVAILABLE'));
     document.documentElement.setAttribute('data-feature003-snapshot-ready', canonicalSnapshotIsValid(RBD_OLEIN_CANONICAL_SNAPSHOT) ? 'true' : 'false');
     if (PRODUCTION_SNAPSHOT && PRODUCTION_SNAPSHOT.snapshotId) document.documentElement.setAttribute('data-feature003-snapshot-id', PRODUCTION_SNAPSHOT.snapshotId);
     if (PRODUCTION_FORECAST_SNAPSHOT && PRODUCTION_FORECAST_SNAPSHOT.forecastId) document.documentElement.setAttribute('data-feature003-forecast-id', PRODUCTION_FORECAST_SNAPSHOT.forecastId);
@@ -2435,13 +2451,20 @@
   function fxEgp(value){ return fxRateAvailable() && isFinite(value) ? value * state.egpUsd : null; }
 
   function applyProductionSnapshot(snapshot){
-    if (!productionSnapshotIsValid(snapshot)) return false;
+    if (!productionSnapshotIsValid(snapshot)) {
+      clearCanonicalFinancialState('SNAPSHOT_INVALID');
+      return false;
+    }
     RBD_OLEIN_CANONICAL_SNAPSHOT = snapshot.rbd;
     PRODUCTION_SNAPSHOT = snapshot;
     PRODUCTION_FORECAST_SNAPSHOT = snapshot.forecast.snapshot;
+    var canonicalInputs = snapshot.forecast && snapshot.forecast.snapshot && snapshot.forecast.snapshot.inputs && snapshot.forecast.snapshot.inputs.marketForecast || {};
     state.egpUsd = null;
     if (snapshot.fx && snapshot.fx.egpUsd && fxObservationIsValid(snapshot.fx.egpUsd)) state.egpUsd = snapshot.fx.egpUsd.value;
     if (snapshot.fx && snapshot.fx.usdMyr && isFinite(snapshot.fx.usdMyr.value)) state.usdMyr = snapshot.fx.usdMyr.value;
+    if (snapshot.fcpo && isFinite(snapshot.fcpo.rawValue)) state.cpoMYR = snapshot.fcpo.rawValue;
+    ['refiningProcessingAdjustment','oleinFractionationPremium','physicalMarketBasisAdjustment','freight','insurancePct','egyptDutyPct','vatPct','marginPct','idLevyPct','vatOn','origin'].forEach(function(key){ if (Object.prototype.hasOwnProperty.call(canonicalInputs,key)) state[key] = canonicalInputs[key]; });
+    if (snapshot.portCostContract && isFinite(snapshot.portCostContract.adjustmentUSDPerMT)) state.portArrivalCostUSD = snapshot.portCostContract.adjustmentUSDPerMT;
     MARKET_BOARD_OBSERVATIONS = Object.keys(snapshot.marketBoard || {}).map(function(key){ return snapshot.marketBoard[key]; });
     RBD_OLEIN_CANONICAL_STATUS = { status:'READY', detail:null, snapshotId:snapshot.snapshotId };
     state.rbdOleinFobMarketUSD = snapshot.rbd.canonicalPriceUSDPerMT;
@@ -2451,8 +2474,58 @@
     return true;
   }
 
+  // PublicationSnapshot is the atomic authority for every public financial
+  // claim. A failed replacement must clear the prior valid state before any
+  // render pass; component-level diagnostics are not permission to publish a
+  // partial market/FX/forecast view.
+  function clearCanonicalFinancialState(detail){
+    RBD_OLEIN_CANONICAL_SNAPSHOT = null;
+    PRODUCTION_SNAPSHOT = null;
+    PRODUCTION_FORECAST_SNAPSHOT = null;
+    MARKET_BOARD_OBSERVATIONS = [];
+    state.cpoMYR = null; state.usdMyr = null; state.egpUsd = null;
+    state.freight = null; state.insurancePct = null; state.egyptDutyPct = null;
+    state.vatPct = null; state.marginPct = null; state.refiningProcessingAdjustment = null;
+    state.oleinFractionationPremium = null; state.physicalMarketBasisAdjustment = null;
+    state.idLevyPct = null; state.vatOn = null; state.origin = null;
+    state.rbdOleinFobMarketUSD = null; state.portArrivalCostUSD = null;
+    state.feature003MarketFirstForecast = null;
+    RBD_OLEIN_CANONICAL_STATUS = { status:'SNAPSHOT_INVALID', detail:detail || 'snapshot failed the publication gate' };
+    document.documentElement.setAttribute('data-financial-state','SNAPSHOT_INVALID');
+  }
+
   function productionSnapshotIsValid(snapshot){
-    return !!(snapshot && snapshot.schemaVersion === 1 && snapshot.contractVersion === '1.0.0' && typeof snapshot.snapshotId === 'string' && snapshot.snapshotId.length > 0 && snapshot.marketObservationId && snapshot.fxObservationId && snapshot.forecastVintageId && snapshot.portCostContract && snapshot.portCostContract.version === 'PORT_COST_V1' && snapshot.publicationStatus === 'AUTHORIZED' && snapshot.integrityStatus !== 'BLOCK' && snapshot.freshness && ['CURRENT','LAST_AVAILABLE_MARKET_SESSION','STALE','MARKET_CLOSED','SOURCE_UNAVAILABLE'].indexOf(snapshot.freshness.state) !== -1 && snapshot.rbdObservation && snapshot.rbdObservation.observationId === snapshot.marketObservationId && snapshot.refresh && typeof snapshot.refresh.completedAt === 'string' && snapshot.status && snapshot.status.state === 'READY' && snapshot.status.validationState === 'VALIDATED' && canonicalSnapshotIsValid(snapshot.rbd) && snapshot.forecast && snapshot.forecast.snapshot && Array.isArray(snapshot.forecast.snapshot.forecastPoints) && snapshot.fx && snapshot.fx.egpUsd && snapshot.fx.egpUsd.fxObservationId === snapshot.fxObservationId && fxObservationIsValid(snapshot.fx.egpUsd) && snapshot.marketFirstForecast && isFinite(snapshot.marketFirstForecast.marketTodayUSD) && isFinite(snapshot.marketFirstForecast.marketForecast7dUSD) && isFinite(snapshot.marketFirstForecast.portArrivalAddOnUSD) && snapshot.marketFirstForecast.portTodayUSD === snapshot.marketFirstForecast.marketTodayUSD + snapshot.marketFirstForecast.portArrivalAddOnUSD && snapshot.marketFirstForecast.portForecast7dUSD === snapshot.marketFirstForecast.marketForecast7dUSD + snapshot.marketFirstForecast.portArrivalAddOnUSD && snapshot.fcpo && snapshot.fcpo.originalQuote && snapshot.fcpo.convertedEquivalents);
+    return !!(snapshot && snapshot.schemaVersion === 1 && snapshot.contractVersion === '1.0.0' && typeof snapshot.snapshotId === 'string' && snapshot.snapshotId.length > 0 && snapshot.marketObservationId && snapshot.fxObservationId && snapshot.forecastVintageId && snapshot.portCostContract && snapshot.portCostContract.version === 'PORT_COST_V1' && snapshot.publicationStatus === 'AUTHORIZED' && snapshot.integrityStatus !== 'BLOCK' && snapshot.freshness && ['CURRENT','LAST_AVAILABLE_MARKET_SESSION','STALE','MARKET_CLOSED','SOURCE_UNAVAILABLE'].indexOf(snapshot.freshness.state) !== -1 && snapshot.rbdObservation && snapshot.rbdObservation.observationId === snapshot.marketObservationId && snapshot.refresh && typeof snapshot.refresh.completedAt === 'string' && snapshot.status && snapshot.status.state === 'READY' && snapshot.status.validationState === 'VALIDATED' && canonicalSnapshotIsValid(snapshot.rbd) && snapshot.forecast && snapshot.forecast.snapshot && Array.isArray(snapshot.forecast.snapshot.forecastPoints) && snapshot.fx && snapshot.fx.egpUsd && snapshot.fx.egpUsd.fxObservationId === snapshot.fxObservationId && fxObservationIsValid(snapshot.fx.egpUsd) && snapshot.marketFirstForecast && isFinite(snapshot.marketFirstForecast.marketTodayUSD) && isFinite(snapshot.marketFirstForecast.marketForecast7dUSD) && isFinite(snapshot.marketFirstForecast.portArrivalAddOnUSD) && snapshot.marketFirstForecast.portTodayUSD === snapshot.marketFirstForecast.marketTodayUSD + snapshot.marketFirstForecast.portArrivalAddOnUSD && snapshot.marketFirstForecast.portForecast7dUSD === snapshot.marketFirstForecast.marketForecast7dUSD + snapshot.marketFirstForecast.portArrivalAddOnUSD && snapshot.fcpo && snapshot.fcpo.originalQuote && snapshot.fcpo.convertedEquivalents && publicationManifestIsValid(snapshot));
+  }
+
+  function publicationManifestIsValid(snapshot){
+    var node = document.getElementById('canonical-publication-manifest');
+    if (!node || !snapshot) return false;
+    var manifest;
+    try { manifest = JSON.parse(node.textContent || ''); } catch (e) { return false; }
+    var fx = snapshot.fx && snapshot.fx.egpUsd;
+    var first = snapshot.marketFirstForecast;
+    var expected = {
+      publicationSnapshotId: snapshot.snapshotId,
+      marketObservationId: snapshot.marketObservationId,
+      fxObservationId: snapshot.fxObservationId,
+      forecastVintageId: snapshot.forecastVintageId,
+      marketUSD: snapshot.rbd && snapshot.rbd.canonicalPriceUSDPerMT,
+      fxValue: fx && fx.value, fxBuy: fx && fx.buy, fxSell: fx && fx.sell,
+      forecastUSD: first && first.marketForecast7dUSD,
+      portUSD: first && first.portTodayUSD,
+      marketEGP: snapshot.rbd && fx && snapshot.rbd.canonicalPriceUSDPerMT * fx.value,
+      portEGP: first && fx && first.portTodayUSD * fx.value,
+      forecastEGP: first && fx && first.marketForecast7dUSD * fx.value,
+      marketSessionDate: snapshot.rbdObservation && snapshot.rbdObservation.marketSessionDate,
+      fxBusinessDate: fx && fx.businessDate
+    };
+    var identityFields = ['publicationSnapshotId','marketObservationId','fxObservationId','forecastVintageId','marketSessionDate','fxBusinessDate'];
+    if (manifest.contractVersion !== 'PUBLICATION_ARTIFACT_MANIFEST_V1') return false;
+    for (var i = 0; i < identityFields.length; i++) if (manifest[identityFields[i]] !== expected[identityFields[i]]) return false;
+    var numericFields = ['marketUSD','fxValue','fxBuy','fxSell','forecastUSD','portUSD','marketEGP','portEGP','forecastEGP'];
+    for (var j = 0; j < numericFields.length; j++) if (typeof manifest[numericFields[j]] !== 'number' || Math.round(manifest[numericFields[j]] * 100) !== Math.round(expected[numericFields[j]] * 100)) return false;
+    return true;
   }
 
   // Product → Origin → Evidence Chain. Only RBD Palm Olein is active; no
@@ -2539,10 +2612,10 @@
       unit:'MYR/USD', refreshMethod:'Daily AI refresh', observationDate:'24 Aug 2026'
     },
     egpUsd: {
-      source:'Central Bank of Egypt Average Client Rate for USD/EGP, 25 Aug 2026, buy/sell 50.3513 / 50.4906 (via banklive.net, cross-checked against egrates.com which independently reports the same CBE rate as 50.351 / 50.491 for 25 Aug 2026)',
-      sourceType:'Official Publication', lastUpdated:'2026-08-25', confidence:'High', status:'Manual',
-      unit:'EGP/USD', refreshMethod:'Daily AI refresh', observationDate:'25 Aug 2026',
-      buy:50.3513, sell:50.4906
+      source:'Central Bank of Egypt official website — Average Client Rate in EGP, USD/EGP, 24 Aug 2026',
+      sourceType:'Official Publication', lastUpdated:'2026-08-24', confidence:'High', status:'Official',
+      unit:'EGP/USD', refreshMethod:'PublicationSnapshot only', observationDate:'24 Aug 2026',
+      buy:50.759, sell:50.8974
     },
     freight: {
       source:'No Egypt-route source documented; nearest §09 citation (MPOB West Malaysia–Sumatra rates) is a different route',
@@ -11142,8 +11215,28 @@
     document.getElementById('egyptFxUpdated').textContent = data.asOfDate;
   }
 
+  function renderFinancialUnavailable(){
+    document.documentElement.setAttribute('data-financial-state','UNAVAILABLE');
+    var unavailable = state.lang === 'ar' ? 'البيانات المالية غير متاحة حاليا' : 'Financial data currently unavailable';
+    ['heroEGP','heroUSD','heroKG','sharedEgyptFx','sharedEgyptDuty','sharedEgyptVat','drFxValue','drFxBuy','drFxSell','drFxRateDate','drFxRetrieved','drCard1ValueUSD','drCard1ValueEGP','drCard2ValueUSD','drCard2ValueEGP','drCard4BaselineUSD','drCard4TargetUSD','drCard4TargetEGP','drCard4TargetExactUSD','drCard4Change','drCard4ConfidenceValue','drCard4ConfidenceQual','drCard4ConfidenceFootnote','drMarketObservationDate','drCloudRefreshDate','drForecastVintageDate','mastheadSnapshotDate'].forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent='—'; });
+    ['drCard1Eyebrow','drCard2Eyebrow','drCard4Eyebrow','drForecastBaselineLabel','drExpectedChangeLabel','drForecastTargetLabel','drHeroChartConcept'].forEach(function(key){ var nodes=document.querySelectorAll('[data-i18n="'+key+'"]'); for(var n=0;n<nodes.length;n++) nodes[n].textContent=unavailable; });
+    ['drCard1Meta','drCard2Meta','drCard4Meta','drFxMeta','drFxMidpoint','drFxSource','drMarketQualityState','drMarketQualityDetail','drSmartState','drSmartExplanation','drForecastExplanationSummary'].forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=''; });
+    var equation=document.getElementById('drCard2Equation'); if(equation) equation.innerHTML='';
+    ['drCard4Word','drCard4Change','drRbdHeroChartSvg','drCard1Sparkline','drCard4MiniChart'].forEach(function(id){ var el=document.getElementById(id); if(el) { if(id.indexOf('Chart') !== -1 || id.indexOf('Sparkline') !== -1) el.innerHTML=''; else el.textContent='—'; } });
+    var daily = document.getElementById('tabPanelDaily');
+    if (daily) { daily.setAttribute('data-financial-state','SNAPSHOT_INVALID'); daily.setAttribute('aria-label', unavailable); }
+    var board = document.getElementById('drMarketBoardMobile'); if (board) { board.innerHTML=''; board.textContent=unavailable; }
+    var boardTable = document.querySelector('.dr-market-board-table'); if (boardTable) { var body=boardTable.querySelector('tbody'); if(body) { body.innerHTML=''; var row=document.createElement('tr'); var cell=document.createElement('td'); cell.colSpan=5; cell.textContent=unavailable; row.appendChild(cell); body.appendChild(row); } }
+    ['drCardMarket','drCardPort','drCardOutlook'].forEach(function(id){ var el=document.getElementById(id); if(el) el.setAttribute('data-financial-state','UNAVAILABLE'); });
+    var status=document.getElementById('drFxStatus'); if(status){ status.textContent=t('drFxStatusUnavailable'); status.className='dr-fx-status is-unavailable'; }
+    var quality=document.getElementById('drMarketQuality'); if(quality){ quality.className='dr-market-quality-row is-unavailable'; quality.setAttribute('data-smart-status','UNKNOWN'); }
+    var qualityState=document.getElementById('drMarketQualityState'); if(qualityState) qualityState.textContent='UNAVAILABLE';
+    var smart=document.getElementById('drForecastExplanation'); if(smart) smart.setAttribute('data-smart-state','UNAVAILABLE');
+  }
+
   // ---------- Master render ----------
   function renderAll(){
+    if (!canonicalHydrationAttempted || !productionSnapshotIsValid(PRODUCTION_SNAPSHOT) || !canonicalSnapshotIsValid(RBD_OLEIN_CANONICAL_SNAPSHOT)) { renderFinancialUnavailable(); updateFeature003Ready(); return; }
     enforceIndonesiaOriginFailSafe();
     var malaysiaDecision = computeProductOriginDecision(ACTIVE_PRODUCT_ID, 'MY', state.egpUsd);
     var indonesiaDecision = computeProductOriginDecision(ACTIVE_PRODUCT_ID, 'ID', state.egpUsd);
@@ -12598,6 +12691,16 @@
       if (!applyProductionSnapshot(snapshot)) throw new Error('production snapshot failed the consumer gate');
       canonicalHydrationAttempted = true; renderAll();
     }).catch(function(productionError){
+      // An HTTP-successful but invalid PublicationSnapshot is a publication
+      // failure, not permission to consult the legacy local API. The latter
+      // may expose component evidence, but it cannot authorize public
+      // financial rendering or replace the immutable publication unit.
+      if (String(productionError && productionError.message || '').indexOf('failed the consumer gate') !== -1) {
+        clearCanonicalFinancialState('SNAPSHOT_INVALID');
+        canonicalHydrationAttempted = true;
+        renderAll();
+        return;
+      }
       // Local development keeps its existing API path when the checked-out
       // snapshot artifact has not yet been generated. This branch is never a
       // public fallback to embedded financial defaults.
@@ -12625,7 +12728,13 @@
       if (snapshot.snapshotId === currentSnapshotId) { hint.textContent = t('drRefreshNoChange'); return; }
       if (!applyProductionSnapshot(snapshot)) throw new Error('published snapshot failed the consumer gate');
       canonicalHydrationAttempted = true; hint.textContent = t('drRefreshSuccess'); renderAll();
-    }).catch(function(error){ hint.textContent = t('drRefreshFailure'); renderAll(); }).finally(function(){ button.disabled = false; });
+    }).catch(function(error){
+      if (String(error && error.message || '').indexOf('failed the consumer gate') !== -1) {
+        clearCanonicalFinancialState('SNAPSHOT_INVALID');
+        canonicalHydrationAttempted = true;
+      }
+      hint.textContent = t('drRefreshFailure'); renderAll();
+    }).finally(function(){ button.disabled = false; });
   }
   function renderRbdHeroChart(){
     var svg = document.getElementById('drRbdHeroChartSvg');
@@ -12756,8 +12865,12 @@
     if (chartConceptLabel) chartConceptLabel.textContent = t(isCurrentMarket ? 'drHeroChartConcept' : 'drHeroChartConceptLatest');
     var card1Eyebrow = panel.querySelector('[data-i18n="drCard1Eyebrow"]');
     var card2Eyebrow = panel.querySelector('[data-i18n="drCard2Eyebrow"]');
+    var card4Eyebrow = panel.querySelector('[data-i18n="drCard4Eyebrow"]');
+    var forecastTargetLabel = panel.querySelector('[data-i18n="drForecastTargetLabel"]');
     if (card1Eyebrow) card1Eyebrow.textContent = t(isCurrentMarket ? 'drCard1Eyebrow' : 'drCard1LatestEyebrow');
     if (card2Eyebrow) card2Eyebrow.textContent = t(isCurrentMarket ? 'drCard2Eyebrow' : 'drCard2LatestEyebrow');
+    if (card4Eyebrow) card4Eyebrow.textContent = t('drCard4Eyebrow');
+    if (forecastTargetLabel) forecastTargetLabel.textContent = t('drForecastTargetLabel');
     var marketUSD = canonical ? canonical.canonicalPriceUSDPerMT : null;
     document.getElementById('drCard1ValueUSD').textContent = marketUSD === null ? '—' : fmt(marketUSD, 2);
     document.getElementById('drCard1ValueEGP').textContent = fxEgp(marketUSD) === null ? '—' : fmt(fxEgp(marketUSD), 2);
@@ -12962,7 +13075,7 @@
     var listEl = document.getElementById('drNotesList');
     var emptyEl = document.getElementById('drNotesEmpty');
     if (!listEl || !emptyEl) return;
-    var notes = traderNotesState.records || [];
+    var notes = (traderNotesState.records || []).filter(traderNoteUiEligible);
     if (!notes.length){
       emptyEl.hidden = false;
       listEl.hidden = true;
@@ -12986,6 +13099,19 @@
       item.appendChild(timeEl);
       listEl.appendChild(item);
     });
+  }
+  // The UI applies the same explicit provenance/disposition contract as the
+  // Feature011 ingestion gate. This is presentation filtering only: the raw
+  // note remains preserved in the service and is never deleted or mutated.
+  function traderNoteUiEligible(note){
+    if (!note) return false;
+    var id = note.id || note.noteId, provenance = String(note.provenance || note.origin || '').toUpperCase();
+    if (provenance === 'TEST') return false;
+    var registryNode = document.getElementById('trader-note-contamination-registry'), registry = null;
+    try { registry = registryNode ? JSON.parse(registryNode.textContent || '{}') : null; } catch (_) { registry = null; }
+    var records = registry && Array.isArray(registry.records) ? registry.records : [];
+    var disposition = records.filter(function(record){ return record && record.noteId === id; })[0];
+    return !(disposition && disposition.eligibleForTraderIntelligence === false);
   }
   function formatTraderNoteDate(value){
     var d=new Date(value); if(isNaN(d.getTime())) return String(value||'—');
