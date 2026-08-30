@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "contractVersion": "1.0.0",
-  "snapshotId": "FEATURE003|6d36dd7215fe6a34d349",
-  "canonicalVersion": "FEATURE003|6d36dd7215fe6a34d349",
-  "generatedAt": "2026-08-30T16:49:53.743Z",
+  "snapshotId": "FEATURE003|1aa42679c3cff76a79e4",
+  "canonicalVersion": "FEATURE003|1aa42679c3cff76a79e4",
+  "generatedAt": "2026-08-30T17:11:10.605Z",
   "refresh": {
-    "completedAt": "2026-08-30T16:49:53.743Z",
-    "artifactGeneratedAt": "2026-08-30T16:49:53.743Z",
+    "completedAt": "2026-08-30T17:11:10.605Z",
+    "artifactGeneratedAt": "2026-08-30T17:11:10.605Z",
     "source": "daily-refresh validated completion"
   },
   "sourceIdentity": {
-    "canonicalSnapshotId": "RBD_PALM_OLEIN|RBD_PALM_OLEIN|AGROPOST_PHYSICAL_FOB_2026-09|2026-08-24T00:00:00.000Z|USD|USD/MT",
+    "canonicalSnapshotId": "CANONICAL_OBSERVATION|af51a3f41474504b712770fd",
     "fcpoObservationId": "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-08-21|2026-11",
     "boardObservationIds": [
       "CPO_PHYSICAL|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT",
@@ -34,7 +34,7 @@
   },
   "rbd": {
     "schemaVersion": 1,
-    "snapshotId": "RBD_PALM_OLEIN|RBD_PALM_OLEIN|AGROPOST_PHYSICAL_FOB_2026-09|2026-08-24T00:00:00.000Z|USD|USD/MT",
+    "snapshotId": "CANONICAL_OBSERVATION|af51a3f41474504b712770fd",
     "productId": "RBD_PALM_OLEIN",
     "productCanonicalName": "RBD Palm Olein",
     "canonicalPriceUSDPerMT": 1200,
@@ -44,46 +44,30 @@
     "observationDate": "2026-08-28",
     "observationDateTime": "2026-08-28T00:00:00.000Z",
     "selectedSourceId": "AGROPOST_CROSSCHECK_CLOSING",
-    "selectedSourceName": "https://agropost.wordpress.com/2026/08/28/28-aug-2026-palm-oil-prices-at-closing/",
+    "selectedSourceName": "Agropost physical market closing table",
     "selectedSourceReference": "https://agropost.wordpress.com/2026/08/28/28-aug-2026-palm-oil-prices-at-closing/",
     "sourceTier": "DIRECT_MARKET",
     "freshnessState": "CURRENT",
     "validationState": "VALIDATED",
-    "conflictState": "NOT_ASSESSED",
-    "temporalComparisonState": "TEMPORALLY_DIFFERENT",
-    "corroborationCount": 1,
-    "comparedObservationIds": [
-      "RBD_PALM_OLEIN|AGROPOST_PHYSICAL_FOB_2026-09|2026-08-24T00:00:00.000Z|USD|USD/MT"
-    ],
-    "sourceObservationIds": [
-      "RBD_PALM_OLEIN|AGROPOST_PHYSICAL_FOB_2026-09|2026-08-24T00:00:00.000Z|USD|USD/MT",
-      "RBD_PALM_OLEIN|MBLION_RBD_OLEIN_FOB|2026-08-21T11:32:44.453Z|USD|USD/MT"
-    ],
-    "sourceEvidenceReferences": [
-      "https://agropost.wordpress.com/",
-      "https://www.mblionoleo.com/"
-    ],
-    "latestTrustedObservationAt": "2026-08-24T00:00:00.000Z",
-    "latestTrustedSource": "AGROPOST_PHYSICAL_FOB_2026-09",
-    "latestTrustedPrice": 1207.5,
-    "latestOfficialObservationAt": null,
-    "latestOfficialPrice": null,
-    "latestMarketWindow": {
-      "start": "2026-08-24",
-      "end": "2026-08-24",
-      "observationIds": [
-        "RBD_PALM_OLEIN|AGROPOST_PHYSICAL_FOB_2026-09|2026-08-24T00:00:00.000Z|USD|USD/MT"
-      ]
+    "canonicalEligibility": true,
+    "fallbackUsed": false,
+    "selectedContract": "2026-09",
+    "contractMonth": "2026-09",
+    "originalQuote": {
+      "value": 1200,
+      "currency": "USD",
+      "unit": "USD/MT",
+      "official": false
     },
-    "freshnessPolicy": {
-      "comparisonWindowDays": 2,
-      "toleranceUSDPerMT": 20,
-      "sourceCurrentMaxAgeDays": 1
+    "nativeQuote": {
+      "value": 1200,
+      "currency": "USD",
+      "unit": "USD/MT"
     },
-    "warningState": "OFFICIAL_OR_OTHER_SOURCE_LAGGING",
-    "capturedAt": "2026-08-25T06:00:00.000Z",
-    "selectionReason": "newest trusted eligible observation selected; source tier is the deterministic tie-break when observations are equally recent; older observations remain audit evidence; older eligible source observation is outside the latest market window",
-    "contractMonth": "2026-09"
+    "sourceContextId": "AGROPOST_TABLE|2026-08-28|SEP-2026|FOB-MALAYSIA",
+    "candidateId": "CANDIDATE_EVIDENCE|f8ee952576776bdaabc9",
+    "rawEvidenceIdentity": "sha256:13d44b28b33db3e6ad836c1ca1170c623d17127d9fa24409699bc8046d9ef92c",
+    "capturedAt": "2026-08-29T07:00:00.000Z"
   },
   "portArrival": {
     "usdPerMT": 1330,
@@ -459,9 +443,9 @@
     "unit": "USD/MT",
     "marketSessionDate": "2026-08-28",
     "observedAt": "2026-08-28T00:00:00.000Z",
-    "source": "https://agropost.wordpress.com/2026/08/28/28-aug-2026-palm-oil-prices-at-closing/",
+    "source": "Agropost physical market closing table",
     "sourceUrl": "https://agropost.wordpress.com/2026/08/28/28-aug-2026-palm-oil-prices-at-closing/",
-    "sourceCapturedAt": "2026-08-25T06:00:00.000Z",
+    "sourceCapturedAt": "2026-08-29T07:00:00.000Z",
     "sourceIdentity": "AGROPOST_CROSSCHECK_CLOSING",
     "validationStatus": "VALID",
     "reasonCodes": [],
