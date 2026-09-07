@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "contractVersion": "1.0.0",
-  "snapshotId": "FEATURE003|b410bf2e92c7b7c165dc",
-  "canonicalVersion": "FEATURE003|b410bf2e92c7b7c165dc",
-  "generatedAt": "2026-09-07T13:33:47.944Z",
+  "snapshotId": "FEATURE003|714d65b472639aa28f40",
+  "canonicalVersion": "FEATURE003|714d65b472639aa28f40",
+  "generatedAt": "2026-09-07T18:28:35.914Z",
   "refresh": {
-    "completedAt": "2026-09-07T13:33:47.944Z",
-    "artifactGeneratedAt": "2026-09-07T13:33:47.944Z",
+    "completedAt": "2026-09-07T18:28:35.914Z",
+    "artifactGeneratedAt": "2026-09-07T18:28:35.914Z",
     "source": "daily-refresh validated completion"
   },
   "sourceIdentity": {
-    "canonicalSnapshotId": "CANONICAL_OBSERVATION|1c01d97da81d18b5578da76c",
+    "canonicalSnapshotId": "CANONICAL_OBSERVATION|d1b4980ab18b4aed3cda0a42",
     "fcpoObservationId": "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-08-21|2026-11",
     "boardObservationIds": [
       "CPO_PHYSICAL|MBLION_CURRENT_TICKER|2026-08-21T11:32:44.453Z|USD|USD/MT",
@@ -22,30 +22,30 @@
     ],
     "forecastIssuedDate": "2026-09-07",
     "forecastModelVersion": "v1-linear-curve-fx-scenario",
-    "forecastInputIdentity": "FORECAST_INPUT|beb4a5106728e96a8157",
-    "marketSnapshotId": "MARKET_SNAPSHOT|128172cc501a9ad5ed84",
+    "forecastInputIdentity": "FORECAST_INPUT|a8a010985689f2a230a1",
+    "marketSnapshotId": "MARKET_SNAPSHOT|cdae97a8e77f66a43e7b",
     "marketState": {
-      "cpoMYR": 4931,
+      "cpoMYR": 4979,
       "usdMyr": 4.0476,
       "egpUsd": 50.92,
-      "rbdOleinFobMarketUSD": 1190,
-      "sourceInputIdentity": "FORECAST_INPUT|beb4a5106728e96a8157"
+      "rbdOleinFobMarketUSD": 1207.5,
+      "sourceInputIdentity": "FORECAST_INPUT|a8a010985689f2a230a1"
     }
   },
   "rbd": {
     "schemaVersion": 1,
-    "snapshotId": "CANONICAL_OBSERVATION|1c01d97da81d18b5578da76c",
+    "snapshotId": "CANONICAL_OBSERVATION|d1b4980ab18b4aed3cda0a42",
     "productId": "RBD_PALM_OLEIN",
     "productCanonicalName": "RBD Palm Olein",
-    "canonicalPriceUSDPerMT": 1190,
-    "rawSelectedPrice": 1190,
+    "canonicalPriceUSDPerMT": 1207.5,
+    "rawSelectedPrice": 1207.5,
     "rawSelectedCurrency": "USD",
     "rawSelectedUnit": "USD/MT",
-    "observationDate": "2026-09-04",
-    "observationDateTime": "2026-09-04T00:00:00.000Z",
+    "observationDate": "2026-09-07",
+    "observationDateTime": "2026-09-07T00:00:00.000Z",
     "selectedSourceId": "AGROPOST_CROSSCHECK_CLOSING",
     "selectedSourceName": "Agropost physical market closing table",
-    "selectedSourceReference": "https://agropost.wordpress.com/2026/09/04/4-sep-2026-palm-oil-prices-at-closing/",
+    "selectedSourceReference": "https://agropost.wordpress.com/2026/09/07/7-sep-2026-palm-oil-prices-at-closing/",
     "sourceTier": "DIRECT_MARKET",
     "freshnessState": "CURRENT",
     "validationState": "VALIDATED",
@@ -54,23 +54,23 @@
     "selectedContract": "2026-09",
     "contractMonth": "2026-09",
     "originalQuote": {
-      "value": 1190,
+      "value": 1207.5,
       "currency": "USD",
       "unit": "USD/MT",
       "official": false
     },
     "nativeQuote": {
-      "value": 1190,
+      "value": 1207.5,
       "currency": "USD",
       "unit": "USD/MT"
     },
-    "sourceContextId": "AGROPOST_TABLE|2026-09-04|SEP-2026|FOB-MALAYSIA",
-    "candidateId": "CANDIDATE_EVIDENCE|4d911353d955242aaa89",
-    "rawEvidenceIdentity": "sha256:5764cf510fc6add9a02db40273e42f65e0da7110575f903065b1c7c07898a8ed",
-    "capturedAt": "2026-09-04T11:59:11.680Z"
+    "sourceContextId": "AGROPOST_TABLE|2026-09-07|SEP-2026|FOB-MALAYSIA",
+    "candidateId": "CANDIDATE_EVIDENCE|8e76acd1769620b9d09e",
+    "rawEvidenceIdentity": "sha256:e27fcaf7b34d21510d3ef512266ee3cbb85b43932974e9a139175ed590b6ef9b",
+    "capturedAt": "2026-09-07T18:25:03.972Z"
   },
   "portArrival": {
-    "usdPerMT": 1320,
+    "usdPerMT": 1337.5,
     "rule": "canonical RBD Palm Olein + 130 USD/MT",
     "adjustmentUSDPerMT": 130,
     "currency": "USD",
@@ -87,17 +87,17 @@
     "marketType": "FUTURES",
     "sourceId": "AGROPOST_FCPO_CLOSING",
     "sourceName": "Agropost Palm Oil Prices at Closing",
-    "sourceReference": "https://agropost.wordpress.com/2026/09/04/4-sep-2026-palm-oil-prices-at-closing/",
+    "sourceReference": "https://agropost.wordpress.com/2026/09/07/7-sep-2026-palm-oil-prices-at-closing/",
     "sourceTier": "SECONDARY_MARKET_DATA",
     "sourceAccessMethod": "public WordPress REST API",
     "contractMonth": "2026-11",
     "contractExpiry": "2026-11-13",
-    "rawValue": 4931,
-    "rawPrice": 4931,
+    "rawValue": 4979,
+    "rawPrice": 4979,
     "rawCurrency": "MYR",
     "rawUnit": "MYR/MT",
     "priceType": "SESSION_LAST",
-    "observationTimestamp": "2026-09-04",
+    "observationTimestamp": "2026-09-07",
     "acquiredAt": "2026-08-21T22:37:30.981Z",
     "delayedBy": null,
     "freshnessAge": 22.6252725,
@@ -143,14 +143,14 @@
     "instrumentType": "EXCHANGE_FUTURES",
     "directOrProxy": "SECONDARY",
     "originalQuote": {
-      "value": 4931,
+      "value": 4979,
       "currency": "MYR",
       "unit": "MYR/MT",
       "official": true
     },
     "convertedEquivalents": {
-      "usdPerMT": 1218.2527917778436,
-      "egpPerMT": 62033.4321573278,
+      "usdPerMT": 1230.1116711137463,
+      "egpPerMT": 62637.28629311197,
       "fxChain": "MYR → USD → EGP",
       "usdMyr": 4.0476,
       "egpUsd": 50.92
@@ -423,33 +423,33 @@
     "usdMyr": {
       "value": 4.0476,
       "source": "BNM KL USD/MYR Reference Rate",
-      "capturedAt": "2026-09-07T13:33:47.0673948Z",
+      "capturedAt": "2026-09-07T18:28:35.0655469Z",
       "observationDate": "2026-09-07",
       "freshnessState": "Verified",
       "status": "Official",
       "unit": "MYR/USD"
     }
   },
-  "marketObservationId": "MARKET_OBSERVATION|c59933f56843efa7a1dd",
+  "marketObservationId": "MARKET_OBSERVATION|eed9b67c52c312eb98c8",
   "fxObservationId": "FX_OBSERVATION|73a4e04943eca9d1c002",
-  "forecastVintageId": "FORECAST_VINTAGE|93b80875783fbe460aa9",
+  "forecastVintageId": "FORECAST_VINTAGE|2220ce0e1af715e7c360",
   "rbdObservation": {
     "contractVersion": "1.0.0",
     "instrument": "RBD_PALM_OLEIN",
     "product": "RBD Palm Olein",
     "contractMonth": "2026-09",
-    "price": 1190,
+    "price": 1207.5,
     "currency": "USD",
     "unit": "USD/MT",
-    "marketSessionDate": "2026-09-04",
-    "observedAt": "2026-09-04T00:00:00.000Z",
+    "marketSessionDate": "2026-09-07",
+    "observedAt": "2026-09-07T00:00:00.000Z",
     "source": "Agropost physical market closing table",
-    "sourceUrl": "https://agropost.wordpress.com/2026/09/04/4-sep-2026-palm-oil-prices-at-closing/",
-    "sourceCapturedAt": "2026-09-04T11:59:11.680Z",
+    "sourceUrl": "https://agropost.wordpress.com/2026/09/07/7-sep-2026-palm-oil-prices-at-closing/",
+    "sourceCapturedAt": "2026-09-07T18:25:03.972Z",
     "sourceIdentity": "AGROPOST_CROSSCHECK_CLOSING",
     "validationStatus": "VALID",
     "reasonCodes": [],
-    "observationId": "MARKET_OBSERVATION|c59933f56843efa7a1dd"
+    "observationId": "MARKET_OBSERVATION|eed9b67c52c312eb98c8"
   },
   "portCostContract": {
     "version": "PORT_COST_V1",
@@ -457,12 +457,12 @@
     "unit": "USD/MT"
   },
   "freshness": {
-    "state": "STALE",
-    "marketSessionDate": "2026-09-04",
+    "state": "CURRENT",
+    "marketSessionDate": "2026-09-07",
     "expectedLatestMarketSession": "2026-09-07",
     "policyId": "MARKET_SESSION_V1"
   },
-  "integrityStatus": "DEGRADE",
+  "integrityStatus": "HEALTHY",
   "publicationStatus": "AUTHORIZED",
   "rbdMarketChart": {
     "unit": "USD/MT",
@@ -492,9 +492,9 @@
         "valueUSDPerMT": 1207.5
       },
       {
-        "date": "2026-09-04",
-        "kind": "latest",
-        "valueUSDPerMT": 1190
+        "date": "2026-09-07",
+        "kind": "today",
+        "valueUSDPerMT": 1207.5
       },
       {
         "date": "2026-09-14",
@@ -509,23 +509,23 @@
     "snapshot": {
       "schemaVersion": 1,
       "issuedDate": "2026-09-07",
-      "capturedAt": "2026-09-07T13:30:59.1288039Z",
+      "capturedAt": "2026-09-07T18:25:03.9721053Z",
       "captureStatus": "CAPTURED",
       "forecastDefinitionVersion": "v1-linear-curve-fx-scenario",
       "landedFormulaVersion": "v1-fob-freight-insurance-cif-duty-vat-margin",
       "classification": "SCENARIO_DERIVED",
       "sourceSnapshotDate": "2026-09-07",
-      "sourceMarketSnapshotId": "MARKET_SNAPSHOT|128172cc501a9ad5ed84",
-      "sourceInputIdentity": "FORECAST_INPUT|beb4a5106728e96a8157",
+      "sourceMarketSnapshotId": "MARKET_SNAPSHOT|cdae97a8e77f66a43e7b",
+      "sourceInputIdentity": "FORECAST_INPUT|a8a010985689f2a230a1",
       "sourceInputIdentityVersion": "v3-forecast-driving-normalized",
-      "forecastId": "FORECAST_VINTAGE|93b80875783fbe460aa9",
+      "forecastId": "FORECAST_VINTAGE|2220ce0e1af715e7c360",
       "inputs": {
-        "currentFcpoMYR": 4931,
+        "currentFcpoMYR": 4979,
         "currentUsdMyr": 4.0476,
         "currentEgpUsd": 50.92,
         "currentFxObservationId": "FX_OBSERVATION|73a4e04943eca9d1c002",
         "marketForecast": {
-          "cpoMYR": 4931,
+          "cpoMYR": 4979,
           "usdMyr": 4.0476,
           "refiningProcessingAdjustment": 15,
           "oleinFractionationPremium": 15,
@@ -585,17 +585,17 @@
         },
         "provenance": {
           "cpoMYR": {
-            "source": "https://agropost.wordpress.com/2026/09/04/4-sep-2026-palm-oil-prices-at-closing/",
+            "source": "https://agropost.wordpress.com/2026/09/07/7-sep-2026-palm-oil-prices-at-closing/",
             "sourceType": "Validated Market Report",
-            "lastUpdated": "2026-09-04",
+            "lastUpdated": "2026-09-07",
             "confidence": "Medium",
             "status": "Validated",
             "unit": "MYR/MT",
             "refreshMethod": "Deterministic compatibility projection",
-            "observationDate": "2026-09-04",
+            "observationDate": "2026-09-07",
             "providerId": "AGROPOST_FCPO_CLOSING",
-            "evidenceId": "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-09-04|2026-11",
-            "sourceReference": "https://agropost.wordpress.com/2026/09/04/4-sep-2026-palm-oil-prices-at-closing/",
+            "evidenceId": "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-09-07|2026-11",
+            "sourceReference": "https://agropost.wordpress.com/2026/09/07/7-sep-2026-palm-oil-prices-at-closing/",
             "projectionVersion": "FEATURE016_BASELINE_PROJECTION_V1",
             "contractMonth": "2026-11",
             "priceType": "SESSION_LAST",
@@ -612,7 +612,7 @@
             "refreshMethod": "Deterministic compatibility projection",
             "observationDate": "2026-09-07",
             "providerId": "BNM_KL_USD_MYR_REFERENCE_RATE",
-            "evidenceId": "sha256:2a008a9c33b159aca5fe5cb66e5cf0e17ba066911023608bad9ab99a8b2a08e4",
+            "evidenceId": "sha256:53308e5007e10a360351da3c34bdf289494e369d246d7fd01b9ec9b9cc3ba81a",
             "sourceReference": "https://financialmarkets.bnm.gov.my/data-download-kl-usd-myr-reference-rate",
             "projectionVersion": "FEATURE016_BASELINE_PROJECTION_V1",
             "datasetIdentity": "BNM_KL_USD_MYR_REFERENCE_RATE",
@@ -681,24 +681,24 @@
             "refreshMethod": "Re-checked only on evidence of change — scripts/daily-refresh-prompt.txt"
           },
           "rbdOleinFobMarketUSD": {
-            "source": "https://agropost.wordpress.com/2026/09/04/4-sep-2026-palm-oil-prices-at-closing/",
+            "source": "https://agropost.wordpress.com/2026/09/07/7-sep-2026-palm-oil-prices-at-closing/",
             "sourceType": "Validated Market Report",
-            "lastUpdated": "2026-09-04",
+            "lastUpdated": "2026-09-07",
             "confidence": "Medium",
             "status": "Validated",
             "unit": "USD/MT",
             "refreshMethod": "Deterministic compatibility projection",
-            "observationDate": "2026-09-04",
+            "observationDate": "2026-09-07",
             "providerId": "AGROPOST_CROSSCHECK_CLOSING",
-            "evidenceId": "CANDIDATE_EVIDENCE|4d911353d955242aaa89",
-            "sourceReference": "https://agropost.wordpress.com/2026/09/04/4-sep-2026-palm-oil-prices-at-closing/",
+            "evidenceId": "CANDIDATE_EVIDENCE|8e76acd1769620b9d09e",
+            "sourceReference": "https://agropost.wordpress.com/2026/09/07/7-sep-2026-palm-oil-prices-at-closing/",
             "projectionVersion": "FEATURE016_BASELINE_PROJECTION_V1",
             "product": "RBD_OLEIN_PHYSICAL",
             "priceBasis": "FOB Malaysia physical",
             "priceType": "SELLING",
             "contractOrDeliveryMonth": "2026-09",
-            "sourceContextId": "AGROPOST_TABLE|2026-09-04|SEP-2026|FOB-MALAYSIA",
-            "canonicalObservationId": "CANONICAL_OBSERVATION|1c01d97da81d18b5578da76c"
+            "sourceContextId": "AGROPOST_TABLE|2026-09-07|SEP-2026|FOB-MALAYSIA",
+            "canonicalObservationId": "CANONICAL_OBSERVATION|d1b4980ab18b4aed3cda0a42"
           },
           "portArrivalCostUSD": {
             "source": "Trading-desk internal estimate (not an independently sourced market quote) — a bundled Malaysia→Egypt port-arrival cost figure (freight + port handling + related port-side costs) the desk uses for a quick buy-today reference",
@@ -817,37 +817,37 @@
       ]
     },
     "snapshotIssuedDate": "2026-09-07",
-    "forecastGeneratedAt": "2026-09-07T13:30:59.1288039Z",
+    "forecastGeneratedAt": "2026-09-07T18:25:03.9721053Z",
     "modelVersion": "v1-linear-curve-fx-scenario",
-    "baselineUSDPerMT": 1407.8080896388353,
+    "baselineUSDPerMT": 1420.6627501784144,
     "targetUSDPerMT": 1355.8719560094264,
     "targetEGPPerMT": 69041,
-    "deltaUSDPerMT": -51.936133629408914,
-    "deltaPercent": -3.6891486852254713,
+    "deltaUSDPerMT": -64.79079416898799,
+    "deltaPercent": -4.560603433914996,
     "confidencePercent": 35,
     "targetDate": "2026-09-14",
     "sourceMarketSnapshotDate": "2026-09-07",
-    "sourceMarketSnapshotId": "MARKET_SNAPSHOT|128172cc501a9ad5ed84",
-    "sourceInputIdentity": "FORECAST_INPUT|beb4a5106728e96a8157",
-    "forecastId": "FORECAST_VINTAGE|93b80875783fbe460aa9"
+    "sourceMarketSnapshotId": "MARKET_SNAPSHOT|cdae97a8e77f66a43e7b",
+    "sourceInputIdentity": "FORECAST_INPUT|a8a010985689f2a230a1",
+    "forecastId": "FORECAST_VINTAGE|2220ce0e1af715e7c360"
   },
   "marketFirstForecast": {
-    "marketTodayUSD": 1190,
+    "marketTodayUSD": 1207.5,
     "marketForecast7dUSD": 1215.49,
-    "marketDeltaUSD": 25.49000000000001,
-    "marketDeltaPct": 2.14201680672269,
+    "marketDeltaUSD": 7.990000000000009,
+    "marketDeltaPct": 0.6616977225672885,
     "forecastDirection": "up",
-    "portTodayUSD": 1320,
+    "portTodayUSD": 1337.5,
     "portForecast7dUSD": 1345.49,
     "portArrivalAddOnUSD": 130,
     "confidencePercent": 35,
     "targetDate": "2026-09-14",
     "source": "FORECAST_SNAPSHOTS.forecastPoints[horizon=1].estimatedFobUsd",
     "legacyLandedCostForecast": {
-      "baselineUSDPerMT": 1407.8080896388353,
+      "baselineUSDPerMT": 1420.6627501784144,
       "targetUSDPerMT": 1355.8719560094264,
-      "deltaUSDPerMT": -51.936133629408914,
-      "deltaPercent": -3.6891486852254713
+      "deltaUSDPerMT": -64.79079416898799,
+      "deltaPercent": -4.560603433914996
     }
   },
   "status": {
@@ -856,7 +856,5 @@
     "freshnessState": "CURRENT"
   },
   "publicationDecision": "AUTHORIZE",
-  "reasonCodes": [
-    "MARKET_OBSERVATION_STALE"
-  ]
+  "reasonCodes": []
 }

@@ -2334,7 +2334,7 @@
 <div class="tooltip" id="tooltip" role="status" aria-live="polite"></div>
 <div class="tooltip prov" id="provTooltip" role="dialog" aria-live="polite"></div>
 
-<script id="canonical-publication-manifest" type="application/json">{"contractVersion":"PUBLICATION_ARTIFACT_MANIFEST_V1","publicationSnapshotId":"FEATURE003|b410bf2e92c7b7c165dc","marketObservationId":"MARKET_OBSERVATION|c59933f56843efa7a1dd","fxObservationId":"FX_OBSERVATION|73a4e04943eca9d1c002","forecastVintageId":"FORECAST_VINTAGE|93b80875783fbe460aa9","integrityStatus":"DEGRADE","marketUSD":1190,"fxValue":50.92,"fxBuy":50.87,"fxSell":50.97,"forecastUSD":1215.49,"portUSD":1320,"marketEGP":60594.8,"portEGP":67214.4,"forecastEGP":61892.75,"marketSessionDate":"2026-09-04","fxBusinessDate":"2026-09-07"}</script>
+<script id="canonical-publication-manifest" type="application/json">{"contractVersion":"PUBLICATION_ARTIFACT_MANIFEST_V1","publicationSnapshotId":"FEATURE003|714d65b472639aa28f40","marketObservationId":"MARKET_OBSERVATION|eed9b67c52c312eb98c8","fxObservationId":"FX_OBSERVATION|73a4e04943eca9d1c002","forecastVintageId":"FORECAST_VINTAGE|2220ce0e1af715e7c360","integrityStatus":"HEALTHY","marketUSD":1207.5,"fxValue":50.92,"fxBuy":50.87,"fxSell":50.97,"forecastUSD":1215.49,"portUSD":1337.5,"marketEGP":61485.9,"portEGP":68105.5,"forecastEGP":61892.75,"marketSessionDate":"2026-09-07","fxBusinessDate":"2026-09-07"}</script>
 <script id="trader-note-contamination-registry" type="application/json">{"schemaVersion":1,"registryId":"FEATURE011_TEST_CONTAMINATION_REGISTRY_V1","records":[{"noteId":"NOTE|88417c67-4415-4c6d-b9d5-754413da831d","classification":"TEST_CONTAMINATION","reason":"Created by former unsafe Feature004 live UAT test","incident":"TEST_SAFETY_UNINTENDED_PRODUCTION_MUTATION_2026-08-25","knownCreatedAt":"2026-08-25T14:37:42.043Z","disposition":"PRESERVE_AND_EXCLUDE","eligibleForTraderIntelligence":false}]}</script><script>
 (function(){
   "use strict";
@@ -2344,7 +2344,7 @@
     // fixtures only. They are never copied into runtime state until a valid
     // PublicationSnapshot is hydrated, and the generator never reads them as
     // canonical publication inputs.
-    cpoMYR: 4931,
+    cpoMYR: 4979,
     usdMyr: 4.0476,
     refiningSpread: 44.5,
     refiningProcessingAdjustment: 15,
@@ -2371,7 +2371,7 @@
     // FOB olein figure from cpoMYR/usdMyr + totalRbdAdjustment() exactly as
     // before - this field exists purely so a trader can see a directly
     // market-reported price alongside that derived one, not to replace it.
-    rbdOleinFobMarketUSD: 1190,
+    rbdOleinFobMarketUSD: 1207.5,
     // Buy-Today Expected Cost at Egypt Port (added 2026-08-20) - a
     // trading-desk internal estimate bundling Malaysia->Egypt port-arrival
     // costs (freight + port handling + related port-side costs) into one
@@ -2599,17 +2599,17 @@
   // a future task.
   var DATA_PROVENANCE = {
     cpoMYR: {
-  "source": "https:\/\/agropost.wordpress.com\/2026\/09\/04\/4-sep-2026-palm-oil-prices-at-closing\/",
+  "source": "https:\/\/agropost.wordpress.com\/2026\/09\/07\/7-sep-2026-palm-oil-prices-at-closing\/",
   "sourceType": "Validated Market Report",
-  "lastUpdated": "2026-09-04",
+  "lastUpdated": "2026-09-07",
   "confidence": "Medium",
   "status": "Validated",
   "unit": "MYR\/MT",
   "refreshMethod": "Deterministic compatibility projection",
-  "observationDate": "2026-09-04",
+  "observationDate": "2026-09-07",
   "providerId": "AGROPOST_FCPO_CLOSING",
-  "evidenceId": "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-09-04|2026-11",
-  "sourceReference": "https:\/\/agropost.wordpress.com\/2026\/09\/04\/4-sep-2026-palm-oil-prices-at-closing\/",
+  "evidenceId": "FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-09-07|2026-11",
+  "sourceReference": "https:\/\/agropost.wordpress.com\/2026\/09\/07\/7-sep-2026-palm-oil-prices-at-closing\/",
   "projectionVersion": "FEATURE016_BASELINE_PROJECTION_V1",
   "contractMonth": "2026-11",
   "priceType": "SESSION_LAST",
@@ -2626,7 +2626,7 @@
   "refreshMethod": "Deterministic compatibility projection",
   "observationDate": "2026-09-07",
   "providerId": "BNM_KL_USD_MYR_REFERENCE_RATE",
-  "evidenceId": "sha256:2a008a9c33b159aca5fe5cb66e5cf0e17ba066911023608bad9ab99a8b2a08e4",
+  "evidenceId": "sha256:53308e5007e10a360351da3c34bdf289494e369d246d7fd01b9ec9b9cc3ba81a",
   "sourceReference": "https:\/\/financialmarkets.bnm.gov.my\/data-download-kl-usd-myr-reference-rate",
   "projectionVersion": "FEATURE016_BASELINE_PROJECTION_V1",
   "datasetIdentity": "BNM_KL_USD_MYR_REFERENCE_RATE",
@@ -2684,24 +2684,24 @@
     // price sheet, cross-checked against one independent source, not an
     // exchange-cleared or transaction-level quote.
     rbdOleinFobMarketUSD: {
-  "source": "https:\/\/agropost.wordpress.com\/2026\/09\/04\/4-sep-2026-palm-oil-prices-at-closing\/",
+  "source": "https:\/\/agropost.wordpress.com\/2026\/09\/07\/7-sep-2026-palm-oil-prices-at-closing\/",
   "sourceType": "Validated Market Report",
-  "lastUpdated": "2026-09-04",
+  "lastUpdated": "2026-09-07",
   "confidence": "Medium",
   "status": "Validated",
   "unit": "USD\/MT",
   "refreshMethod": "Deterministic compatibility projection",
-  "observationDate": "2026-09-04",
+  "observationDate": "2026-09-07",
   "providerId": "AGROPOST_CROSSCHECK_CLOSING",
-  "evidenceId": "CANDIDATE_EVIDENCE|4d911353d955242aaa89",
-  "sourceReference": "https:\/\/agropost.wordpress.com\/2026\/09\/04\/4-sep-2026-palm-oil-prices-at-closing\/",
+  "evidenceId": "CANDIDATE_EVIDENCE|8e76acd1769620b9d09e",
+  "sourceReference": "https:\/\/agropost.wordpress.com\/2026\/09\/07\/7-sep-2026-palm-oil-prices-at-closing\/",
   "projectionVersion": "FEATURE016_BASELINE_PROJECTION_V1",
   "product": "RBD_OLEIN_PHYSICAL",
   "priceBasis": "FOB Malaysia physical",
   "priceType": "SELLING",
   "contractOrDeliveryMonth": "2026-09",
-  "sourceContextId": "AGROPOST_TABLE|2026-09-04|SEP-2026|FOB-MALAYSIA",
-  "canonicalObservationId": "CANONICAL_OBSERVATION|1c01d97da81d18b5578da76c"
+  "sourceContextId": "AGROPOST_TABLE|2026-09-07|SEP-2026|FOB-MALAYSIA",
+  "canonicalObservationId": "CANONICAL_OBSERVATION|d1b4980ab18b4aed3cda0a42"
 },
     // Buy-Today Expected Cost at Egypt Port (added 2026-08-20) - see
     // DEFAULTS.portArrivalCostUSD comment. Deliberately classified as an
@@ -6363,6 +6363,84 @@
       ],
       sourceInputIdentity: 'FORECAST_INPUT|12ff45d1c79ef5549522',
       sourceMarketSnapshotId: 'MARKET_SNAPSHOT|abd9659b6dfcb7586e6c'
+    },
+    {
+      issuedDate: '2026-09-07',
+      modelVersion: 'v1-linear-curve-fx-scenario',
+      sourceSnapshotDate: '2026-09-07',
+      currentFcpoMYR: 4979,
+      currentUsdMyr: 4.0476,
+      currentEgpUsd: 50.92,
+      forecastPoints: [
+        {
+          targetDate: '2026-09-14',
+          horizonWeeks: 1,
+          fcpoMYR: 4740,
+          estimatedFobUsd: 1215.49,
+          baseLandedUsd: 1356.58,
+          baseLandedEgp: 69041,
+          lowLandedEgp: 68962,
+          highLandedEgp: 69290,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-09-21',
+          horizonWeeks: 2,
+          fcpoMYR: 4759,
+          estimatedFobUsd: 1220.36,
+          baseLandedUsd: 1361.86,
+          baseLandedEgp: 69273,
+          lowLandedEgp: 69114,
+          highLandedEgp: 69773,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-09-28',
+          horizonWeeks: 3,
+          fcpoMYR: 4779,
+          estimatedFobUsd: 1225.23,
+          baseLandedUsd: 1367.14,
+          baseLandedEgp: 69505,
+          lowLandedEgp: 69266,
+          highLandedEgp: 70257,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-10-05',
+          horizonWeeks: 4,
+          fcpoMYR: 4799,
+          estimatedFobUsd: 1230.11,
+          baseLandedUsd: 1372.42,
+          baseLandedEgp: 69737,
+          lowLandedEgp: 69417,
+          highLandedEgp: 70744,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-11-02',
+          horizonWeeks: 8,
+          fcpoMYR: 4876,
+          estimatedFobUsd: 1249.07,
+          baseLandedUsd: 1392.97,
+          baseLandedEgp: 70633,
+          lowLandedEgp: 69983,
+          highLandedEgp: 72676,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-11-30',
+          horizonWeeks: 12,
+          fcpoMYR: 4946,
+          estimatedFobUsd: 1266.46,
+          baseLandedUsd: 1411.83,
+          baseLandedEgp: 71438,
+          lowLandedEgp: 70450,
+          highLandedEgp: 74544,
+          status: 'Pending'
+        }
+      ],
+      sourceInputIdentity: 'FORECAST_INPUT|a8a010985689f2a230a1',
+      sourceMarketSnapshotId: 'MARKET_SNAPSHOT|cdae97a8e77f66a43e7b'
     },
     {
       issuedDate: '2026-09-07',
@@ -16915,6 +16993,191 @@
         }
       },
       snapshotId: 'MARKET_SNAPSHOT|128172cc501a9ad5ed84'
+    },
+    {
+      schemaVersion: 1,
+      snapshotDate: '2026-09-07',
+      capturedAt: '2026-09-07T18:28:35.0655469Z',
+      landedFormulaVersion: 'v1-fob-freight-insurance-cif-duty-vat-margin',
+      malaysia: {
+        cpoMYR: 4979,
+        usdMyr: 4.0476,
+        refiningProcessingAdjustment: 15,
+        oleinFractionationPremium: 15,
+        physicalMarketBasisAdjustment: 14.5,
+        totalRbdAdjustment: 44.5,
+        estimatedFobOleinUsd: 1274.6117,
+        rbdOleinFobMarketUSD: 1207.5
+      },
+      fx: {
+        usdMyr: 4.0476,
+        egpUsd: 50.92,
+        usdIdr: 17703
+      },
+      freight: {
+        freight: 36,
+        origin: 'my',
+        transitDays: 35,
+        clearanceDays: 7
+      },
+      importCosts: {
+        insurancePct: 0.75,
+        egyptDutyPct: 1.5,
+        vatOn: false,
+        vatPct: 14,
+        marginPct: 6
+      },
+      outputs: {
+        fobOleinUsd: 1274.6117,
+        originCostUsd: 0,
+        cifUsd: 1320.4413,
+        dutyUsd: 19.8066,
+        vatUsd: 0,
+        marginUsd: 80.4149,
+        landedUSD: 1420.6628,
+        landedEGP: 72340.15
+      },
+      provenance: {
+        cpoMYR: {
+          source: 'https://agropost.wordpress.com/2026/09/07/7-sep-2026-palm-oil-prices-at-closing/',
+          sourceType: 'Validated Market Report',
+          lastUpdated: '2026-09-07',
+          confidence: 'Medium',
+          status: 'Validated',
+          unit: 'MYR/MT',
+          refreshMethod: 'Deterministic compatibility projection',
+          observationDate: '2026-09-07',
+          providerId: 'AGROPOST_FCPO_CLOSING',
+          evidenceId: 'FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-09-07|2026-11',
+          sourceReference: 'https://agropost.wordpress.com/2026/09/07/7-sep-2026-palm-oil-prices-at-closing/',
+          projectionVersion: 'FEATURE016_BASELINE_PROJECTION_V1',
+          contractMonth: '2026-11',
+          priceType: 'SESSION_LAST',
+          contractSelectionRule: 'ACTIVE_CURRENT_THEN_EARLIEST_NON_EXPIRED_FALLBACK',
+          activeContractEvidenceId: 'DRARIF_FCPO_ACTIVE_CALENDAR'
+        },
+        usdMyr: {
+          source: 'BNM KL USD/MYR Reference Rate',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-09-07',
+          confidence: 'High',
+          status: 'Official',
+          unit: 'MYR/USD',
+          refreshMethod: 'Deterministic compatibility projection',
+          observationDate: '2026-09-07',
+          providerId: 'BNM_KL_USD_MYR_REFERENCE_RATE',
+          evidenceId: 'sha256:53308e5007e10a360351da3c34bdf289494e369d246d7fd01b9ec9b9cc3ba81a',
+          sourceReference: 'https://financialmarkets.bnm.gov.my/data-download-kl-usd-myr-reference-rate',
+          projectionVersion: 'FEATURE016_BASELINE_PROJECTION_V1',
+          datasetIdentity: 'BNM_KL_USD_MYR_REFERENCE_RATE',
+          referenceRate: 4.0476
+        },
+        egpUsd: {
+          source: 'Banque Misr official Transfer Buy/Sell',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-09-07T12:12:13.000Z',
+          confidence: 'High',
+          status: 'Official',
+          unit: 'EGP/USD',
+          refreshMethod: 'Deterministic compatibility projection',
+          observationDate: '2026-09-07',
+          observedAt: '2026-09-07T12:12:13.000Z',
+          retrievedAt: '2026-09-07T12:12:13.000Z',
+          providerId: 'BANQUE_MISR',
+          evidenceId: 'FX_OBSERVATION|73a4e04943eca9d1c002',
+          rawEvidenceIdentity: 'sha256:3cfe736e2ca8daa7733f78be8807a712c77560bd5ea35772bc10cc4c97794d4c',
+          sourceReference: 'https://www.banquemisr.com/en/CAPITAL-MARKETS/Exchange-Rates-and-Currencies',
+          projectionVersion: 'FEATURE016_BASELINE_PROJECTION_V1',
+          buy: 50.87,
+          sell: 50.97,
+          rateType: 'TRANSFER',
+          fallbackFrom: 'CBE',
+          fallbackReason: 'UNAVAILABLE_TRANSPORT',
+          fxObservationId: 'FX_OBSERVATION|73a4e04943eca9d1c002',
+          sourceIdentity: 'BANQUE_MISR',
+          businessDate: '2026-09-07',
+          validationStatus: 'VALID'
+        },
+        freight: {
+          source: 'No Egypt-route source documented; nearest §09 citation (MPOB West Malaysia–Sumatra rates) is a different route',
+          sourceType: 'Not documented (route mismatch)',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily automation, only on Egypt-route-specific evidence, else left unchanged — scripts/daily-refresh-prompt.txt'
+        },
+        refiningSpread: {
+          source: 'agropost.wordpress.com dated "24 Aug 2026 – Palm Oil Prices at Closing" table (PHYSICAL MARKET PRICES FOB Malaysia), Sep’26 contract (RBD Palm Olein $1,207.50/MT selling vs CPO $1,163.00/MT selling); mblionoleo.com still shows its earlier dated table (13 Aug 2026, RBD Palm Olein $1,147.50/MT vs CPO $1,109.00/MT, spread $38.50) with no fresher print available this run',
+          sourceType: 'Market Report',
+          lastUpdated: '2026-08-24',
+          confidence: 'Medium',
+          status: 'Derived',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily AI refresh'
+        },
+        insurancePct: {
+          source: 'Not documented',
+          sourceType: 'Not documented',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Hardcoded',
+          unit: '%',
+          refreshMethod: 'Not refreshed by automation (static assumption)'
+        },
+        egyptDutyPct: {
+          source: 'WTO Tariff & Trade Data — Egypt member profile (§09 sources)',
+          sourceType: 'Regulatory / trade data',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: '%',
+          refreshMethod: 'Re-checked only on evidence of change — scripts/daily-refresh-prompt.txt'
+        },
+        rbdOleinFobMarketUSD: {
+          source: 'https://agropost.wordpress.com/2026/09/07/7-sep-2026-palm-oil-prices-at-closing/',
+          sourceType: 'Validated Market Report',
+          lastUpdated: '2026-09-07',
+          confidence: 'Medium',
+          status: 'Validated',
+          unit: 'USD/MT',
+          refreshMethod: 'Deterministic compatibility projection',
+          observationDate: '2026-09-07',
+          providerId: 'AGROPOST_CROSSCHECK_CLOSING',
+          evidenceId: 'CANDIDATE_EVIDENCE|8e76acd1769620b9d09e',
+          sourceReference: 'https://agropost.wordpress.com/2026/09/07/7-sep-2026-palm-oil-prices-at-closing/',
+          projectionVersion: 'FEATURE016_BASELINE_PROJECTION_V1',
+          product: 'RBD_OLEIN_PHYSICAL',
+          priceBasis: 'FOB Malaysia physical',
+          priceType: 'SELLING',
+          contractOrDeliveryMonth: '2026-09',
+          sourceContextId: 'AGROPOST_TABLE|2026-09-07|SEP-2026|FOB-MALAYSIA',
+          canonicalObservationId: 'CANONICAL_OBSERVATION|d1b4980ab18b4aed3cda0a42'
+        }
+      },
+      evidence: {
+        cpoMYR: {
+          tier: 'Estimated',
+          reason: 'Provenance is insufficient for a stronger tier'
+        },
+        usdMyr: {
+          tier: 'Verified',
+          reason: 'High-confidence, directly sourced figure'
+        },
+        egpUsd: {
+          tier: 'Verified',
+          reason: 'High-confidence, directly sourced figure'
+        },
+        freight: {
+          tier: 'Low Confidence',
+          reason: 'Source confidence is recorded as Low'
+        },
+        rbdOleinFobMarketUSD: {
+          tier: 'Estimated',
+          reason: 'Provenance is insufficient for a stronger tier'
+        }
+      },
+      snapshotId: 'MARKET_SNAPSHOT|cdae97a8e77f66a43e7b'
     }
   ];
 
