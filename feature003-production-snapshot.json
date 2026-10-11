@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "contractVersion": "1.0.0",
-  "snapshotId": "FEATURE003|2a638b000b760a32891d",
-  "canonicalVersion": "FEATURE003|2a638b000b760a32891d",
-  "generatedAt": "2026-10-11T04:28:11.081Z",
+  "snapshotId": "FEATURE003|116c2a7a7ce29a16d886",
+  "canonicalVersion": "FEATURE003|116c2a7a7ce29a16d886",
+  "generatedAt": "2026-10-11T08:21:24.206Z",
   "refresh": {
-    "completedAt": "2026-10-11T04:28:11.081Z",
-    "artifactGeneratedAt": "2026-10-11T04:28:11.081Z",
+    "completedAt": "2026-10-11T08:21:24.206Z",
+    "artifactGeneratedAt": "2026-10-11T08:21:24.206Z",
     "source": "daily-refresh validated completion"
   },
   "sourceIdentity": {
@@ -22,14 +22,14 @@
     ],
     "forecastIssuedDate": "2026-10-11",
     "forecastModelVersion": "v1-linear-curve-fx-scenario",
-    "forecastInputIdentity": "FORECAST_INPUT|be61b1bb7c4249a48281",
-    "marketSnapshotId": "MARKET_SNAPSHOT|866e2df93a425949cbc5",
+    "forecastInputIdentity": "FORECAST_INPUT|6625caeb20a1d9a70757",
+    "marketSnapshotId": "MARKET_SNAPSHOT|539917d3bf601ed4e9f3",
     "marketState": {
       "cpoMYR": 4663,
       "usdMyr": 4.0887,
-      "egpUsd": 52.39,
+      "egpUsd": 52.57,
       "rbdOleinFobMarketUSD": 1142.5,
-      "sourceInputIdentity": "FORECAST_INPUT|be61b1bb7c4249a48281"
+      "sourceInputIdentity": "FORECAST_INPUT|6625caeb20a1d9a70757"
     }
   },
   "rbd": {
@@ -150,10 +150,10 @@
     },
     "convertedEquivalents": {
       "usdPerMT": 1140.4602930026658,
-      "egpPerMT": 59748.714750409665,
+      "egpPerMT": 59953.99760315014,
       "fxChain": "MYR → USD → EGP",
       "usdMyr": 4.0887,
-      "egpUsd": 52.39
+      "egpUsd": 52.57
     }
   },
   "marketBoard": {
@@ -398,32 +398,32 @@
   "fx": {
     "egpUsd": {
       "contractVersion": "1.0.0",
-      "fxObservationId": "FX_OBSERVATION|a9d3cd2232fa5d916012",
+      "fxObservationId": "FX_OBSERVATION|41c88f837ba57cacf9f6",
       "pair": "USD/EGP",
-      "value": 52.39,
-      "buy": 52.34,
-      "sell": 52.44,
-      "businessDate": "2026-10-09",
-      "observedAt": "2026-10-09T08:11:02.000Z",
+      "value": 52.57,
+      "buy": 52.52,
+      "sell": 52.62,
+      "businessDate": "2026-10-11",
+      "observedAt": "2026-10-11T09:12:58.000Z",
       "source": "Banque Misr official Exchange Rates and Currencies",
       "sourceUrl": "https://www.banquemisr.com/en/CAPITAL-MARKETS/Exchange-Rates-and-Currencies",
-      "sourceCapturedAt": "2026-10-09T08:11:02.000Z",
+      "sourceCapturedAt": "2026-10-11T09:12:58.000Z",
       "sourceIdentity": "BANQUE_MISR",
       "validationStatus": "VALID",
       "reasonCodes": [],
-      "freshnessState": "Stale",
+      "freshnessState": "Verified",
       "status": "Official",
       "unit": "EGP/USD",
       "freshness": {
         "state": "CURRENT",
         "policyId": "MARKET_SESSION_V1",
-        "asOf": "2026-10-09T08:11:02.000Z"
+        "asOf": "2026-10-11T09:12:58.000Z"
       }
     },
     "usdMyr": {
       "value": 4.0887,
       "source": "BNM KL USD/MYR Reference Rate",
-      "capturedAt": "2026-10-11T04:28:10.2325744Z",
+      "capturedAt": "2026-10-11T08:21:23.0214989Z",
       "observationDate": "2026-10-11",
       "freshnessState": "Stale",
       "status": "Official",
@@ -431,8 +431,8 @@
     }
   },
   "marketObservationId": "MARKET_OBSERVATION|5ed34466e1f6e5d4ee9b",
-  "fxObservationId": "FX_OBSERVATION|a9d3cd2232fa5d916012",
-  "forecastVintageId": "FORECAST_VINTAGE|3c303b2c14e2de28f93a",
+  "fxObservationId": "FX_OBSERVATION|41c88f837ba57cacf9f6",
+  "forecastVintageId": "FORECAST_VINTAGE|b24c05805e19e472c114",
   "rbdObservation": {
     "contractVersion": "1.0.0",
     "instrument": "RBD_PALM_OLEIN",
@@ -509,21 +509,21 @@
     "snapshot": {
       "schemaVersion": 1,
       "issuedDate": "2026-10-11",
-      "capturedAt": "2026-10-11T04:27:50.6599070Z",
+      "capturedAt": "2026-10-11T08:21:04.5290227Z",
       "captureStatus": "CAPTURED",
       "forecastDefinitionVersion": "v1-linear-curve-fx-scenario",
       "landedFormulaVersion": "v1-fob-freight-insurance-cif-duty-vat-margin",
       "classification": "SCENARIO_DERIVED",
       "sourceSnapshotDate": "2026-10-11",
-      "sourceMarketSnapshotId": "MARKET_SNAPSHOT|866e2df93a425949cbc5",
-      "sourceInputIdentity": "FORECAST_INPUT|be61b1bb7c4249a48281",
+      "sourceMarketSnapshotId": "MARKET_SNAPSHOT|539917d3bf601ed4e9f3",
+      "sourceInputIdentity": "FORECAST_INPUT|6625caeb20a1d9a70757",
       "sourceInputIdentityVersion": "v3-forecast-driving-normalized",
-      "forecastId": "FORECAST_VINTAGE|3c303b2c14e2de28f93a",
+      "forecastId": "FORECAST_VINTAGE|b24c05805e19e472c114",
       "inputs": {
         "currentFcpoMYR": 4663,
         "currentUsdMyr": 4.0887,
-        "currentEgpUsd": 52.39,
-        "currentFxObservationId": "FX_OBSERVATION|a9d3cd2232fa5d916012",
+        "currentEgpUsd": 52.57,
+        "currentFxObservationId": "FX_OBSERVATION|41c88f837ba57cacf9f6",
         "marketForecast": {
           "cpoMYR": 4663,
           "usdMyr": 4.0887,
@@ -538,7 +538,7 @@
           "vatOn": false,
           "vatPct": 14,
           "marginPct": 6,
-          "egpUsd": 52.39,
+          "egpUsd": 52.57,
           "horizonWeeks": [
             1,
             2,
@@ -615,7 +615,7 @@
             "refreshMethod": "Deterministic compatibility projection",
             "observationDate": "2026-10-09",
             "providerId": "BNM_KL_USD_MYR_REFERENCE_RATE",
-            "evidenceId": "sha256:5717eb1a91914d200bc4a5345d5b1136ea115e616026e7d132b368f94a19c15f",
+            "evidenceId": "sha256:d469637f8316a171a8b31929214b6c9d1b48192ca1ede40c091761723e661455",
             "sourceReference": "https://financialmarkets.bnm.gov.my/data-download-kl-usd-myr-reference-rate",
             "projectionVersion": "FEATURE016_BASELINE_PROJECTION_V1",
             "datasetIdentity": "BNM_KL_USD_MYR_REFERENCE_RATE",
@@ -624,27 +624,27 @@
           "egpUsd": {
             "source": "Banque Misr official Transfer Buy/Sell",
             "sourceType": "Official Publication",
-            "lastUpdated": "2026-10-09T08:11:02.000Z",
+            "lastUpdated": "2026-10-11T09:12:58.000Z",
             "confidence": "High",
             "status": "Official",
             "unit": "EGP/USD",
             "refreshMethod": "Deterministic compatibility projection",
-            "observationDate": "2026-10-09",
-            "observedAt": "2026-10-09T08:11:02.000Z",
-            "retrievedAt": "2026-10-09T08:11:02.000Z",
+            "observationDate": "2026-10-11",
+            "observedAt": "2026-10-11T09:12:58.000Z",
+            "retrievedAt": "2026-10-11T09:12:58.000Z",
             "providerId": "BANQUE_MISR",
-            "evidenceId": "FX_OBSERVATION|a9d3cd2232fa5d916012",
-            "rawEvidenceIdentity": "sha256:b9af25eac8d176b49a60e3ee8c8f88ba26b357439ee08723e524dfffb85a8272",
+            "evidenceId": "FX_OBSERVATION|41c88f837ba57cacf9f6",
+            "rawEvidenceIdentity": "sha256:47c5d4c99c05fb0d0bbae5ea0bd29994ed7264ae435f39c92f517697b772c1a6",
             "sourceReference": "https://www.banquemisr.com/en/CAPITAL-MARKETS/Exchange-Rates-and-Currencies",
             "projectionVersion": "FEATURE016_BASELINE_PROJECTION_V1",
-            "buy": 52.34,
-            "sell": 52.44,
+            "buy": 52.52,
+            "sell": 52.62,
             "rateType": "TRANSFER",
             "fallbackFrom": "CBE",
             "fallbackReason": "UNAVAILABLE_TRANSPORT",
-            "fxObservationId": "FX_OBSERVATION|a9d3cd2232fa5d916012",
+            "fxObservationId": "FX_OBSERVATION|41c88f837ba57cacf9f6",
             "sourceIdentity": "BANQUE_MISR",
-            "businessDate": "2026-10-09",
+            "businessDate": "2026-10-11",
             "validationStatus": "VALID"
           },
           "freight": {
@@ -738,9 +738,9 @@
           "fcpoMYR": 4670,
           "estimatedFobUsd": 1186.78,
           "baseLandedUsd": 1325.45,
-          "baseLandedEgp": 69243,
-          "lowLandedEgp": 69165,
-          "highLandedEgp": 69486,
+          "baseLandedEgp": 69461,
+          "lowLandedEgp": 69384,
+          "highLandedEgp": 69704,
           "status": "Pending",
           "evaluation": null,
           "horizonWeeks": 1
@@ -755,9 +755,9 @@
           "fcpoMYR": 4678,
           "estimatedFobUsd": 1188.59,
           "baseLandedUsd": 1327.42,
-          "baseLandedEgp": 69148,
-          "lowLandedEgp": 68993,
-          "highLandedEgp": 69634,
+          "baseLandedEgp": 69347,
+          "lowLandedEgp": 69192,
+          "highLandedEgp": 69833,
           "status": "Pending",
           "evaluation": null,
           "horizonWeeks": 2
@@ -772,9 +772,9 @@
           "fcpoMYR": 4685,
           "estimatedFobUsd": 1190.41,
           "baseLandedUsd": 1329.39,
-          "baseLandedEgp": 69052,
-          "lowLandedEgp": 68819,
-          "highLandedEgp": 69783,
+          "baseLandedEgp": 69231,
+          "lowLandedEgp": 68999,
+          "highLandedEgp": 69963,
           "status": "Pending",
           "evaluation": null,
           "horizonWeeks": 3
@@ -789,9 +789,9 @@
           "fcpoMYR": 4693,
           "estimatedFobUsd": 1192.23,
           "baseLandedUsd": 1331.36,
-          "baseLandedEgp": 68956,
-          "lowLandedEgp": 68645,
-          "highLandedEgp": 69932,
+          "baseLandedEgp": 69115,
+          "lowLandedEgp": 68805,
+          "highLandedEgp": 70092,
           "status": "Pending",
           "evaluation": null,
           "horizonWeeks": 4
@@ -806,9 +806,9 @@
           "fcpoMYR": 4722,
           "estimatedFobUsd": 1199.5,
           "baseLandedUsd": 1339.24,
-          "baseLandedEgp": 68565,
-          "lowLandedEgp": 67940,
-          "highLandedEgp": 70529,
+          "baseLandedEgp": 68645,
+          "lowLandedEgp": 68020,
+          "highLandedEgp": 70609,
           "status": "Pending",
           "evaluation": null,
           "horizonWeeks": 8
@@ -833,19 +833,19 @@
       ]
     },
     "snapshotIssuedDate": "2026-10-11",
-    "forecastGeneratedAt": "2026-10-11T04:27:50.6599070Z",
+    "forecastGeneratedAt": "2026-10-11T08:21:04.5290227Z",
     "modelVersion": "v1-linear-curve-fx-scenario",
     "baselineUSDPerMT": 1323.48341308588,
-    "targetUSDPerMT": 1321.6835273907234,
-    "targetEGPPerMT": 69243,
-    "deltaUSDPerMT": -1.7998856951567177,
-    "deltaPercent": -0.13599609011797448,
+    "targetUSDPerMT": 1321.3049267643141,
+    "targetEGPPerMT": 69461,
+    "deltaUSDPerMT": -2.1784863215659698,
+    "deltaPercent": -0.1646024649819022,
     "confidencePercent": 35,
     "targetDate": "2026-10-18",
     "sourceMarketSnapshotDate": "2026-10-11",
-    "sourceMarketSnapshotId": "MARKET_SNAPSHOT|866e2df93a425949cbc5",
-    "sourceInputIdentity": "FORECAST_INPUT|be61b1bb7c4249a48281",
-    "forecastId": "FORECAST_VINTAGE|3c303b2c14e2de28f93a"
+    "sourceMarketSnapshotId": "MARKET_SNAPSHOT|539917d3bf601ed4e9f3",
+    "sourceInputIdentity": "FORECAST_INPUT|6625caeb20a1d9a70757",
+    "forecastId": "FORECAST_VINTAGE|b24c05805e19e472c114"
   },
   "marketFirstForecast": {
     "marketTodayUSD": 1142.5,
@@ -861,9 +861,9 @@
     "source": "FORECAST_SNAPSHOTS.forecastPoints[horizon=1].estimatedFobUsd",
     "legacyLandedCostForecast": {
       "baselineUSDPerMT": 1323.48341308588,
-      "targetUSDPerMT": 1321.6835273907234,
-      "deltaUSDPerMT": -1.7998856951567177,
-      "deltaPercent": -0.13599609011797448
+      "targetUSDPerMT": 1321.3049267643141,
+      "deltaUSDPerMT": -2.1784863215659698,
+      "deltaPercent": -0.1646024649819022
     }
   },
   "status": {
