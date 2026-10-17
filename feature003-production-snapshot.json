@@ -3,10 +3,10 @@
   "contractVersion": "1.0.0",
   "snapshotId": "FEATURE003|e3fc015ceb20b3ddc473",
   "canonicalVersion": "FEATURE003|e3fc015ceb20b3ddc473",
-  "generatedAt": "2026-10-17T11:11:29.814Z",
+  "generatedAt": "2026-10-17T14:14:23.219Z",
   "refresh": {
-    "completedAt": "2026-10-17T11:11:29.814Z",
-    "artifactGeneratedAt": "2026-10-17T11:11:29.814Z",
+    "completedAt": "2026-10-17T14:14:23.219Z",
+    "artifactGeneratedAt": "2026-10-17T14:14:23.219Z",
     "source": "daily-refresh validated completion"
   },
   "sourceIdentity": {
@@ -404,10 +404,10 @@
       "buy": 53.42,
       "sell": 53.52,
       "businessDate": "2026-10-17",
-      "observedAt": "2026-10-17T11:58:14.000Z",
+      "observedAt": "2026-10-17T13:23:09.000Z",
       "source": "Banque Misr official Exchange Rates and Currencies",
       "sourceUrl": "https://www.banquemisr.com/en/CAPITAL-MARKETS/Exchange-Rates-and-Currencies",
-      "sourceCapturedAt": "2026-10-17T11:58:14.000Z",
+      "sourceCapturedAt": "2026-10-17T13:23:09.000Z",
       "sourceIdentity": "BANQUE_MISR",
       "validationStatus": "VALID",
       "reasonCodes": [],
@@ -417,7 +417,7 @@
       "freshness": {
         "state": "CURRENT",
         "policyId": "MARKET_SESSION_V1",
-        "asOf": "2026-10-17T11:58:14.000Z"
+        "asOf": "2026-10-17T13:23:09.000Z"
       }
     },
     "usdMyr": {
