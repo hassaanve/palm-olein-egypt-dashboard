@@ -3,10 +3,10 @@
   "contractVersion": "1.0.0",
   "snapshotId": "FEATURE003|e3fc015ceb20b3ddc473",
   "canonicalVersion": "FEATURE003|e3fc015ceb20b3ddc473",
-  "generatedAt": "2026-10-17T20:23:45.741Z",
+  "generatedAt": "2026-10-17T21:59:57.286Z",
   "refresh": {
-    "completedAt": "2026-10-17T20:23:45.741Z",
-    "artifactGeneratedAt": "2026-10-17T20:23:45.741Z",
+    "completedAt": "2026-10-17T21:59:57.286Z",
+    "artifactGeneratedAt": "2026-10-17T21:59:57.286Z",
     "source": "daily-refresh validated completion"
   },
   "sourceIdentity": {
