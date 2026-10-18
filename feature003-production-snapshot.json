@@ -3,10 +3,10 @@
   "contractVersion": "1.0.0",
   "snapshotId": "FEATURE003|e920c4b1249752786799",
   "canonicalVersion": "FEATURE003|e920c4b1249752786799",
-  "generatedAt": "2026-10-18T03:48:15.750Z",
+  "generatedAt": "2026-10-18T07:01:05.897Z",
   "refresh": {
-    "completedAt": "2026-10-18T03:48:15.750Z",
-    "artifactGeneratedAt": "2026-10-18T03:48:15.750Z",
+    "completedAt": "2026-10-18T07:01:05.897Z",
+    "artifactGeneratedAt": "2026-10-18T07:01:05.897Z",
     "source": "daily-refresh validated completion"
   },
   "sourceIdentity": {
@@ -398,16 +398,16 @@
   "fx": {
     "egpUsd": {
       "contractVersion": "1.0.0",
-      "fxObservationId": "FX_OBSERVATION|4bf008594c3183f4cb52",
+      "fxObservationId": "FX_OBSERVATION|96397228972f0b5a94e7",
       "pair": "USD/EGP",
       "value": 53.47,
       "buy": 53.42,
       "sell": 53.52,
-      "businessDate": "2026-10-17",
-      "observedAt": "2026-10-17T13:23:09.000Z",
+      "businessDate": "2026-10-18",
+      "observedAt": "2026-10-18T06:57:46.000Z",
       "source": "Banque Misr official Exchange Rates and Currencies",
       "sourceUrl": "https://www.banquemisr.com/en/CAPITAL-MARKETS/Exchange-Rates-and-Currencies",
-      "sourceCapturedAt": "2026-10-17T13:23:09.000Z",
+      "sourceCapturedAt": "2026-10-18T06:57:46.000Z",
       "sourceIdentity": "BANQUE_MISR",
       "validationStatus": "VALID",
       "reasonCodes": [],
@@ -417,7 +417,7 @@
       "freshness": {
         "state": "CURRENT",
         "policyId": "MARKET_SESSION_V1",
-        "asOf": "2026-10-17T13:23:09.000Z"
+        "asOf": "2026-10-18T06:57:46.000Z"
       }
     },
     "usdMyr": {
@@ -431,7 +431,7 @@
     }
   },
   "marketObservationId": "MARKET_OBSERVATION|0735cd3c689424d90da5",
-  "fxObservationId": "FX_OBSERVATION|4bf008594c3183f4cb52",
+  "fxObservationId": "FX_OBSERVATION|96397228972f0b5a94e7",
   "forecastVintageId": "FORECAST_VINTAGE|0c6a77b03423a4ca73ab",
   "rbdObservation": {
     "contractVersion": "1.0.0",
