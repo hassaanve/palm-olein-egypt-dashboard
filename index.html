@@ -2334,7 +2334,7 @@
 <div class="tooltip" id="tooltip" role="status" aria-live="polite"></div>
 <div class="tooltip prov" id="provTooltip" role="dialog" aria-live="polite"></div>
 
-<script id="canonical-publication-manifest" type="application/json">{"contractVersion":"PUBLICATION_ARTIFACT_MANIFEST_V1","publicationSnapshotId":"FEATURE003|36ec50831fad0a0900a9","marketObservationId":"MARKET_OBSERVATION|8df1e38039626bc9b57f","fxObservationId":"FX_OBSERVATION|5923da019c1dd9dd0fff","forecastVintageId":"FORECAST_VINTAGE|8c0eea1e5689f6e0386a","integrityStatus":"DEGRADE","marketUSD":1152.5,"fxValue":55.28,"fxBuy":55.23,"fxSell":55.33,"forecastUSD":1220.35,"portUSD":1282.5,"marketEGP":63710.2,"portEGP":70896.6,"forecastEGP":67460.95,"marketSessionDate":"2026-10-22","fxBusinessDate":"2026-10-22"}</script>
+<script id="canonical-publication-manifest" type="application/json">{"contractVersion":"PUBLICATION_ARTIFACT_MANIFEST_V1","publicationSnapshotId":"FEATURE003|c4a41d0c962e97fe7582","marketObservationId":"MARKET_OBSERVATION|8df1e38039626bc9b57f","fxObservationId":"FX_OBSERVATION|5923da019c1dd9dd0fff","forecastVintageId":"FORECAST_VINTAGE|f82f30cef2fd091e095d","integrityStatus":"DEGRADE","marketUSD":1152.5,"fxValue":55.28,"fxBuy":55.23,"fxSell":55.33,"forecastUSD":1220.35,"portUSD":1282.5,"marketEGP":63710.2,"portEGP":70896.6,"forecastEGP":67460.95,"marketSessionDate":"2026-10-22","fxBusinessDate":"2026-10-22"}</script>
 <script id="trader-note-contamination-registry" type="application/json">{"schemaVersion":1,"registryId":"FEATURE011_TEST_CONTAMINATION_REGISTRY_V1","records":[{"noteId":"NOTE|88417c67-4415-4c6d-b9d5-754413da831d","classification":"TEST_CONTAMINATION","reason":"Created by former unsafe Feature004 live UAT test","incident":"TEST_SAFETY_UNINTENDED_PRODUCTION_MUTATION_2026-08-25","knownCreatedAt":"2026-08-25T14:37:42.043Z","disposition":"PRESERVE_AND_EXCLUDE","eligibleForTraderIntelligence":false}]}</script><script>
 (function(){
   "use strict";
@@ -2626,7 +2626,7 @@
   "refreshMethod": "Deterministic compatibility projection",
   "observationDate": "2026-10-22",
   "providerId": "BNM_KL_USD_MYR_REFERENCE_RATE",
-  "evidenceId": "sha256:a38dd112823951491bd6e84b2c139b60af626a855ab40bcbdd8adbc976fc66fb",
+  "evidenceId": "sha256:8a163aa06acc3656935f58389ab43ce979883401050a05974a62558a81ba10f3",
   "sourceReference": "https:\/\/financialmarkets.bnm.gov.my\/data-download-kl-usd-myr-reference-rate",
   "projectionVersion": "FEATURE016_BASELINE_PROJECTION_V1",
   "datasetIdentity": "BNM_KL_USD_MYR_REFERENCE_RATE",
@@ -2645,7 +2645,7 @@
   "retrievedAt": "2026-10-22T11:56:39.000Z",
   "providerId": "BANQUE_MISR",
   "evidenceId": "FX_OBSERVATION|5923da019c1dd9dd0fff",
-  "rawEvidenceIdentity": "sha256:65cc34c0513ca79ccaeba65a925320dfa01821c675a96c1874871a863b25ae0f",
+  "rawEvidenceIdentity": "sha256:67f3e01ab8e1b3784a6e95cc0da0aa9a9517cdcead15d1efe22a151ad148dcf3",
   "sourceReference": "https:\/\/www.banquemisr.com\/en\/CAPITAL-MARKETS\/Exchange-Rates-and-Currencies",
   "projectionVersion": "FEATURE016_BASELINE_PROJECTION_V1",
   "buy": 55.23,
@@ -3432,8 +3432,8 @@
   var CURVE = [
     { key:'spot', myr:4793, labelKey:'ptSpot', subKey:'ptSpotSub', weekOffset:0 },
     { key:'aug', myr:4887, labelKey:'ptAug', subKey:'ptContract', weekOffset:16, contractMonth:'2027-02' },
-    { key:'sep', myr:4981, labelKey:'ptSep', subKey:'ptContract', weekOffset:20, contractMonth:'2027-03' },
-    { key:'oct', myr:5036, labelKey:'ptOct', subKey:'ptContract', weekOffset:25, contractMonth:'2027-04' }
+    { key:'sep', myr:4963, labelKey:'ptSep', subKey:'ptContract', weekOffset:20, contractMonth:'2027-03' },
+    { key:'oct', myr:5023, labelKey:'ptOct', subKey:'ptContract', weekOffset:25, contractMonth:'2027-04' }
   ];
 
   var FX_SCENARIOS = { stableEnd: 49.9, baseEnd: 50.6, depEnd: 52.8 };
@@ -10434,6 +10434,84 @@
       ],
       sourceInputIdentity: 'FORECAST_INPUT|07daccdb1aba7e834824',
       sourceMarketSnapshotId: 'MARKET_SNAPSHOT|6e029c3efc325e216700'
+    },
+    {
+      issuedDate: '2026-10-23',
+      modelVersion: 'v1-linear-curve-fx-scenario',
+      sourceSnapshotDate: '2026-10-23',
+      currentFcpoMYR: 4793,
+      currentUsdMyr: 4.0812,
+      currentEgpUsd: 55.28,
+      forecastPoints: [
+        {
+          targetDate: '2026-10-30',
+          horizonWeeks: 1,
+          fcpoMYR: 4799,
+          estimatedFobUsd: 1220.35,
+          baseLandedUsd: 1361.84,
+          baseLandedEgp: 74752,
+          lowLandedEgp: 74672,
+          highLandedEgp: 75001,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-11-06',
+          horizonWeeks: 2,
+          fcpoMYR: 4805,
+          estimatedFobUsd: 1221.79,
+          baseLandedUsd: 1363.4,
+          baseLandedEgp: 74306,
+          lowLandedEgp: 74146,
+          highLandedEgp: 74805,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-11-13',
+          horizonWeeks: 3,
+          fcpoMYR: 4811,
+          estimatedFobUsd: 1223.23,
+          baseLandedUsd: 1364.96,
+          baseLandedEgp: 73858,
+          lowLandedEgp: 73619,
+          highLandedEgp: 74609,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-11-20',
+          horizonWeeks: 4,
+          fcpoMYR: 4817,
+          estimatedFobUsd: 1224.67,
+          baseLandedUsd: 1366.52,
+          baseLandedEgp: 73410,
+          lowLandedEgp: 73091,
+          highLandedEgp: 74412,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2026-12-18',
+          horizonWeeks: 8,
+          fcpoMYR: 4840,
+          estimatedFobUsd: 1230.43,
+          baseLandedUsd: 1372.77,
+          baseLandedEgp: 71604,
+          lowLandedEgp: 70963,
+          highLandedEgp: 73617,
+          status: 'Pending'
+        },
+        {
+          targetDate: '2027-01-15',
+          horizonWeeks: 12,
+          fcpoMYR: 4864,
+          estimatedFobUsd: 1236.18,
+          baseLandedUsd: 1379.01,
+          baseLandedEgp: 69778,
+          lowLandedEgp: 68813,
+          highLandedEgp: 72812,
+          status: 'Pending'
+        }
+      ],
+      sourceInputIdentity: 'FORECAST_INPUT|14d795f5c18d36a78252',
+      sourceMarketSnapshotId: 'MARKET_SNAPSHOT|91acb99dd6124b094580'
     }
   ];
 
@@ -36842,6 +36920,204 @@
         }
       },
       snapshotId: 'MARKET_SNAPSHOT|6e029c3efc325e216700'
+    },
+    {
+      schemaVersion: 1,
+      snapshotDate: '2026-10-23',
+      capturedAt: '2026-10-23T07:02:30.9294449Z',
+      landedFormulaVersion: 'v1-fob-freight-insurance-cif-duty-vat-margin',
+      malaysia: {
+        cpoMYR: 4793,
+        usdMyr: 4.0812,
+        refiningProcessingAdjustment: 15,
+        oleinFractionationPremium: 15,
+        physicalMarketBasisAdjustment: 14.5,
+        totalRbdAdjustment: 44.5,
+        estimatedFobOleinUsd: 1218.9095,
+        rbdOleinFobMarketUSD: 1152.5
+      },
+      fx: {
+        usdMyr: 4.0812,
+        egpUsd: 55.28,
+        usdIdr: 17703
+      },
+      freight: {
+        freight: 36,
+        origin: 'my',
+        transitDays: 35,
+        clearanceDays: 7
+      },
+      importCosts: {
+        insurancePct: 0.75,
+        egyptDutyPct: 1.5,
+        vatOn: false,
+        vatPct: 14,
+        marginPct: 6
+      },
+      outputs: {
+        fobOleinUsd: 1218.9095,
+        originCostUsd: 0,
+        cifUsd: 1264.3213,
+        dutyUsd: 18.9648,
+        vatUsd: 0,
+        marginUsd: 76.9972,
+        landedUSD: 1360.2833,
+        landedEGP: 75196.46
+      },
+      provenance: {
+        cpoMYR: {
+          source: 'https://agropost.wordpress.com/2026/10/22/22-oct-2026-palm-oil-prices-at-closing/',
+          sourceType: 'Validated Market Report',
+          lastUpdated: '2026-10-22',
+          confidence: 'Medium',
+          status: 'Validated',
+          unit: 'MYR/MT',
+          refreshMethod: 'Deterministic compatibility projection',
+          observationDate: '2026-10-22',
+          providerId: 'AGROPOST_FCPO_CLOSING',
+          evidenceId: 'FCPO_FUTURES|AGROPOST_FCPO_CLOSING|2026-10-22|2027-01',
+          sourceReference: 'https://agropost.wordpress.com/2026/10/22/22-oct-2026-palm-oil-prices-at-closing/',
+          projectionVersion: 'FEATURE016_BASELINE_PROJECTION_V1',
+          contractMonth: '2027-01',
+          priceType: 'SESSION_LAST',
+          contractSelectionRule: 'ACTIVE_CURRENT_THEN_EARLIEST_NON_EXPIRED_FALLBACK',
+          activeContractEvidenceId: 'DRARIF_FCPO_ACTIVE_CALENDAR'
+        },
+        usdMyr: {
+          source: 'BNM KL USD/MYR Reference Rate',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-10-22',
+          confidence: 'High',
+          status: 'Official',
+          unit: 'MYR/USD',
+          refreshMethod: 'Deterministic compatibility projection',
+          observationDate: '2026-10-22',
+          providerId: 'BNM_KL_USD_MYR_REFERENCE_RATE',
+          evidenceId: 'sha256:8a163aa06acc3656935f58389ab43ce979883401050a05974a62558a81ba10f3',
+          sourceReference: 'https://financialmarkets.bnm.gov.my/data-download-kl-usd-myr-reference-rate',
+          projectionVersion: 'FEATURE016_BASELINE_PROJECTION_V1',
+          datasetIdentity: 'BNM_KL_USD_MYR_REFERENCE_RATE',
+          referenceRate: 4.0812
+        },
+        egpUsd: {
+          source: 'Banque Misr official Transfer Buy/Sell',
+          sourceType: 'Official Publication',
+          lastUpdated: '2026-10-22T11:56:39.000Z',
+          confidence: 'High',
+          status: 'Official',
+          unit: 'EGP/USD',
+          refreshMethod: 'Deterministic compatibility projection',
+          observationDate: '2026-10-22',
+          observedAt: '2026-10-22T11:56:39.000Z',
+          retrievedAt: '2026-10-22T11:56:39.000Z',
+          providerId: 'BANQUE_MISR',
+          evidenceId: 'FX_OBSERVATION|5923da019c1dd9dd0fff',
+          rawEvidenceIdentity: 'sha256:67f3e01ab8e1b3784a6e95cc0da0aa9a9517cdcead15d1efe22a151ad148dcf3',
+          sourceReference: 'https://www.banquemisr.com/en/CAPITAL-MARKETS/Exchange-Rates-and-Currencies',
+          projectionVersion: 'FEATURE016_BASELINE_PROJECTION_V1',
+          buy: 55.23,
+          sell: 55.33,
+          rateType: 'TRANSFER',
+          fallbackFrom: 'CBE',
+          fallbackReason: 'UNAVAILABLE_TRANSPORT',
+          fxObservationId: 'FX_OBSERVATION|5923da019c1dd9dd0fff',
+          sourceIdentity: 'BANQUE_MISR',
+          businessDate: '2026-10-22',
+          validationStatus: 'VALID'
+        },
+        freight: {
+          source: 'No Egypt-route source documented; nearest §09 citation (MPOB West Malaysia–Sumatra rates) is a different route',
+          sourceType: 'Not documented (route mismatch)',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: 'USD/MT',
+          refreshMethod: 'Daily automation, only on Egypt-route-specific evidence, else left unchanged — scripts/daily-refresh-prompt.txt'
+        },
+        refiningSpread: {
+          source: 'https://agropost.wordpress.com/2026/10/22/22-oct-2026-palm-oil-prices-at-closing/',
+          sourceType: 'Deterministic derived market field',
+          lastUpdated: '2026-10-22',
+          confidence: 'Medium',
+          status: 'Derived',
+          unit: 'USD/MT',
+          refreshMethod: 'Feature016 deterministic physical-pair projection',
+          observationDate: '2026-10-22',
+          providerId: 'FEATURE016_DERIVED_REFINING_SPREAD',
+          evidenceId: 'DERIVED_CANONICAL_OBSERVATION|e2ca3912db1dcdd6422a9878',
+          derivedObservationId: 'DERIVED_CANONICAL_OBSERVATION|e2ca3912db1dcdd6422a9878',
+          formulaVersion: 'REFINING_SPREAD_PHYSICAL_PAIR_V1',
+          contractMonth: '2026-11',
+          sourceContextId: 'AGROPOST_TABLE|2026-10-22|NOV-2026|FOB-MALAYSIA',
+          rbdCanonicalObservationId: 'CANONICAL_OBSERVATION|a9ca3f10cbbe78f71b49fe70',
+          physicalCpoCanonicalObservationId: 'CANONICAL_OBSERVATION|0347b522ca3790f39b0d94a9',
+          rbdCandidateId: 'CANDIDATE_EVIDENCE|2eb88751cbd2cdb268d4',
+          physicalCpoCandidateId: 'CANDIDATE_EVIDENCE|3a7dc00ec7707e7e3851',
+          sourceReference: 'https://agropost.wordpress.com/2026/10/22/22-oct-2026-palm-oil-prices-at-closing/',
+          projectionVersion: 'FEATURE016_REFINING_SPREAD_PROJECTION_V1'
+        },
+        insurancePct: {
+          source: 'Not documented',
+          sourceType: 'Not documented',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Hardcoded',
+          unit: '%',
+          refreshMethod: 'Not refreshed by automation (static assumption)'
+        },
+        egyptDutyPct: {
+          source: 'WTO Tariff & Trade Data — Egypt member profile (§09 sources)',
+          sourceType: 'Regulatory / trade data',
+          lastUpdated: 'Not recorded',
+          confidence: 'Low',
+          status: 'Manual',
+          unit: '%',
+          refreshMethod: 'Re-checked only on evidence of change — scripts/daily-refresh-prompt.txt'
+        },
+        rbdOleinFobMarketUSD: {
+          source: 'https://agropost.wordpress.com/2026/10/22/22-oct-2026-palm-oil-prices-at-closing/',
+          sourceType: 'Validated Market Report',
+          lastUpdated: '2026-10-22',
+          confidence: 'Medium',
+          status: 'Validated',
+          unit: 'USD/MT',
+          refreshMethod: 'Deterministic compatibility projection',
+          observationDate: '2026-10-22',
+          providerId: 'AGROPOST_CROSSCHECK_CLOSING',
+          evidenceId: 'CANDIDATE_EVIDENCE|2eb88751cbd2cdb268d4',
+          sourceReference: 'https://agropost.wordpress.com/2026/10/22/22-oct-2026-palm-oil-prices-at-closing/',
+          projectionVersion: 'FEATURE016_BASELINE_PROJECTION_V1',
+          product: 'RBD_OLEIN_PHYSICAL',
+          priceBasis: 'FOB Malaysia physical',
+          priceType: 'SELLING',
+          contractOrDeliveryMonth: '2026-11',
+          sourceContextId: 'AGROPOST_TABLE|2026-10-22|NOV-2026|FOB-MALAYSIA',
+          canonicalObservationId: 'CANONICAL_OBSERVATION|a9ca3f10cbbe78f71b49fe70'
+        }
+      },
+      evidence: {
+        cpoMYR: {
+          tier: 'Estimated',
+          reason: 'Provenance is insufficient for a stronger tier'
+        },
+        usdMyr: {
+          tier: 'Verified',
+          reason: 'High-confidence, directly sourced figure'
+        },
+        egpUsd: {
+          tier: 'Verified',
+          reason: 'High-confidence, directly sourced figure'
+        },
+        freight: {
+          tier: 'Low Confidence',
+          reason: 'Source confidence is recorded as Low'
+        },
+        rbdOleinFobMarketUSD: {
+          tier: 'Estimated',
+          reason: 'Provenance is insufficient for a stronger tier'
+        }
+      },
+      snapshotId: 'MARKET_SNAPSHOT|91acb99dd6124b094580'
     }
   ];
 

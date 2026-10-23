@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "contractVersion": "1.0.0",
-  "snapshotId": "FEATURE003|36ec50831fad0a0900a9",
-  "canonicalVersion": "FEATURE003|36ec50831fad0a0900a9",
-  "generatedAt": "2026-10-23T03:42:26.251Z",
+  "snapshotId": "FEATURE003|c4a41d0c962e97fe7582",
+  "canonicalVersion": "FEATURE003|c4a41d0c962e97fe7582",
+  "generatedAt": "2026-10-23T07:02:32.097Z",
   "refresh": {
-    "completedAt": "2026-10-23T03:42:26.251Z",
-    "artifactGeneratedAt": "2026-10-23T03:42:26.251Z",
+    "completedAt": "2026-10-23T07:02:32.097Z",
+    "artifactGeneratedAt": "2026-10-23T07:02:32.097Z",
     "source": "daily-refresh validated completion"
   },
   "sourceIdentity": {
@@ -22,14 +22,14 @@
     ],
     "forecastIssuedDate": "2026-10-23",
     "forecastModelVersion": "v1-linear-curve-fx-scenario",
-    "forecastInputIdentity": "FORECAST_INPUT|07daccdb1aba7e834824",
-    "marketSnapshotId": "MARKET_SNAPSHOT|6e029c3efc325e216700",
+    "forecastInputIdentity": "FORECAST_INPUT|14d795f5c18d36a78252",
+    "marketSnapshotId": "MARKET_SNAPSHOT|91acb99dd6124b094580",
     "marketState": {
       "cpoMYR": 4793,
       "usdMyr": 4.0812,
       "egpUsd": 55.28,
       "rbdOleinFobMarketUSD": 1152.5,
-      "sourceInputIdentity": "FORECAST_INPUT|07daccdb1aba7e834824"
+      "sourceInputIdentity": "FORECAST_INPUT|14d795f5c18d36a78252"
     }
   },
   "rbd": {
@@ -423,7 +423,7 @@
     "usdMyr": {
       "value": 4.0812,
       "source": "BNM KL USD/MYR Reference Rate",
-      "capturedAt": "2026-10-23T03:42:24.9928174Z",
+      "capturedAt": "2026-10-23T07:02:30.9294449Z",
       "observationDate": "2026-10-23",
       "freshnessState": "Verified",
       "status": "Official",
@@ -432,7 +432,7 @@
   },
   "marketObservationId": "MARKET_OBSERVATION|8df1e38039626bc9b57f",
   "fxObservationId": "FX_OBSERVATION|5923da019c1dd9dd0fff",
-  "forecastVintageId": "FORECAST_VINTAGE|8c0eea1e5689f6e0386a",
+  "forecastVintageId": "FORECAST_VINTAGE|f82f30cef2fd091e095d",
   "rbdObservation": {
     "contractVersion": "1.0.0",
     "instrument": "RBD_PALM_OLEIN",
@@ -509,16 +509,16 @@
     "snapshot": {
       "schemaVersion": 1,
       "issuedDate": "2026-10-23",
-      "capturedAt": "2026-10-23T03:42:06.7039674Z",
+      "capturedAt": "2026-10-23T07:02:07.0204407Z",
       "captureStatus": "CAPTURED",
       "forecastDefinitionVersion": "v1-linear-curve-fx-scenario",
       "landedFormulaVersion": "v1-fob-freight-insurance-cif-duty-vat-margin",
       "classification": "SCENARIO_DERIVED",
       "sourceSnapshotDate": "2026-10-23",
-      "sourceMarketSnapshotId": "MARKET_SNAPSHOT|6e029c3efc325e216700",
-      "sourceInputIdentity": "FORECAST_INPUT|07daccdb1aba7e834824",
+      "sourceMarketSnapshotId": "MARKET_SNAPSHOT|91acb99dd6124b094580",
+      "sourceInputIdentity": "FORECAST_INPUT|14d795f5c18d36a78252",
       "sourceInputIdentityVersion": "v3-forecast-driving-normalized",
-      "forecastId": "FORECAST_VINTAGE|8c0eea1e5689f6e0386a",
+      "forecastId": "FORECAST_VINTAGE|f82f30cef2fd091e095d",
       "inputs": {
         "currentFcpoMYR": 4793,
         "currentUsdMyr": 4.0812,
@@ -566,7 +566,7 @@
           },
           {
             "key": "sep",
-            "myr": 4981,
+            "myr": 4963,
             "labelKey": "ptSep",
             "subKey": "ptContract",
             "weekOffset": 20,
@@ -574,7 +574,7 @@
           },
           {
             "key": "oct",
-            "myr": 5036,
+            "myr": 5023,
             "labelKey": "ptOct",
             "subKey": "ptContract",
             "weekOffset": 25,
@@ -615,7 +615,7 @@
             "refreshMethod": "Deterministic compatibility projection",
             "observationDate": "2026-10-22",
             "providerId": "BNM_KL_USD_MYR_REFERENCE_RATE",
-            "evidenceId": "sha256:a38dd112823951491bd6e84b2c139b60af626a855ab40bcbdd8adbc976fc66fb",
+            "evidenceId": "sha256:8a163aa06acc3656935f58389ab43ce979883401050a05974a62558a81ba10f3",
             "sourceReference": "https://financialmarkets.bnm.gov.my/data-download-kl-usd-myr-reference-rate",
             "projectionVersion": "FEATURE016_BASELINE_PROJECTION_V1",
             "datasetIdentity": "BNM_KL_USD_MYR_REFERENCE_RATE",
@@ -634,7 +634,7 @@
             "retrievedAt": "2026-10-22T11:56:39.000Z",
             "providerId": "BANQUE_MISR",
             "evidenceId": "FX_OBSERVATION|5923da019c1dd9dd0fff",
-            "rawEvidenceIdentity": "sha256:65cc34c0513ca79ccaeba65a925320dfa01821c675a96c1874871a863b25ae0f",
+            "rawEvidenceIdentity": "sha256:67f3e01ab8e1b3784a6e95cc0da0aa9a9517cdcead15d1efe22a151ad148dcf3",
             "sourceReference": "https://www.banquemisr.com/en/CAPITAL-MARKETS/Exchange-Rates-and-Currencies",
             "projectionVersion": "FEATURE016_BASELINE_PROJECTION_V1",
             "buy": 55.23,
@@ -833,7 +833,7 @@
       ]
     },
     "snapshotIssuedDate": "2026-10-23",
-    "forecastGeneratedAt": "2026-10-23T03:42:06.7039674Z",
+    "forecastGeneratedAt": "2026-10-23T07:02:07.0204407Z",
     "modelVersion": "v1-linear-curve-fx-scenario",
     "baselineUSDPerMT": 1360.2832958810031,
     "targetUSDPerMT": 1352.2431259044863,
@@ -843,9 +843,9 @@
     "confidencePercent": 35,
     "targetDate": "2026-10-30",
     "sourceMarketSnapshotDate": "2026-10-23",
-    "sourceMarketSnapshotId": "MARKET_SNAPSHOT|6e029c3efc325e216700",
-    "sourceInputIdentity": "FORECAST_INPUT|07daccdb1aba7e834824",
-    "forecastId": "FORECAST_VINTAGE|8c0eea1e5689f6e0386a"
+    "sourceMarketSnapshotId": "MARKET_SNAPSHOT|91acb99dd6124b094580",
+    "sourceInputIdentity": "FORECAST_INPUT|14d795f5c18d36a78252",
+    "forecastId": "FORECAST_VINTAGE|f82f30cef2fd091e095d"
   },
   "marketFirstForecast": {
     "marketTodayUSD": 1152.5,
