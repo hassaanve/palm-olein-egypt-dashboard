@@ -3,10 +3,10 @@
   "contractVersion": "1.0.0",
   "snapshotId": "FEATURE003|a549ad13ae95f8eeb165",
   "canonicalVersion": "FEATURE003|a549ad13ae95f8eeb165",
-  "generatedAt": "2026-10-31T08:02:23.880Z",
+  "generatedAt": "2026-10-31T10:25:19.869Z",
   "refresh": {
-    "completedAt": "2026-10-31T08:02:23.880Z",
-    "artifactGeneratedAt": "2026-10-31T08:02:23.880Z",
+    "completedAt": "2026-10-31T10:25:19.869Z",
+    "artifactGeneratedAt": "2026-10-31T10:25:19.869Z",
     "source": "daily-refresh validated completion"
   },
   "sourceIdentity": {
@@ -490,6 +490,180 @@
         "observationDateTime": "2026-08-24T00:00:00.000Z",
         "kind": "actual",
         "valueUSDPerMT": 1207.5
+      },
+      {
+        "date": "2026-08-28",
+        "observationDateTime": "2026-08-28T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1200
+      },
+      {
+        "date": "2026-09-03",
+        "observationDateTime": "2026-09-03T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1190
+      },
+      {
+        "date": "2026-09-04",
+        "observationDateTime": "2026-09-04T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1190
+      },
+      {
+        "date": "2026-09-07",
+        "observationDateTime": "2026-09-07T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1207.5
+      },
+      {
+        "date": "2026-09-08",
+        "observationDateTime": "2026-09-08T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1200
+      },
+      {
+        "date": "2026-09-11",
+        "observationDateTime": "2026-09-11T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1185
+      },
+      {
+        "date": "2026-09-14",
+        "observationDateTime": "2026-09-14T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1200
+      },
+      {
+        "date": "2026-09-25",
+        "observationDateTime": "2026-09-25T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1155
+      },
+      {
+        "date": "2026-09-28",
+        "observationDateTime": "2026-09-28T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1150
+      },
+      {
+        "date": "2026-09-29",
+        "observationDateTime": "2026-09-29T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1140
+      },
+      {
+        "date": "2026-10-01",
+        "observationDateTime": "2026-10-01T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1120
+      },
+      {
+        "date": "2026-10-02",
+        "observationDateTime": "2026-10-02T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1120
+      },
+      {
+        "date": "2026-10-05",
+        "observationDateTime": "2026-10-05T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1130
+      },
+      {
+        "date": "2026-10-06",
+        "observationDateTime": "2026-10-06T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1120
+      },
+      {
+        "date": "2026-10-07",
+        "observationDateTime": "2026-10-07T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1115
+      },
+      {
+        "date": "2026-10-08",
+        "observationDateTime": "2026-10-08T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1142.5
+      },
+      {
+        "date": "2026-10-09",
+        "observationDateTime": "2026-10-09T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1140
+      },
+      {
+        "date": "2026-10-12",
+        "observationDateTime": "2026-10-12T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1150
+      },
+      {
+        "date": "2026-10-13",
+        "observationDateTime": "2026-10-13T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1145
+      },
+      {
+        "date": "2026-10-14",
+        "observationDateTime": "2026-10-14T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1142.5
+      },
+      {
+        "date": "2026-10-16",
+        "observationDateTime": "2026-10-16T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1145
+      },
+      {
+        "date": "2026-10-19",
+        "observationDateTime": "2026-10-19T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1145
+      },
+      {
+        "date": "2026-10-20",
+        "observationDateTime": "2026-10-20T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1160
+      },
+      {
+        "date": "2026-10-21",
+        "observationDateTime": "2026-10-21T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1150
+      },
+      {
+        "date": "2026-10-22",
+        "observationDateTime": "2026-10-22T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1152.5
+      },
+      {
+        "date": "2026-10-23",
+        "observationDateTime": "2026-10-23T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1157.5
+      },
+      {
+        "date": "2026-10-26",
+        "observationDateTime": "2026-10-26T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1150
+      },
+      {
+        "date": "2026-10-27",
+        "observationDateTime": "2026-10-27T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1135
+      },
+      {
+        "date": "2026-10-28",
+        "observationDateTime": "2026-10-28T00:00:00.000Z",
+        "kind": "actual",
+        "valueUSDPerMT": 1135
       },
       {
         "date": "2026-10-29",
